@@ -614,6 +614,137 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .track-status.good{background:rgba(16,185,129,0.12);color:var(--green);border:1px solid rgba(16,185,129,0.2)}
 .track-status.bad{background:rgba(239,68,68,0.12);color:var(--red);border:1px solid rgba(239,68,68,0.2)}
 
+/* ── ONBOARDING OVERLAY ── */
+#onboarding{
+  position:fixed;inset:0;z-index:2000;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;transition:opacity 0.5s ease,transform 0.5s ease;
+}
+#onboarding.hidden{display:none}
+.ob-logo-top{
+  position:absolute;top:28px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:8px;
+}
+.ob-logo-top-text{
+  font-size:18px;font-weight:900;
+  background:linear-gradient(135deg,#fff,var(--purpleL));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.ob-logo-icon-sm{
+  width:30px;height:30px;border-radius:8px;
+  background:linear-gradient(135deg,var(--purple),var(--purpleL));
+  display:flex;align-items:center;justify-content:center;font-size:15px;
+}
+.ob-progress{display:flex;gap:8px;margin-bottom:44px}
+.ob-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:all 0.35s}
+.ob-dot.active{background:var(--purple);width:24px;border-radius:99px}
+.ob-dot.done{background:var(--green)}
+.ob-screens{width:100%;max-width:500px;position:relative}
+.ob-screen{
+  display:none;flex-direction:column;align-items:center;
+  text-align:center;padding:0 28px;
+}
+.ob-screen.active{display:flex;animation:obSlide 0.4s cubic-bezier(0.34,1.1,0.64,1)}
+.ob-screen.slide-back{animation:obSlideBack 0.4s cubic-bezier(0.34,1.1,0.64,1)}
+@keyframes obSlide{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes obSlideBack{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+.ob-emoji{font-size:64px;margin-bottom:20px;display:block}
+.ob-headline{font-size:38px;font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:12px}
+.ob-sub{font-size:15px;color:var(--t2);line-height:1.6;max-width:400px;margin-bottom:28px}
+.ob-inputs{width:100%;display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.ob-input-group{text-align:left}
+.ob-input-label{font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px}
+.ob-input{
+  width:100%;padding:14px 16px;background:var(--card);
+  border:1px solid var(--border2);border-radius:12px;
+  font-size:18px;font-weight:700;color:var(--t1);font-family:'Inter',sans-serif;
+  outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+}
+.ob-input:focus{border-color:var(--purpleL);box-shadow:0 0 0 3px var(--purpleGlow)}
+.ob-pfx{position:relative}
+.ob-pfx::before{content:'$';position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;font-weight:700;color:var(--t2);pointer-events:none}
+.ob-pfx .ob-input{padding-left:28px}
+.ob-sfx{position:relative}
+.ob-sfx::after{content:'%';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;font-weight:700;color:var(--t2);pointer-events:none}
+.ob-sfx .ob-input{padding-right:32px}
+.debt-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+.debt-chip{
+  padding:8px 16px;border-radius:99px;font-size:13px;font-weight:600;
+  cursor:pointer;border:1px solid var(--border2);color:var(--t2);
+  background:transparent;transition:all 0.18s;
+}
+.debt-chip.sel{background:var(--purpleGlow);color:var(--purpleL);border-color:rgba(124,58,237,0.4)}
+/* Reveal */
+.ob-reveal-num{
+  font-size:96px;font-weight:900;letter-spacing:-5px;line-height:1;
+  background:linear-gradient(135deg,#fff,var(--purpleL));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin:6px 0;transition:background 0.5s;
+}
+.ob-reveal-unit{font-size:17px;color:var(--t2);font-weight:500;margin-bottom:6px}
+.ob-reveal-year{font-size:13px;color:var(--t3);padding:6px 16px;background:var(--card);border-radius:99px;display:inline-block;margin-bottom:28px}
+/* Date screen */
+.ob-date-big{
+  font-size:56px;font-weight:900;letter-spacing:-3px;line-height:1;
+  background:linear-gradient(135deg,var(--gold),var(--goldL));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin:6px 0;
+}
+.ob-days-sub{font-size:14px;color:var(--t2);margin-bottom:20px}
+.ob-insight-box{
+  width:100%;padding:16px 20px;text-align:left;margin-bottom:20px;
+  background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(168,85,247,0.03));
+  border:1px solid rgba(124,58,237,0.22);border-radius:14px;
+}
+.ob-insight-lbl{font-size:11px;color:var(--purpleL);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px}
+.ob-insight-txt{font-size:14px;color:var(--t1);line-height:1.6;font-weight:500}
+.ob-insight-txt strong{color:var(--green)}
+.ob-whatif{width:100%;margin-bottom:24px}
+.ob-whatif-row{display:flex;justify-content:space-between;margin-bottom:8px}
+.ob-whatif-lbl{font-size:13px;color:var(--t2)}
+.ob-whatif-val{font-size:13px;font-weight:700;color:var(--green)}
+.ob-range{-webkit-appearance:none;width:100%;height:6px;background:var(--border2);border-radius:99px;outline:none;cursor:pointer}
+.ob-range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purpleL));cursor:pointer;box-shadow:0 0 8px rgba(124,58,237,0.4)}
+/* Name screen */
+.ob-name-input{
+  width:100%;padding:16px;text-align:center;background:var(--card);
+  border:1px solid var(--border2);border-radius:14px;
+  font-size:24px;font-weight:700;color:var(--t1);font-family:'Inter',sans-serif;
+  outline:none;transition:all 0.2s;margin-bottom:20px;
+}
+.ob-name-input:focus{border-color:var(--purpleL);box-shadow:0 0 0 3px var(--purpleGlow)}
+.ob-name-input::placeholder{color:var(--t3)}
+.remind-chips{display:flex;gap:10px;justify-content:center;margin-bottom:28px}
+.remind-chip{
+  padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;
+  cursor:pointer;border:1px solid var(--border2);color:var(--t2);
+  background:var(--card);transition:all 0.2s;
+}
+.remind-chip.sel{background:rgba(16,185,129,0.1);color:var(--green);border-color:rgba(16,185,129,0.3)}
+/* Buttons */
+.ob-btn{
+  width:100%;padding:16px 28px;border-radius:14px;font-size:16px;font-weight:800;
+  cursor:pointer;border:none;transition:all 0.2s;
+  background:linear-gradient(135deg,var(--purple),var(--purpleL));color:#fff;
+  letter-spacing:-0.3px;font-family:'Inter',sans-serif;
+}
+.ob-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(124,58,237,0.35)}
+.ob-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none;box-shadow:none}
+.ob-skip{
+  margin-top:12px;font-size:13px;color:var(--t3);cursor:pointer;
+  background:none;border:none;font-family:'Inter',sans-serif;transition:color 0.2s;
+}
+.ob-skip:hover{color:var(--t2)}
+.ob-nav{
+  width:100%;max-width:500px;display:flex;justify-content:space-between;
+  align-items:center;margin-top:16px;padding:0 28px;
+}
+.ob-back-btn{
+  font-size:13px;color:var(--t3);cursor:pointer;background:none;border:none;
+  font-family:'Inter',sans-serif;padding:8px 0;transition:color 0.2s;
+}
+.ob-back-btn:hover{color:var(--t2)}
+
 /* ── MERCHANT CHIP TRANSACTIONS ── */
 .merchant-chip{
   width:44px;height:44px;border-radius:13px;flex-shrink:0;
@@ -692,6 +823,114 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 </aside>
+
+<!-- ─── ONBOARDING ─── -->
+<div id="onboarding">
+  <div class="ob-logo-top">
+    <div class="ob-logo-icon-sm">⚡</div>
+    <span class="ob-logo-top-text">FinQuest</span>
+  </div>
+
+  <div class="ob-progress">
+    <div class="ob-dot active" id="dot-0"></div>
+    <div class="ob-dot" id="dot-1"></div>
+    <div class="ob-dot" id="dot-2"></div>
+    <div class="ob-dot" id="dot-3"></div>
+    <div class="ob-dot" id="dot-4"></div>
+  </div>
+
+  <div class="ob-screens">
+
+    <!-- Step 0: Hook -->
+    <div class="ob-screen active" id="ob-0">
+      <span class="ob-emoji">💸</span>
+      <div class="ob-headline">Your debt has a daily price.</div>
+      <div class="ob-sub">Most people have no idea what it is.<br>You're about to find out — in 60 seconds.</div>
+      <button class="ob-btn" onclick="obNext()">Show me mine →</button>
+    </div>
+
+    <!-- Step 1: Debt Input -->
+    <div class="ob-screen" id="ob-1">
+      <span class="ob-emoji" style="font-size:48px;margin-bottom:14px">📋</span>
+      <div class="ob-headline" style="font-size:30px">Tell us about your debt</div>
+      <div class="ob-sub" style="margin-bottom:16px">Start with your biggest one. Add more after.</div>
+      <div class="debt-chips">
+        <div class="debt-chip sel" onclick="obChip(this,'credit')">💳 Credit Card</div>
+        <div class="debt-chip" onclick="obChip(this,'student')">🎓 Student Loan</div>
+        <div class="debt-chip" onclick="obChip(this,'personal')">💼 Personal Loan</div>
+        <div class="debt-chip" onclick="obChip(this,'auto')">🚗 Auto Loan</div>
+      </div>
+      <div class="ob-inputs">
+        <div class="ob-input-group">
+          <div class="ob-input-label">Balance owed</div>
+          <div class="ob-pfx"><input class="ob-input" id="ob-balance" type="number" placeholder="5,000" min="1" oninput="obValidate()"></div>
+        </div>
+        <div class="ob-input-group">
+          <div class="ob-input-label">Interest Rate (APR)</div>
+          <div class="ob-sfx"><input class="ob-input" id="ob-apr" type="number" placeholder="24" min="0" max="100" step="0.1" value="24" oninput="obValidate()"></div>
+        </div>
+        <div class="ob-input-group">
+          <div class="ob-input-label">Monthly minimum payment</div>
+          <div class="ob-pfx"><input class="ob-input" id="ob-payment" type="number" placeholder="150" min="1" oninput="obValidate()"></div>
+        </div>
+      </div>
+      <button class="ob-btn" id="ob-calc-btn" onclick="obCalculate()" disabled>Calculate my daily cost →</button>
+    </div>
+
+    <!-- Step 2: The Reveal -->
+    <div class="ob-screen" id="ob-2">
+      <div style="font-size:12px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px">Your debt costs you</div>
+      <div class="ob-reveal-num" id="ob-reveal-num">$0.00</div>
+      <div class="ob-reveal-unit">every single day</div>
+      <div class="ob-reveal-year" id="ob-year-cost">calculating...</div>
+      <div class="ob-sub" id="ob-reveal-sub" style="margin-bottom:24px;font-size:14px"></div>
+      <button class="ob-btn" onclick="obNext()">See your debt-free date →</button>
+    </div>
+
+    <!-- Step 3: Debt-Free Date + Insight -->
+    <div class="ob-screen" id="ob-3">
+      <div style="font-size:12px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px">At your current pace, you're free by</div>
+      <div class="ob-date-big" id="ob-free-date">—</div>
+      <div class="ob-days-sub" id="ob-days-sub">— days from now</div>
+      <div class="ob-insight-box">
+        <div class="ob-insight-lbl">⚡ Your personalized insight</div>
+        <div class="ob-insight-txt" id="ob-insight-txt">Loading...</div>
+      </div>
+      <div class="ob-whatif">
+        <div class="ob-whatif-row">
+          <span class="ob-whatif-lbl">Pay an extra <strong id="ob-extra-lbl">$0</strong>/month</span>
+          <span class="ob-whatif-val" id="ob-whatif-result">drag to explore</span>
+        </div>
+        <input type="range" class="ob-range" id="ob-extra-range" min="0" max="300" step="10" value="0" oninput="obWhatif(this.value)">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-top:4px"><span>$0</span><span>$150</span><span>$300</span></div>
+      </div>
+      <button class="ob-btn" onclick="obNext()">Let's crush this →</button>
+    </div>
+
+    <!-- Step 4: Name + Reminder -->
+    <div class="ob-screen" id="ob-4">
+      <span class="ob-emoji">🎯</span>
+      <div class="ob-headline">Almost there.</div>
+      <div class="ob-sub">What should we call you, and when do you want your daily check-in?</div>
+      <input class="ob-name-input" id="ob-name" type="text" placeholder="First name" maxlength="20" oninput="obNameChange()">
+      <div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px">Daily reminder</div>
+      <div class="remind-chips">
+        <div class="remind-chip sel" onclick="obRemind(this)">🌅 8am</div>
+        <div class="remind-chip" onclick="obRemind(this)">☀️ 12pm</div>
+        <div class="remind-chip" onclick="obRemind(this)">🌙 7pm</div>
+      </div>
+      <button class="ob-btn" id="ob-finish-btn" onclick="obFinish()">Take me to my dashboard →</button>
+      <button class="ob-skip" onclick="obFinish()">Skip for now</button>
+    </div>
+
+  </div><!-- end ob-screens -->
+
+  <div class="ob-nav">
+    <button class="ob-back-btn" id="ob-back" onclick="obBack()" style="visibility:hidden">← Back</button>
+    <div style="font-size:12px;color:var(--t3)" id="ob-step-lbl">Step 1 of 5</div>
+    <div style="width:60px"></div>
+  </div>
+</div>
 
 <!-- ─── MAIN ─── -->
 <main class="main">
@@ -1778,6 +2017,181 @@ function initTrendChart() {
       }
     }
   });
+}
+
+// ─────────────────────────────
+//  ONBOARDING
+// ─────────────────────────────
+let obStep = 0;
+let obData = { balance:0, apr:24, payment:0, type:'credit', daily:0, months:0 };
+
+function obGoTo(step, dir) {
+  document.getElementById(`ob-${obStep}`).classList.remove('active','slide-back');
+  obStep = step;
+  const s = document.getElementById(`ob-${obStep}`);
+  s.classList.remove('active','slide-back');
+  void s.offsetWidth; // reflow
+  s.classList.add('active');
+  if (dir === 'back') s.classList.add('slide-back');
+  // dots
+  for (let i = 0; i < 5; i++) {
+    const d = document.getElementById(`dot-${i}`);
+    d.className = 'ob-dot' + (i < obStep ? ' done' : i === obStep ? ' active' : '');
+  }
+  document.getElementById('ob-back').style.visibility = obStep > 0 ? 'visible' : 'hidden';
+  document.getElementById('ob-step-lbl').textContent = `Step ${obStep + 1} of 5`;
+}
+function obNext() { obGoTo(obStep + 1, 'fwd'); }
+function obBack() { obGoTo(obStep - 1, 'back'); }
+
+function obChip(el, type) {
+  document.querySelectorAll('.debt-chip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  obData.type = type;
+  const defaults = { credit:24, student:6.5, personal:11, auto:7 };
+  document.getElementById('ob-apr').value = defaults[type];
+  obValidate();
+}
+
+function obValidate() {
+  const b = parseFloat(document.getElementById('ob-balance').value);
+  const a = parseFloat(document.getElementById('ob-apr').value);
+  const p = parseFloat(document.getElementById('ob-payment').value);
+  const minP = b * (a / 100 / 12);
+  const ok = b > 0 && a >= 0 && p > 0 && p > minP;
+  document.getElementById('ob-calc-btn').disabled = !ok;
+  if (p > 0 && b > 0 && p <= minP) {
+    document.getElementById('ob-payment').style.borderColor = 'var(--red)';
+  } else {
+    document.getElementById('ob-payment').style.borderColor = '';
+  }
+}
+
+function obCalculate() {
+  const balance  = parseFloat(document.getElementById('ob-balance').value);
+  const apr      = parseFloat(document.getElementById('ob-apr').value);
+  const payment  = parseFloat(document.getElementById('ob-payment').value);
+  obData = { ...obData, balance, apr, payment };
+  obData.daily   = balance * (apr / 100) / 365;
+  const r = apr / 100 / 12;
+  obData.months  = r > 0 ? -Math.log(1 - r * balance / payment) / Math.log(1 + r) : balance / payment;
+
+  // Pre-fill date screen
+  const freeDate = new Date();
+  freeDate.setMonth(freeDate.getMonth() + Math.ceil(obData.months));
+  document.getElementById('ob-free-date').textContent =
+    freeDate.toLocaleDateString('en-US', { month:'long', year:'numeric' });
+  const daysLeft = Math.ceil((freeDate - new Date()) / 864e5);
+  document.getElementById('ob-days-sub').textContent = `${daysLeft.toLocaleString()} days from now`;
+
+  // Insight: find smallest extra payment that saves ≥1 month
+  const insightExtras = [10, 20, 50, 100];
+  let insightText = `"You're paying <strong>$${obData.daily.toFixed(2)}</strong> today. At this pace, you're debt-free in ${Math.round(obData.months)} months."`;
+  for (const extra of insightExtras) {
+    const nm = r > 0 ? -Math.log(1 - r * balance / (payment + extra)) / Math.log(1 + r) : balance / (payment + extra);
+    const saved = Math.round(obData.months - nm);
+    if (saved >= 1) {
+      insightText = `"You're paying <strong>$${obData.daily.toFixed(2)}</strong> today. At this pace, debt-free in ${Math.round(obData.months)} months. Cut just <strong>$${extra}/month → save ${saved} months.</strong>"`;
+      break;
+    }
+  }
+  document.getElementById('ob-insight-txt').innerHTML = insightText;
+
+  // Navigate to reveal
+  obGoTo(2, 'fwd');
+
+  // Animate the number count-up
+  const el = document.getElementById('ob-reveal-num');
+  const target = obData.daily;
+  let current = 0; let frame = 0; const frames = 55;
+  const tick = setInterval(() => {
+    frame++;
+    current = target * (frame / frames);
+    el.textContent = '$' + current.toFixed(2);
+    if (frame >= frames) {
+      clearInterval(tick);
+      el.textContent = '$' + target.toFixed(2);
+      // Color by severity
+      if (target >= 15)      { el.style.background = 'linear-gradient(135deg,#EF4444,#F87171)'; }
+      else if (target >= 7)  { el.style.background = 'linear-gradient(135deg,#F97316,#FCD34D)'; }
+      else                   { el.style.background = 'linear-gradient(135deg,#fff,var(--purpleL))'; }
+      el.style.webkitBackgroundClip = 'text';
+    }
+  }, 1100 / frames);
+
+  const yearCost = (obData.daily * 365).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  document.getElementById('ob-year-cost').textContent = `$${yearCost} vanishing in interest this year`;
+  const names = { credit:'credit card', student:'student loan', personal:'personal loan', auto:'auto loan' };
+  document.getElementById('ob-reveal-sub').textContent =
+    `Your ${names[obData.type]} at ${apr}% APR charges you while you sleep, eat, and breathe.`;
+}
+
+function obWhatif(val) {
+  const extra = parseInt(val);
+  document.getElementById('ob-extra-lbl').textContent = `$${extra}`;
+  if (extra === 0) { document.getElementById('ob-whatif-result').textContent = 'drag to explore'; return; }
+  const r = obData.apr / 100 / 12;
+  const nm = r > 0
+    ? -Math.log(1 - r * obData.balance / (obData.payment + extra)) / Math.log(1 + r)
+    : obData.balance / (obData.payment + extra);
+  const saved = Math.round(obData.months - nm);
+  const nd = new Date(); nd.setMonth(nd.getMonth() + Math.ceil(nm));
+  const ndStr = nd.toLocaleDateString('en-US', { month:'short', year:'numeric' });
+  document.getElementById('ob-whatif-result').textContent =
+    saved > 0 ? `Free by ${ndStr} — ${saved} months sooner` : 'no change';
+}
+
+function obRemind(el) {
+  document.querySelectorAll('.remind-chip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function obNameChange() {
+  const name = document.getElementById('ob-name').value.trim();
+  document.getElementById('ob-finish-btn').textContent =
+    name ? `Let's go, ${name} →` : 'Take me to my dashboard →';
+}
+
+function obFinish() {
+  const name = (document.getElementById('ob-name').value.trim()) || 'Alex';
+  // Push data into the live dashboard
+  const d = obData;
+  if (d.balance > 0) {
+    // Daily dollar
+    const ddEl = document.getElementById('daily-dollar');
+    if (ddEl) ddEl.textContent = '$' + d.daily.toFixed(2);
+    // Greeting
+    const greet = document.querySelector('#dashboard .page-title');
+    if (greet) greet.textContent = `Good morning, ${name} 👋`;
+    // Debt-free date
+    const freeDate = new Date();
+    freeDate.setMonth(freeDate.getMonth() + Math.ceil(d.months));
+    const fStr = freeDate.toLocaleDateString('en-US', {month:'short', year:'numeric'});
+    const daysLeft = Math.ceil((freeDate - new Date()) / 864e5);
+    const cdEl = document.querySelector('.countdown-date');
+    if (cdEl) cdEl.textContent = fStr;
+    const cdDays = document.querySelector('.countdown-days');
+    if (cdDays) cdDays.textContent = `${daysLeft.toLocaleString()} days remaining`;
+    // First debt row
+    const typeLabel = {credit:'Credit Card',student:'Student Loan',personal:'Personal Loan',auto:'Auto Loan'}[d.type]||'Debt';
+    const dn = document.querySelector('.debt-name');
+    if (dn) dn.textContent = typeLabel;
+    const da = document.querySelector('.debt-apr');
+    if (da) da.textContent = `${d.apr}% APR · Primary debt`;
+    const dam = document.querySelector('.debt-amount');
+    if (dam) dam.textContent = '$' + d.balance.toLocaleString();
+    const ddy = document.querySelector('.debt-daily');
+    if (ddy) ddy.textContent = '$' + d.daily.toFixed(2) + '/day';
+  }
+  localStorage.setItem('fq_onboarded', '1');
+  const ob = document.getElementById('onboarding');
+  ob.style.opacity = '0'; ob.style.transform = 'scale(0.97)';
+  setTimeout(() => ob.classList.add('hidden'), 480);
+}
+
+// Skip onboarding if already completed
+if (localStorage.getItem('fq_onboarded')) {
+  document.getElementById('onboarding').classList.add('hidden');
 }
 
 // ─────────────────────────────
