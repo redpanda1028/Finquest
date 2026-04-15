@@ -575,6 +575,37 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   transition:color 0.2s;line-height:1;
 }
 .debt-remove:hover{color:var(--red)}
+.debt-min-pay{font-size:10px;color:var(--green);margin-top:2px}
+.debt-item-header{display:flex;align-items:center;gap:10px;width:100%}
+.debt-edit-btn{margin-left:auto;background:none;border:1px solid var(--border2);border-radius:6px;padding:3px 9px;font-size:10px;font-weight:700;color:var(--t2);cursor:pointer;transition:all 0.2s;flex-shrink:0;letter-spacing:.3px}
+.debt-edit-btn:hover{border-color:var(--purpleL);color:var(--purpleL)}
+.debt-edit-form{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:none}
+.debt-edit-form.open{display:block}
+.debt-edit-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.debt-edit-field{display:flex;flex-direction:column;gap:4px}
+.debt-edit-label{font-size:10px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.8px}
+.debt-edit-input{width:100%;padding:9px 10px;background:var(--card2);border:1px solid var(--border2);border-radius:8px;font-size:13px;font-weight:600;color:var(--t1);font-family:'Inter',sans-serif;outline:none;box-sizing:border-box;transition:border-color 0.15s}
+.debt-edit-input:focus{border-color:var(--purpleL)}
+.debt-edit-toggle{display:flex;background:rgba(255,255,255,0.04);border-radius:8px;padding:2px;gap:2px;margin-bottom:8px}
+.debt-edit-toggle-btn{flex:1;padding:6px 8px;border-radius:6px;border:none;background:transparent;font-size:11px;font-weight:700;color:var(--t2);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
+.debt-edit-toggle-btn.active{background:var(--purple);color:#fff}
+.debt-edit-actions{display:flex;gap:8px;margin-top:10px}
+.debt-save-btn{flex:1;padding:9px;background:linear-gradient(135deg,var(--purple),var(--purpleL));border:none;border-radius:8px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Inter',sans-serif}
+.debt-cancel-btn{padding:9px 14px;background:var(--card2);border:1px solid var(--border2);border-radius:8px;font-size:13px;font-weight:600;color:var(--t2);cursor:pointer;font-family:'Inter',sans-serif}
+
+/* ── DAILY SPLIT ── */
+.daily-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 16px}
+.daily-split-block{background:rgba(255,255,255,0.05);border-radius:12px;padding:12px 14px;border:1px solid rgba(255,255,255,0.07)}
+.daily-split-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--t2);margin-bottom:7px}
+.daily-split-val{font-size:clamp(22px,5vw,30px);font-weight:900;letter-spacing:-1.5px;line-height:1}
+.daily-split-sub{font-size:10px;color:var(--t3);margin-top:5px;line-height:1.35}
+
+/* ── OB PAYMENT TOGGLE ── */
+.ob-toggle{display:flex;background:rgba(255,255,255,0.05);border-radius:10px;padding:3px;margin-bottom:16px;gap:3px;border:1px solid var(--border2)}
+.ob-toggle-btn{flex:1;padding:9px 10px;border-radius:8px;border:none;background:transparent;font-size:12px;font-weight:700;color:var(--t2);cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;line-height:1.3}
+.ob-toggle-btn.active{background:linear-gradient(135deg,var(--purple),var(--purpleL));color:#fff;box-shadow:0 2px 10px rgba(124,58,237,0.35)}
+.ob-toggle-input{display:none}.ob-toggle-input.visible{display:block}
+
 
 /* ── GOAL CARDS ── */
 .goal-cards{display:flex;flex-direction:column;gap:10px;width:100%;margin-bottom:24px}
@@ -949,8 +980,17 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
           <div class="ob-sfx"><input class="ob-input" id="ob-apr" type="number" placeholder="24" min="0" max="100" step="0.1" value="24" oninput="obValidate()"></div>
         </div>
         <div class="ob-input-group">
-          <div class="ob-input-label">Monthly minimum payment</div>
-          <div class="ob-pfx"><input class="ob-input" id="ob-payment" type="number" placeholder="150" min="1" oninput="obValidate()"></div>
+          <div class="ob-input-label" style="margin-bottom:8px">How do you want to enter your payoff info?</div>
+          <div class="ob-toggle">
+            <button class="ob-toggle-btn active" id="ob-toggle-pay" onclick="setObPayMode('payment')">💳 Monthly payment</button>
+            <button class="ob-toggle-btn" id="ob-toggle-exp" onclick="setObPayMode('expiry')">📅 Loan expiry date</button>
+          </div>
+          <div class="ob-toggle-input visible" id="ob-payment-wrap">
+            <div class="ob-pfx"><input class="ob-input" id="ob-payment" type="number" placeholder="Min monthly payment ($)" min="1" oninput="obValidate()"></div>
+          </div>
+          <div class="ob-toggle-input" id="ob-expiry-wrap">
+            <input class="ob-input" id="ob-expiry" type="month" oninput="obValidate()" style="color:var(--t1);background:var(--card);border:1px solid var(--border2);border-radius:14px;width:100%;box-sizing:border-box;font-family:Inter,sans-serif;font-size:16px;outline:none;padding:14px;-webkit-appearance:none">
+          </div>
         </div>
       </div>
       <button class="ob-btn" id="ob-calc-btn" onclick="obCalculate()" disabled>Build my plan →</button>
@@ -1017,14 +1057,25 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <!-- Row 1: Daily Dollar + BIG Streak -->
   <div class="g3" style="margin-bottom:16px">
     <div class="daily-dollar-card col-span-2">
-      <div class="daily-dollar-label">⚡ Today your debt costs you</div>
+      <div class="daily-dollar-label">⚡ What your debt costs you every day</div>
       <button class="track-status good" id="track-btn" onclick="toggleTrack()">● On track today</button>
-      <div class="daily-dollar-amount on-track" id="daily-dollar">$5.58</div>
+      <div class="daily-split">
+        <div class="daily-split-block">
+          <div class="daily-split-label">💸 Daily interest</div>
+          <div class="daily-split-val" id="daily-dollar" style="color:#F87171">$5.58</div>
+          <div class="daily-split-sub">Accruing whether you pay or not</div>
+        </div>
+        <div class="daily-split-block">
+          <div class="daily-split-label">📋 Min. daily payment</div>
+          <div class="daily-split-val" id="daily-min-payment" style="color:#34D399">$10.37</div>
+          <div class="daily-split-sub">Required to retire debt on time</div>
+        </div>
+      </div>
       <div class="daily-dollar-sub">
-        That's <span>$167.40 this month</span> in pure interest — money that buys you nothing.
+        That's <span id="daily-monthly-interest">$167.40 this month</span> in pure interest — money that buys you nothing.
       </div>
       <div class="reframe">
-        💡 <strong>Reframe it:</strong> Your $18,450 in debt isn't a mountain — it's <strong>$5.58 a day</strong>. One less coffee order changes this number.
+        💡 <strong>Reframe it:</strong> Your <span id="reframe-total-debt">$18,450</span> in debt isn't a mountain — it's <strong><span id="reframe-daily">$5.58</span> a day</strong>. One less coffee order changes this number.
       </div>
       <button class="pause-trigger-btn" onclick="openPause()">
         ⏸ Try the Pause Feature — about to spend money?
@@ -1870,14 +1921,31 @@ let strategy = 'avalanche';
 // ─────────────────────────────
 const DEBT_COLORS = ['#EF4444','#3B82F6','#7C3AED','#F97316','#10B981','#F59E0B','#EC4899','#06B6D4'];
 let debts = [
-  { id:1, name:'Chase Sapphire Card',  type:'credit',   balance:4200,  origBalance:6200,  apr:24.0, payment:150, color:DEBT_COLORS[0] },
-  { id:2, name:'Federal Student Loan', type:'student',  balance:12000, origBalance:21800, apr:6.5,  payment:350, color:DEBT_COLORS[1] },
-  { id:3, name:'SoFi Personal Loan',   type:'personal', balance:2250,  origBalance:10000, apr:11.0, payment:200, color:DEBT_COLORS[2] },
+  { id:1, name:'Chase Sapphire Card',  type:'credit',   balance:4200,  origBalance:6200,  apr:24.0, payment:150, termMonths:60,  color:DEBT_COLORS[0] },
+  { id:2, name:'Federal Student Loan', type:'student',  balance:12000, origBalance:21800, apr:6.5,  payment:350, termMonths:120, color:DEBT_COLORS[1] },
+  { id:3, name:'SoFi Personal Loan',   type:'personal', balance:2250,  origBalance:10000, apr:11.0, payment:200, termMonths:48,  color:DEBT_COLORS[2] },
 ];
 let nextDebtId = 4;
 
 function debtTypeLabel(type) {
   return {credit:'Credit Card',student:'Student Loan',personal:'Personal Loan',auto:'Auto Loan'}[type] || 'Debt';
+}
+
+// ─────────────────────────────
+//  DEBT MATH HELPERS
+// ─────────────────────────────
+function calcMinMonthlyPayment(balance, apr, termMonths) {
+  const r = apr / 100 / 12;
+  if (r === 0) return balance / termMonths;
+  return balance * r / (1 - Math.pow(1 + r, -termMonths));
+}
+
+function calcTermFromPayment(balance, apr, monthlyPayment) {
+  const r = apr / 100 / 12;
+  if (r === 0) return balance / monthlyPayment;
+  const x = 1 - (r * balance) / monthlyPayment;
+  if (x <= 0) return 1;
+  return -Math.log(x) / Math.log(1 + r);
 }
 
 function renderDebts() {
@@ -1889,20 +1957,63 @@ function renderDebts() {
   }
   const sorted = [...debts].sort((a,b) => b.apr - a.apr);
   el.innerHTML = sorted.map((d, i) => {
-    const daily = d.balance * d.apr / 100 / 365;
-    const pct   = d.origBalance > 0 ? Math.max(2, Math.round((1 - d.balance / d.origBalance) * 100)) : 2;
+    const daily    = d.balance * d.apr / 100 / 365;
+    const term     = d.termMonths || 60;
+    const minPay   = calcMinMonthlyPayment(d.balance, d.apr, term);
+    const minDaily = minPay / 30.4;
+    const pct      = d.origBalance > 0 ? Math.max(2, Math.round((1 - d.balance / d.origBalance) * 100)) : 2;
+    const termYrs  = (term / 12).toFixed(1).replace(/\.0$/, '');
     return `
-      <div class="debt-item">
-        <div class="debt-dot" style="background:${d.color}"></div>
-        <div class="debt-info">
-          <div class="debt-name">${d.name}</div>
-          <div class="debt-apr">${d.apr}% APR${i === 0 ? ' · Highest priority' : ''}</div>
-          <div class="debt-progress"><div class="debt-progress-fill" style="background:${d.color};width:${pct}%"></div></div>
+      <div class="debt-item" style="flex-direction:column;align-items:stretch">
+        <div class="debt-item-header">
+          <div class="debt-dot" style="background:${d.color}"></div>
+          <div class="debt-info">
+            <div class="debt-name">${d.name}</div>
+            <div class="debt-apr">${d.apr}% APR${i === 0 ? ' · Highest priority' : ''}</div>
+            <div class="debt-progress"><div class="debt-progress-fill" style="background:${d.color};width:${pct}%"></div></div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div class="debt-amount">$${d.balance.toLocaleString()}</div>
+            <div class="debt-daily">$${daily.toFixed(2)}/day interest</div>
+            <div class="debt-min-pay">$${minDaily.toFixed(2)}/day to pay off</div>
+          </div>
+          <button class="debt-edit-btn" onclick="toggleDebtEdit(${d.id})">Edit</button>
         </div>
-        <div style="text-align:right;flex-shrink:0">
-          <div class="debt-amount">$${d.balance.toLocaleString()}</div>
-          <div class="debt-daily">$${daily.toFixed(2)}/day</div>
-          <div class="debt-remove" onclick="removeDebt(${d.id})">✕ remove</div>
+        <div class="debt-edit-form" id="debt-edit-form-${d.id}">
+          <div class="debt-edit-row">
+            <div class="debt-edit-field" style="grid-column:span 2">
+              <div class="debt-edit-label">Loan name</div>
+              <input class="debt-edit-input" id="dedit-name-${d.id}" type="text" value="${d.name}" oninput="previewDebt(${d.id})">
+            </div>
+          </div>
+          <div class="debt-edit-row">
+            <div class="debt-edit-field">
+              <div class="debt-edit-label">Balance ($)</div>
+              <input class="debt-edit-input" id="dedit-balance-${d.id}" type="number" value="${d.balance}" oninput="previewDebt(${d.id})">
+            </div>
+            <div class="debt-edit-field">
+              <div class="debt-edit-label">APR (%)</div>
+              <input class="debt-edit-input" id="dedit-apr-${d.id}" type="number" value="${d.apr}" step="0.1" oninput="previewDebt(${d.id})">
+            </div>
+          </div>
+          <div class="debt-edit-label">Payoff method</div>
+          <div class="debt-edit-toggle" style="margin-top:4px">
+            <button class="debt-edit-toggle-btn active" id="dedit-mode-term-${d.id}" onclick="setDebtEditMode(${d.id},'term')">Loan term (years)</button>
+            <button class="debt-edit-toggle-btn" id="dedit-mode-pay-${d.id}" onclick="setDebtEditMode(${d.id},'pay')">Monthly payment ($)</button>
+          </div>
+          <div id="dedit-term-wrap-${d.id}">
+            <div class="debt-edit-label">Loan term (years)</div>
+            <input class="debt-edit-input" id="dedit-term-${d.id}" type="number" value="${termYrs}" step="0.5" oninput="previewDebt(${d.id})" style="margin-top:4px">
+          </div>
+          <div id="dedit-pay-wrap-${d.id}" style="display:none">
+            <div class="debt-edit-label">Monthly payment ($)</div>
+            <input class="debt-edit-input" id="dedit-pay-${d.id}" type="number" value="${minPay.toFixed(2)}" step="1" oninput="previewDebt(${d.id})" style="margin-top:4px">
+          </div>
+          <div id="dedit-preview-${d.id}" style="font-size:12px;color:var(--t2);margin-top:10px;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px;line-height:1.6"></div>
+          <div class="debt-edit-actions">
+            <button class="debt-save-btn" onclick="saveDebt(${d.id})">Save changes</button>
+            <button class="debt-cancel-btn" onclick="toggleDebtEdit(${d.id})">Cancel</button>
+          </div>
         </div>
       </div>`;
   }).join('');
@@ -1915,13 +2026,25 @@ function removeDebt(id) {
 }
 
 function updateDebtStats() {
-  const total = debts.reduce((s,d) => s + d.balance, 0);
-  const daily = debts.reduce((s,d) => s + d.balance * d.apr / 100 / 365, 0);
+  const total    = debts.reduce((s,d) => s + d.balance, 0);
+  const daily    = debts.reduce((s,d) => s + d.balance * d.apr / 100 / 365, 0);
   const totalPmt = debts.reduce((s,d) => s + d.payment, 0);
+  const totalMinDaily = debts.reduce((s,d) => {
+    const term = d.termMonths || 60;
+    return s + calcMinMonthlyPayment(d.balance, d.apr, term) / 30.4;
+  }, 0);
 
-  // Update daily dollar display
+  // Update daily split
   const ddEl = document.getElementById('daily-dollar');
   if (ddEl) ddEl.textContent = '$' + daily.toFixed(2);
+  const dmpEl = document.getElementById('daily-min-payment');
+  if (dmpEl) dmpEl.textContent = '$' + totalMinDaily.toFixed(2);
+  const dmiEl = document.getElementById('daily-monthly-interest');
+  if (dmiEl) dmiEl.textContent = '$' + (daily * 30.4).toFixed(2) + ' this month';
+  const rtEl = document.getElementById('reframe-total-debt');
+  if (rtEl) rtEl.textContent = '$' + total.toLocaleString();
+  const rdEl = document.getElementById('reframe-daily');
+  if (rdEl) rdEl.textContent = '$' + daily.toFixed(2);
 
   // Update total debt card
   const tdEl = document.getElementById('total-debt-display');
@@ -2036,7 +2159,9 @@ function confirmAddDebt() {
   const payment = parseFloat(document.getElementById('ad-payment').value);
   const color   = DEBT_COLORS[(nextDebtId - 1) % DEBT_COLORS.length];
 
-  debts.push({ id: nextDebtId++, name, type: adType, balance, origBalance: balance, apr, payment, color });
+  const r = apr / 100 / 12;
+  const termMonths = r > 0 ? Math.round(-Math.log(1 - r * balance / payment) / Math.log(1 + r)) : Math.round(balance / payment);
+  debts.push({ id: nextDebtId++, name, type: adType, balance, origBalance: balance, apr, payment, termMonths, color });
   renderDebts();
   updateDebtStats();
   closeAddDebt();
@@ -2104,6 +2229,94 @@ function closePause(skipped) {
 }
 function closePauseOutside(e) {
   if (e.target === document.getElementById('pause-overlay')) closePause(false);
+}
+
+// ─────────────────────────────
+//  DEBT CARD EDITING
+// ─────────────────────────────
+const deditModes = {};
+
+function toggleDebtEdit(id) {
+  const form = document.getElementById('debt-edit-form-' + id);
+  if (!form) return;
+  const isOpening = !form.classList.contains('open');
+  debts.forEach(d => {
+    const f = document.getElementById('debt-edit-form-' + d.id);
+    if (f && d.id !== id) f.classList.remove('open');
+  });
+  form.classList.toggle('open', isOpening);
+  if (isOpening) previewDebt(id);
+}
+
+function setDebtEditMode(id, mode) {
+  deditModes[id] = mode;
+  document.getElementById('dedit-mode-term-' + id).classList.toggle('active', mode === 'term');
+  document.getElementById('dedit-mode-pay-'  + id).classList.toggle('active', mode === 'pay');
+  document.getElementById('dedit-term-wrap-' + id).style.display = mode === 'term' ? '' : 'none';
+  document.getElementById('dedit-pay-wrap-'  + id).style.display = mode === 'pay'  ? '' : 'none';
+  previewDebt(id);
+}
+
+function previewDebt(id) {
+  const balance = parseFloat(document.getElementById('dedit-balance-' + id).value) || 0;
+  const apr     = parseFloat(document.getElementById('dedit-apr-'     + id).value) || 0;
+  const mode    = deditModes[id] || 'term';
+  let termMonths, monthlyPay;
+
+  if (mode === 'term') {
+    const years = parseFloat(document.getElementById('dedit-term-' + id).value) || 1;
+    termMonths  = Math.round(years * 12);
+    monthlyPay  = calcMinMonthlyPayment(balance, apr, termMonths);
+  } else {
+    monthlyPay = parseFloat(document.getElementById('dedit-pay-' + id).value) || 0;
+    termMonths = Math.round(calcTermFromPayment(balance, apr, monthlyPay));
+  }
+
+  const previewEl = document.getElementById('dedit-preview-' + id);
+  if (!previewEl || balance <= 0 || monthlyPay <= 0) return;
+
+  const dailyInterest = balance * apr / 100 / 365;
+  const dailyMin      = monthlyPay / 30.4;
+  const yrs = Math.floor(termMonths / 12);
+  const mos = termMonths % 12;
+  const termStr = yrs > 0 ? `${yrs}yr${mos > 0 ? ' ' + mos + 'mo' : ''}` : `${mos}mo`;
+
+  previewEl.innerHTML =
+    `Daily interest: <strong style="color:#F87171">$${dailyInterest.toFixed(2)}</strong> &nbsp;·&nbsp; ` +
+    `Min daily payment: <strong style="color:#34D399">$${dailyMin.toFixed(2)}</strong><br>` +
+    `Monthly payment: <strong>$${monthlyPay.toFixed(2)}</strong> &nbsp;·&nbsp; ` +
+    `Payoff in: <strong>${termStr}</strong>`;
+}
+
+function saveDebt(id) {
+  const balance    = parseFloat(document.getElementById('dedit-balance-' + id).value) || 0;
+  const apr        = parseFloat(document.getElementById('dedit-apr-'     + id).value) || 0;
+  const name       = document.getElementById('dedit-name-' + id).value.trim();
+  const mode       = deditModes[id] || 'term';
+  let termMonths;
+
+  if (mode === 'term') {
+    const years = parseFloat(document.getElementById('dedit-term-' + id).value) || 1;
+    termMonths  = Math.round(years * 12);
+  } else {
+    const monthlyPay = parseFloat(document.getElementById('dedit-pay-' + id).value) || 0;
+    termMonths       = Math.round(calcTermFromPayment(balance, apr, monthlyPay));
+  }
+  const payment = calcMinMonthlyPayment(balance, apr, termMonths);
+
+  const debt = debts.find(d => d.id === id);
+  if (debt) {
+    if (name) debt.name = name;
+    debt.balance    = balance;
+    debt.apr        = apr;
+    debt.termMonths = termMonths;
+    debt.payment    = payment;
+  }
+  renderDebts();
+  updateDebtStats();
+  showToast('✅', 0);
+  document.getElementById('toast-text').textContent = 'Debt updated';
+  document.getElementById('toast-amount').style.display = 'none';
 }
 
 // ─────────────────────────────
@@ -2360,24 +2573,51 @@ function obChip(el, type) {
   obValidate();
 }
 
+let obPayMode = 'payment';
+function setObPayMode(mode) {
+  obPayMode = mode;
+  document.getElementById('ob-toggle-pay').classList.toggle('active', mode === 'payment');
+  document.getElementById('ob-toggle-exp').classList.toggle('active', mode === 'expiry');
+  document.getElementById('ob-payment-wrap').classList.toggle('visible', mode === 'payment');
+  document.getElementById('ob-expiry-wrap').classList.toggle('visible', mode === 'expiry');
+  obValidate();
+}
+
 function obValidate() {
   const b = parseFloat(document.getElementById('ob-balance').value);
   const a = parseFloat(document.getElementById('ob-apr').value);
-  const p = parseFloat(document.getElementById('ob-payment').value);
-  const minP = b * (a / 100 / 12);
-  const ok = b > 0 && a >= 0 && p > 0 && p > minP;
+  let ok = false;
+  if (obPayMode === 'payment') {
+    const p    = parseFloat(document.getElementById('ob-payment').value);
+    const minP = b * (a / 100 / 12);
+    ok = b > 0 && a >= 0 && p > 0 && p > minP;
+    document.getElementById('ob-payment').style.borderColor = (p > 0 && b > 0 && p <= minP) ? 'var(--red)' : '';
+  } else {
+    const expiry = document.getElementById('ob-expiry').value;
+    ok = b > 0 && a >= 0 && !!expiry && new Date(expiry + '-01') > new Date();
+  }
   document.getElementById('ob-calc-btn').disabled = !ok;
-  document.getElementById('ob-payment').style.borderColor = (p > 0 && b > 0 && p <= minP) ? 'var(--red)' : '';
 }
 
 function obCalculate() {
   const balance = parseFloat(document.getElementById('ob-balance').value);
   const apr     = parseFloat(document.getElementById('ob-apr').value);
-  const payment = parseFloat(document.getElementById('ob-payment').value);
-  obData = { ...obData, balance, apr, payment };
+  const r       = apr / 100 / 12;
+  let payment, termMonths;
+
+  if (obPayMode === 'payment') {
+    payment    = parseFloat(document.getElementById('ob-payment').value);
+    termMonths = r > 0 ? Math.round(-Math.log(1 - r * balance / payment) / Math.log(1 + r)) : Math.round(balance / payment);
+  } else {
+    const expiry     = document.getElementById('ob-expiry').value;
+    const expiryDate = new Date(expiry + '-01');
+    termMonths = Math.max(1, Math.round((expiryDate - new Date(2026, 3, 1)) / (1000 * 60 * 60 * 24 * 30.4)));
+    payment    = calcMinMonthlyPayment(balance, apr, termMonths);
+  }
+
+  obData = { ...obData, balance, apr, payment, termMonths };
   obData.daily  = balance * (apr / 100) / 365;
-  const r = apr / 100 / 12;
-  obData.months = r > 0 ? -Math.log(1 - r * balance / payment) / Math.log(1 + r) : balance / payment;
+  obData.months = termMonths;
 
   obGoTo(4, 'fwd');
 
@@ -2457,8 +2697,10 @@ function obFinish() {
   if (greet) greet.textContent = `Good morning, ${name} 👋`;
 
   if (obData.balance > 0) {
-    const typeLabel = {credit:'Credit Card',student:'Student Loan',personal:'Personal Loan',auto:'Auto Loan'}[obData.type] || 'Debt';
-    debts[0] = { id:1, name:typeLabel, type:obData.type, balance:obData.balance, origBalance:obData.balance, apr:obData.apr, payment:obData.payment, color:DEBT_COLORS[0] };
+    const typeLabel  = {credit:'Credit Card',student:'Student Loan',personal:'Personal Loan',auto:'Auto Loan'}[obData.type] || 'Debt';
+    const r          = obData.apr / 100 / 12;
+    const termMonths = obData.termMonths || (r > 0 ? Math.round(-Math.log(1 - r * obData.balance / obData.payment) / Math.log(1 + r)) : Math.round(obData.balance / obData.payment));
+    debts[0] = { id:1, name:typeLabel, type:obData.type, balance:obData.balance, origBalance:obData.balance, apr:obData.apr, payment:obData.payment, termMonths, color:DEBT_COLORS[0] };
     debts = debts.slice(0, 1);
     nextDebtId = 2;
     renderDebts();
@@ -2481,16 +2723,13 @@ if (localStorage.getItem('fq_onboarded')) {
 let onTrack = true;
 function toggleTrack() {
   onTrack = !onTrack;
-  const dd = document.getElementById('daily-dollar');
   const btn = document.getElementById('track-btn');
   if (onTrack) {
-    dd.classList.replace('behind', 'on-track');
     btn.className = 'track-status good';
     btn.textContent = '● On track today';
     document.querySelector('.page-sub span').style.color = 'var(--green)';
     document.querySelector('.page-sub span').textContent = "You're winning today.";
   } else {
-    dd.classList.replace('on-track', 'behind');
     btn.className = 'track-status bad';
     btn.textContent = '● Behind today';
     document.querySelector('.page-sub span').style.color = 'var(--red)';
@@ -2551,11 +2790,12 @@ updateDebtStats();
 updateXP();
 initFreedomChart();
 
-// Animate daily dollar counter
+// Animate daily dollar counter (computed from live debts)
 (function() {
   const el = document.getElementById('daily-dollar');
+  if (!el) return;
+  const target = debts.reduce((s,d) => s + d.balance * d.apr / 100 / 365, 0);
   let start = 0;
-  const target = 5.58;
   const step = target / 40;
   const interval = setInterval(() => {
     start = Math.min(start + step, target);
