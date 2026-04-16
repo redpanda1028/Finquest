@@ -898,11 +898,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 <!-- ─── ONBOARDING ─── -->
 <div id="onboarding">
-  <div class="ob-logo-top">
-    <div class="ob-logo-icon-sm">⚡</div>
-    <span class="ob-logo-top-text">FinQuest</span>
-  </div>
-
   <div class="ob-progress">
     <div class="ob-dot active" id="dot-0"></div>
     <div class="ob-dot" id="dot-1"></div>
@@ -989,7 +984,26 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
             <div class="ob-pfx"><input class="ob-input" id="ob-payment" type="number" placeholder="Min monthly payment ($)" min="1" oninput="obValidate()"></div>
           </div>
           <div class="ob-toggle-input" id="ob-expiry-wrap">
-            <input class="ob-input" id="ob-expiry" type="month" oninput="obValidate()" style="color:var(--t1);background:var(--card);border:1px solid var(--border2);border-radius:14px;width:100%;box-sizing:border-box;font-family:Inter,sans-serif;font-size:16px;outline:none;padding:14px;-webkit-appearance:none">
+            <div style="display:flex;gap:10px">
+              <select id="ob-expiry-month" onchange="obValidate()" style="flex:1;color:var(--t1);background:var(--card);border:1px solid var(--border2);border-radius:14px;font-family:Inter,sans-serif;font-size:16px;outline:none;padding:14px;-webkit-appearance:none;appearance:none;text-align:center;cursor:pointer">
+                <option value="">Month</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+              <select id="ob-expiry-year" onchange="obValidate()" style="flex:1;color:var(--t1);background:var(--card);border:1px solid var(--border2);border-radius:14px;font-family:Inter,sans-serif;font-size:16px;outline:none;padding:14px;-webkit-appearance:none;appearance:none;text-align:center;cursor:pointer">
+                <option value="">Year</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -2512,6 +2526,18 @@ function initTrendChart() {
 let obStep = 0;
 let obData = { goal:'debt', targetYear:2028, income:0, balance:0, apr:24, payment:0, type:'credit', daily:0, months:0 };
 
+// Populate year dropdown: current year through +15 years
+(function() {
+  const sel = document.getElementById('ob-expiry-year');
+  if (!sel) return;
+  const thisYear = new Date().getFullYear();
+  for (let y = thisYear; y <= thisYear + 15; y++) {
+    const opt = document.createElement('option');
+    opt.value = y; opt.textContent = y;
+    sel.appendChild(opt);
+  }
+})();
+
 function obGoTo(step, dir) {
   document.getElementById(`ob-${obStep}`).classList.remove('active','slide-back');
   obStep = step;
@@ -2593,8 +2619,9 @@ function obValidate() {
     ok = b > 0 && a >= 0 && p > 0 && p > minP;
     document.getElementById('ob-payment').style.borderColor = (p > 0 && b > 0 && p <= minP) ? 'var(--red)' : '';
   } else {
-    const expiry = document.getElementById('ob-expiry').value;
-    ok = b > 0 && a >= 0 && !!expiry && new Date(expiry + '-01') > new Date();
+    const m = document.getElementById('ob-expiry-month').value;
+    const y = document.getElementById('ob-expiry-year').value;
+    ok = b > 0 && a >= 0 && !!m && !!y && new Date(parseInt(y), parseInt(m) - 1, 1) > new Date();
   }
   document.getElementById('ob-calc-btn').disabled = !ok;
 }
@@ -2609,9 +2636,11 @@ function obCalculate() {
     payment    = parseFloat(document.getElementById('ob-payment').value);
     termMonths = r > 0 ? Math.round(-Math.log(1 - r * balance / payment) / Math.log(1 + r)) : Math.round(balance / payment);
   } else {
-    const expiry     = document.getElementById('ob-expiry').value;
-    const expiryDate = new Date(expiry + '-01');
-    termMonths = Math.max(1, Math.round((expiryDate - new Date(2026, 3, 1)) / (1000 * 60 * 60 * 24 * 30.4)));
+    const m = parseInt(document.getElementById('ob-expiry-month').value);
+    const y = parseInt(document.getElementById('ob-expiry-year').value);
+    const expiryDate = new Date(y, m - 1, 1);
+    const now = new Date(); now.setDate(1); now.setHours(0,0,0,0);
+    termMonths = Math.max(1, Math.round((expiryDate - now) / (1000 * 60 * 60 * 24 * 30.4)));
     payment    = calcMinMonthlyPayment(balance, apr, termMonths);
   }
 
@@ -2693,23 +2722,34 @@ function obNameChange() {
 
 function obFinish() {
   const name = document.getElementById('ob-name').value.trim() || 'Alex';
+
+  // Always close onboarding first — unconditional, so button always responds
+  localStorage.setItem('fq_onboarded', '1');
+  localStorage.setItem('fq_user_name', name);
+  const ob = document.getElementById('onboarding');
+  ob.style.transition = 'opacity 0.48s ease, transform 0.48s ease';
+  ob.style.opacity = '0';
+  ob.style.transform = 'scale(0.97)';
+  setTimeout(() => ob.classList.add('hidden'), 480);
+
+  // Then update the dashboard
   const greet = document.querySelector('#dashboard .page-title');
   if (greet) greet.textContent = `Good morning, ${name} 👋`;
 
-  if (obData.balance > 0) {
-    const typeLabel  = {credit:'Credit Card',student:'Student Loan',personal:'Personal Loan',auto:'Auto Loan'}[obData.type] || 'Debt';
-    const r          = obData.apr / 100 / 12;
-    const termMonths = obData.termMonths || (r > 0 ? Math.round(-Math.log(1 - r * obData.balance / obData.payment) / Math.log(1 + r)) : Math.round(obData.balance / obData.payment));
-    debts[0] = { id:1, name:typeLabel, type:obData.type, balance:obData.balance, origBalance:obData.balance, apr:obData.apr, payment:obData.payment, termMonths, color:DEBT_COLORS[0] };
-    debts = debts.slice(0, 1);
-    nextDebtId = 2;
-    renderDebts();
-    updateDebtStats();
+  try {
+    if (obData.balance > 0) {
+      const typeLabel  = {credit:'Credit Card',student:'Student Loan',personal:'Personal Loan',auto:'Auto Loan'}[obData.type] || 'Debt';
+      const r          = obData.apr / 100 / 12;
+      const termMonths = obData.termMonths || (r > 0 ? Math.round(-Math.log(1 - r * obData.balance / obData.payment) / Math.log(1 + r)) : Math.round(obData.balance / obData.payment));
+      debts[0] = { id:1, name:typeLabel, type:obData.type, balance:obData.balance, origBalance:obData.balance, apr:obData.apr, payment:obData.payment, termMonths, color:DEBT_COLORS[0] };
+      debts = debts.slice(0, 1);
+      nextDebtId = 2;
+      renderDebts();
+      updateDebtStats();
+    }
+  } catch(e) {
+    console.warn('obFinish dashboard update error:', e);
   }
-  localStorage.setItem('fq_onboarded', '1');
-  const ob = document.getElementById('onboarding');
-  ob.style.opacity = '0'; ob.style.transform = 'scale(0.97)';
-  setTimeout(() => ob.classList.add('hidden'), 480);
 }
 
 // Skip onboarding if already completed
