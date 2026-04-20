@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FinQuest — Crush Your Debt</title>
+<title>IdealU — Crush Your Debt</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -11,7 +11,7 @@
 :root{
   --bg:#07090F;--bg2:#0D1117;--card:#111827;--card2:#1F2937;
   --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
-  --purple:#7C3AED;--purpleL:#A855F7;--purpleGlow:rgba(124,58,237,0.15);
+  --purple:#059669;--purpleL:#10B981;--purpleGlow:rgba(5,150,105,0.15);
   --gold:#F59E0B;--goldL:#FCD34D;
   --green:#10B981;--greenL:#34D399;
   --red:#EF4444;--orange:#F97316;--blue:#3B82F6;
@@ -214,6 +214,44 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   width:38%;transition:width 1s ease;
 }
 .countdown-hint{font-size:11px;color:var(--t3);margin-top:6px}
+
+/* ── DAILY GOAL METER ── */
+.goal-meter-card{display:flex;gap:32px;align-items:center;flex-wrap:wrap}
+.goal-meter-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.goal-arc-wrap{position:relative;width:160px;height:160px}
+.goal-arc-wrap svg{transform:rotate(-90deg)}
+.goal-arc-center{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+}
+.goal-arc-pct{font-size:30px;font-weight:900;letter-spacing:-1px;color:var(--t1)}
+.goal-arc-label{font-size:11px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:0.4px;margin-top:2px}
+.goal-log-row{display:flex;gap:8px;margin-top:14px;align-items:center}
+.goal-log-input{
+  width:90px;background:var(--card);border:1.5px solid var(--border2);border-radius:8px;
+  padding:7px 10px;font-size:13px;font-family:'Inter',sans-serif;color:var(--t1);
+  outline:none;box-sizing:border-box;transition:border-color 0.2s;
+}
+.goal-log-input:focus{border-color:var(--green)}
+.goal-log-btn{
+  padding:7px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;
+  background:linear-gradient(135deg,var(--green),var(--greenL));color:#fff;border:none;
+  transition:all 0.2s;white-space:nowrap;
+}
+.goal-log-btn:hover{transform:translateY(-1px);box-shadow:0 3px 12px rgba(16,185,129,0.3)}
+.goal-meter-right{flex:1;min-width:200px}
+.goal-chart-title{font-size:12px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px}
+.goal-bars{display:flex;gap:8px;align-items:flex-end;height:80px}
+.goal-bar-col{display:flex;flex-direction:column;align-items:center;flex:1;gap:4px;height:100%}
+.goal-bar-track{flex:1;width:100%;background:var(--border2);border-radius:6px;overflow:hidden;display:flex;align-items:flex-end}
+.goal-bar-fill{width:100%;border-radius:6px;transition:height 0.6s ease;background:linear-gradient(180deg,var(--green),var(--greenL))}
+.goal-bar-fill.over{background:linear-gradient(180deg,var(--gold),var(--goldL))}
+.goal-bar-pct{font-size:10px;font-weight:700;color:var(--t3)}
+.goal-bar-day{font-size:10px;color:var(--t3);font-weight:500}
+.goal-summary{margin-top:16px;display:flex;gap:16px;flex-wrap:wrap}
+.goal-stat{display:flex;flex-direction:column;gap:2px}
+.goal-stat-val{font-size:16px;font-weight:800;color:var(--t1)}
+.goal-stat-lbl{font-size:11px;color:var(--t3)}
 
 /* ── MISSIONS ── */
 .level-banner{
@@ -527,6 +565,36 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   background:transparent;color:var(--t2);border:1px solid var(--border2);
 }
 .btn-secondary:hover{background:var(--card)}
+.pause-purchase-row{
+  display:flex;gap:10px;margin-bottom:20px;text-align:left;
+}
+.pause-purchase-row .ob-input-group{flex:1}
+.pause-purchase-row .ob-input-group:first-child{flex:2}
+.pause-purchase-label{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.pause-history-item{
+  display:flex;align-items:center;gap:12px;padding:10px 0;
+  border-bottom:1px solid var(--border);
+}
+.pause-history-item:last-child{border-bottom:none}
+.pause-history-badge{
+  width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;
+}
+.pause-history-badge.skipped{background:rgba(16,185,129,0.12)}
+.pause-history-badge.proceeded{background:rgba(107,114,128,0.12)}
+.pause-history-info{flex:1;min-width:0}
+.pause-history-name{font-size:14px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pause-history-meta{font-size:12px;color:var(--t3);margin-top:1px}
+.pause-history-amount{font-size:14px;font-weight:700;flex-shrink:0}
+.pause-history-amount.skipped{color:var(--green)}
+.pause-history-amount.proceeded{color:var(--t2)}
+.pause-purchase-input{
+  width:100%;background:var(--card);border:1.5px solid var(--border2);border-radius:10px;
+  padding:10px 12px;font-size:14px;font-family:'Inter',sans-serif;color:var(--t1);
+  outline:none;transition:border-color 0.2s;box-sizing:border-box;
+}
+.pause-purchase-input:focus{border-color:var(--orange)}
+.pause-purchase-input::placeholder{color:var(--t3)}
 .pause-grade-badge{
   position:absolute;top:-16px;left:50%;transform:translateX(-50%);
   background:var(--orange);color:#fff;font-size:12px;font-weight:800;
@@ -557,12 +625,23 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .tag-blue{background:rgba(59,130,246,0.12);color:var(--blue)}
 .tag-gold{background:rgba(245,158,11,0.12);color:var(--gold)}
 .pause-trigger-btn{
-  display:inline-flex;align-items:center;gap:8px;padding:10px 18px;
-  border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;
-  background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);
-  color:var(--orange);transition:all 0.2s;margin-top:12px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:16px 20px;margin-top:16px;
+  border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;letter-spacing:0.2px;
+  background:linear-gradient(135deg,rgba(249,115,22,0.22),rgba(249,115,22,0.12));
+  border:1.5px solid rgba(249,115,22,0.55);
+  color:var(--orange);transition:all 0.2s;
+  box-shadow:0 0 18px rgba(249,115,22,0.18);
 }
-.pause-trigger-btn:hover{background:rgba(249,115,22,0.15)}
+.pause-trigger-btn:hover{
+  background:linear-gradient(135deg,rgba(249,115,22,0.32),rgba(249,115,22,0.18));
+  box-shadow:0 0 28px rgba(249,115,22,0.32);
+  border-color:rgba(249,115,22,0.8);
+  transform:translateY(-1px);
+}
+.pause-trigger-btn .pause-btn-sub{
+  display:block;font-size:11px;font-weight:500;color:rgba(249,115,22,0.7);margin-top:2px;letter-spacing:0;
+}
 .add-debt-btn{
   font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;
   background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.25);
@@ -859,7 +938,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 <aside class="sidebar">
   <div class="logo">
     <div class="logo-icon">⚡</div>
-    <span class="logo-text">FinQuest</span>
+    <span class="logo-text">IdealU</span>
   </div>
   <nav class="nav">
     <div class="nav-item active" onclick="nav('dashboard',this)">
@@ -1092,7 +1171,11 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
         💡 <strong>Reframe it:</strong> Your <span id="reframe-total-debt">$18,450</span> in debt isn't a mountain — it's <strong><span id="reframe-daily">$5.58</span> a day</strong>. One less coffee order changes this number.
       </div>
       <button class="pause-trigger-btn" onclick="openPause()">
-        ⏸ Try the Pause Feature — about to spend money?
+        <span style="font-size:20px">⏸️</span>
+        <span>
+          About to spend money?
+          <span class="pause-btn-sub">Tap before you buy — the Pause Feature has your back</span>
+        </span>
       </button>
     </div>
 
@@ -1127,6 +1210,83 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
         <div class="countdown-fill" id="countdown-bar"></div>
       </div>
       <div class="countdown-hint">38% of your journey complete</div>
+    </div>
+  </div>
+
+  <!-- Row 2c: Daily Goal Meter -->
+  <div style="margin-bottom:16px">
+    <div class="card goal-meter-card" style="padding:24px 28px">
+      <!-- Arc Meter -->
+      <div class="goal-meter-left">
+        <div class="goal-arc-wrap">
+          <svg width="160" height="160" viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="64" fill="none" stroke="var(--border2)" stroke-width="12"/>
+            <circle cx="80" cy="80" r="64" fill="none" stroke="url(#goalGrad)" stroke-width="12"
+              stroke-linecap="round" id="goal-arc-circle"
+              stroke-dasharray="402" stroke-dashoffset="402"/>
+            <defs>
+              <linearGradient id="goalGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="var(--green)"/>
+                <stop offset="100%" stop-color="var(--greenL)"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="goal-arc-center">
+            <div class="goal-arc-pct" id="goal-arc-pct">0%</div>
+            <div class="goal-arc-label">of today's<br>goal</div>
+          </div>
+        </div>
+        <div class="goal-log-row">
+          <input class="goal-log-input" id="goal-log-input" type="number" placeholder="$0.00" min="0.01" step="0.01">
+          <button class="goal-log-btn" onclick="logDailyPayment()">+ Log</button>
+        </div>
+        <div style="font-size:11px;color:var(--t3);margin-top:8px;text-align:center">
+          Goal: <strong id="goal-target-display" style="color:var(--t1)">$10.37</strong>/day
+          &nbsp;·&nbsp;
+          <button onclick="toggleGoalBreakdown()" style="font-size:11px;color:var(--purpleL);background:none;border:none;cursor:pointer;padding:0;font-family:'Inter',sans-serif;font-weight:600">How?</button>
+        </div>
+        <div id="goal-breakdown" style="display:none;margin-top:10px;background:var(--card);border-radius:10px;padding:10px 14px;text-align:left;width:100%;box-sizing:border-box">
+          <div id="goal-breakdown-rows" style="font-size:12px;color:var(--t2);display:flex;flex-direction:column;gap:6px"></div>
+          <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;font-size:12px;color:var(--t3)">
+            Each debt's monthly minimum ÷ 30.4 days
+          </div>
+        </div>
+      </div>
+
+      <!-- Bar Chart -->
+      <div class="goal-meter-right">
+        <div class="goal-chart-title">7-Day Progress</div>
+        <div class="goal-bars" id="goal-bars"></div>
+        <div class="goal-summary">
+          <div class="goal-stat">
+            <div class="goal-stat-val" id="goal-days-hit">—</div>
+            <div class="goal-stat-lbl">days hit goal</div>
+          </div>
+          <div class="goal-stat">
+            <div class="goal-stat-val" id="goal-avg-pct">—</div>
+            <div class="goal-stat-lbl">avg completion</div>
+          </div>
+          <div class="goal-stat">
+            <div class="goal-stat-val" id="goal-total-paid">—</div>
+            <div class="goal-stat-lbl">paid this week</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2b: Pause History -->
+  <div style="margin-bottom:16px" id="pause-history-section">
+    <div class="card" style="padding:20px 24px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div class="card-label" style="margin-bottom:0">⏸️ Pause History</div>
+        <button onclick="clearPauseHistory()" style="font-size:11px;font-weight:600;color:var(--t3);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color 0.2s" onmouseover="this.style.color='var(--t1)'" onmouseout="this.style.color='var(--t3)'">Clear all</button>
+      </div>
+      <div id="pause-history-list">
+        <div id="pause-history-empty" style="text-align:center;padding:24px 0;color:var(--t3);font-size:14px">
+          No pauses yet — next time you're about to spend, hit the Pause button.
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1547,7 +1707,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
           </div>
           <div class="post-time">2h ago</div>
         </div>
-        <div class="post-body">Just paid off my first card in full. <strong>Chase Freedom — $3,200 — GONE.</strong> Started FinQuest 4 months ago thinking I'd never get here. The daily missions kept me accountable on days I wanted to give up.</div>
+        <div class="post-body">Just paid off my first card in full. <strong>Chase Freedom — $3,200 — GONE.</strong> Started IdealU 4 months ago thinking I'd never get here. The daily missions kept me accountable on days I wanted to give up.</div>
         <div class="post-milestone">🎉 Paid off Chase Freedom Card — $3,200</div>
         <div class="post-actions">
           <div class="post-action liked" onclick="this.classList.toggle('liked')">❤️ 47</div>
@@ -1703,7 +1863,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <div style="font-size:11px;color:var(--t2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px">Share Your Level</div>
       <div style="padding:12px 20px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:12px;cursor:pointer" onclick="showToast('📤 Profile card copied to clipboard!',0)">
         <div style="font-size:22px;font-weight:900;color:var(--gold)">Debt Fighter</div>
-        <div style="font-size:12px;color:var(--t2);margin-top:2px">Level 4 · FinQuest</div>
+        <div style="font-size:12px;color:var(--t2);margin-top:2px">Level 4 · IdealU</div>
         <div style="font-size:11px;color:var(--t3);margin-top:8px">Tap to share →</div>
       </div>
     </div>
@@ -1844,12 +2004,22 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     <div class="pause-grade-badge">Grade: B+ · Before You Buy</div>
     <span class="pause-emoji">⏸️</span>
     <div class="pause-title">Hold on a second.</div>
+    <div class="pause-purchase-row">
+      <div class="ob-input-group">
+        <div class="pause-purchase-label">What are you buying?</div>
+        <input class="pause-purchase-input" id="pause-item-name" type="text" placeholder="e.g. new shoes, dinner out…" maxlength="50" oninput="updatePauseImpact()">
+      </div>
+      <div class="ob-input-group" style="max-width:110px">
+        <div class="pause-purchase-label">How much?</div>
+        <input class="pause-purchase-input" id="pause-item-amount" type="number" placeholder="$0" min="1" oninput="updatePauseImpact()">
+      </div>
+    </div>
     <div class="pause-message">
       You're making real progress — <strong>14-day streak</strong> and counting. Pause for a second — will you regret this purchase tomorrow?
     </div>
     <div class="pause-impact">
-      <strong id="pause-impact-text">This $65 purchase = 11 days of interest payments</strong>
-      Your debt-free date could shift forward <strong style="color:var(--orange)">4 days</strong> if you skip this and pay it toward your Chase card instead.
+      <strong id="pause-impact-text">Enter what you're buying above</strong>
+      <span id="pause-impact-sub">We'll show you what this costs in real debt terms.</span>
     </div>
     <div class="pause-buttons">
       <button class="btn-primary" onclick="closePause(true)">✅ Skip it — keep my momentum</button>
@@ -2235,15 +2405,189 @@ function showToast(icon, xp) {
 //  PAUSE MODAL
 // ─────────────────────────────
 function openPause() {
+  document.getElementById('pause-item-name').value = '';
+  document.getElementById('pause-item-amount').value = '';
+  document.getElementById('pause-impact-text').textContent = 'Enter what you\'re buying above';
+  document.getElementById('pause-impact-sub').textContent = 'We\'ll show you what this costs in real debt terms.';
   document.getElementById('pause-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('pause-item-name').focus(), 300);
+}
+function updatePauseImpact() {
+  const name = document.getElementById('pause-item-name').value.trim();
+  const amount = parseFloat(document.getElementById('pause-item-amount').value);
+  const impactText = document.getElementById('pause-impact-text');
+  const impactSub = document.getElementById('pause-impact-sub');
+  if (!amount || amount <= 0) {
+    impactText.textContent = name ? `What does ${name} really cost you?` : 'Enter what you\'re buying above';
+    impactSub.textContent = 'We\'ll show you what this costs in real debt terms.';
+    return;
+  }
+  // Use daily interest from page if available, else fall back to ~$3.29/day
+  const dailyInterestEl = document.getElementById('daily-interest');
+  const dailyInterest = dailyInterestEl ? parseFloat(dailyInterestEl.textContent.replace(/[^0-9.]/g,'')) || 3.29 : 3.29;
+  const interestDays = dailyInterest > 0 ? Math.round(amount / dailyInterest) : '?';
+  const label = name || 'this purchase';
+  impactText.textContent = `$${amount.toLocaleString()} on ${label} = ${interestDays} days of interest payments`;
+  impactSub.textContent = `Skip it and put $${amount.toLocaleString()} toward your debt instead — your debt-free date moves up.`;
 }
 function closePause(skipped) {
   document.getElementById('pause-overlay').classList.remove('open');
+  const name = document.getElementById('pause-item-name').value.trim();
+  const amount = parseFloat(document.getElementById('pause-item-amount').value);
+  if (name || amount > 0) {
+    const history = JSON.parse(localStorage.getItem('pauseHistory') || '[]');
+    history.unshift({
+      name: name || 'Unnamed purchase',
+      amount: amount || 0,
+      skipped,
+      date: new Date().toISOString()
+    });
+    localStorage.setItem('pauseHistory', JSON.stringify(history.slice(0, 50)));
+    renderPauseHistory();
+  }
   if (skipped) showToast('💪', 0);
 }
 function closePauseOutside(e) {
   if (e.target === document.getElementById('pause-overlay')) closePause(false);
 }
+function renderPauseHistory() {
+  const history = JSON.parse(localStorage.getItem('pauseHistory') || '[]');
+  const list = document.getElementById('pause-history-list');
+  const empty = document.getElementById('pause-history-empty');
+  if (!history.length) { empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  const items = history.map(h => {
+    const date = new Date(h.date);
+    const dateStr = date.toLocaleDateString('en-US', {month:'short', day:'numeric'}) + ' · ' + date.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'});
+    const cls = h.skipped ? 'skipped' : 'proceeded';
+    const icon = h.skipped ? '✅' : '🛒';
+    const label = h.skipped ? 'Skipped' : 'Proceeded';
+    const amountStr = h.amount > 0 ? `$${h.amount.toLocaleString()}` : '—';
+    return `<div class="pause-history-item">
+      <div class="pause-history-badge ${cls}">${icon}</div>
+      <div class="pause-history-info">
+        <div class="pause-history-name">${h.name}</div>
+        <div class="pause-history-meta">${label} · ${dateStr}</div>
+      </div>
+      <div class="pause-history-amount ${cls}">${amountStr}</div>
+    </div>`;
+  }).join('');
+  list.innerHTML = '<div id="pause-history-empty" style="display:none"></div>' + items;
+}
+function clearPauseHistory() {
+  localStorage.removeItem('pauseHistory');
+  renderPauseHistory();
+}
+document.addEventListener('DOMContentLoaded', renderPauseHistory);
+
+// ─────────────────────────────
+//  DAILY GOAL METER
+// ─────────────────────────────
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function getDailyLog() {
+  return JSON.parse(localStorage.getItem('dailyGoalLog') || '{}');
+}
+function getDailyTarget() {
+  const el = document.getElementById('daily-min-payment');
+  if (el) return parseFloat(el.textContent.replace(/[^0-9.]/g,'')) || 10.37;
+  return 10.37;
+}
+function toggleGoalBreakdown() {
+  const el = document.getElementById('goal-breakdown');
+  if (!el) return;
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  if (!open) renderGoalBreakdown();
+}
+function renderGoalBreakdown() {
+  const rows = document.getElementById('goal-breakdown-rows');
+  if (!rows) return;
+  const icons = {credit:'💳',student:'🎓',personal:'💼',auto:'🚗'};
+  rows.innerHTML = debts.map(d => {
+    const monthly = calcMinMonthlyPayment(d.balance, d.apr, d.termMonths || 60);
+    const daily = monthly / 30.4;
+    return `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <span>${icons[d.type] || '💰'} ${d.name}</span>
+      <span style="font-weight:700;color:var(--t1);white-space:nowrap">$${daily.toFixed(2)}/day</span>
+    </div>`;
+  }).join('') + `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid var(--border);margin-top:6px;padding-top:6px;font-weight:800;color:var(--green)">
+    <span>Total goal</span>
+    <span>$${getDailyTarget().toFixed(2)}/day</span>
+  </div>`;
+}
+function logDailyPayment() {
+  const input = document.getElementById('goal-log-input');
+  const val = parseFloat(input.value);
+  if (!val || val <= 0) return;
+  const log = getDailyLog();
+  const key = todayKey();
+  log[key] = (log[key] || 0) + val;
+  localStorage.setItem('dailyGoalLog', JSON.stringify(log));
+  input.value = '';
+  renderGoalMeter();
+}
+function renderGoalMeter() {
+  const target = getDailyTarget();
+  const log = getDailyLog();
+  const today = todayKey();
+  const paid = log[today] || 0;
+  const pct = Math.min(Math.round((paid / target) * 100), 100);
+  const circumference = 2 * Math.PI * 64; // r=64 → 402.1
+
+  // Arc
+  const arc = document.getElementById('goal-arc-circle');
+  const pctEl = document.getElementById('goal-arc-pct');
+  const targetEl = document.getElementById('goal-target-display');
+  if (arc) arc.style.strokeDashoffset = circumference * (1 - pct / 100);
+  if (pctEl) pctEl.textContent = pct + '%';
+  if (targetEl) targetEl.textContent = '$' + target.toFixed(2);
+  // Swap color if 100%
+  if (arc) arc.style.stroke = pct >= 100 ? 'var(--gold)' : 'url(#goalGrad)';
+  if (pctEl) pctEl.style.color = pct >= 100 ? 'var(--gold)' : 'var(--t1)';
+
+  // 7-day bars
+  const barsEl = document.getElementById('goal-bars');
+  if (!barsEl) return;
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const dayLabel = d.toLocaleDateString('en-US', {weekday:'short'}).slice(0,2);
+    const dayPaid = log[key] || 0;
+    const dayPct = Math.min(Math.round((dayPaid / target) * 100), 100);
+    days.push({key, label: dayLabel, pct: dayPct, paid: dayPaid, isToday: key === today});
+  }
+  barsEl.innerHTML = days.map(d => `
+    <div class="goal-bar-col">
+      <div class="goal-bar-pct">${d.pct > 0 ? d.pct + '%' : ''}</div>
+      <div class="goal-bar-track">
+        <div class="goal-bar-fill${d.pct >= 100 ? ' over' : ''}" style="height:${Math.max(d.pct,3)}%"></div>
+      </div>
+      <div class="goal-bar-day" style="${d.isToday ? 'color:var(--green);font-weight:700' : ''}">${d.label}</div>
+    </div>`).join('');
+
+  // Summary stats
+  const daysHit = days.filter(d => d.pct >= 100).length;
+  const avgPct = Math.round(days.reduce((s,d) => s + d.pct, 0) / 7);
+  const totalPaid = days.reduce((s,d) => s + d.paid, 0);
+  const dhEl = document.getElementById('goal-days-hit');
+  const apEl = document.getElementById('goal-avg-pct');
+  const tpEl = document.getElementById('goal-total-paid');
+  if (dhEl) dhEl.textContent = daysHit + '/7';
+  if (apEl) apEl.textContent = avgPct + '%';
+  if (tpEl) tpEl.textContent = '$' + totalPaid.toFixed(2);
+}
+document.addEventListener('DOMContentLoaded', () => {
+  renderGoalMeter();
+  // Refresh meter when debts update
+  const origUpdate = window.updateDebtStats;
+  if (typeof origUpdate === 'function') {
+    window.updateDebtStats = function() { origUpdate.call(this); renderGoalMeter(); };
+  }
+});
 
 // ─────────────────────────────
 //  DEBT CARD EDITING
