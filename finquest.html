@@ -195,10 +195,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .debt-item:last-child{border-bottom:none}
 .debt-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .debt-info{flex:1}
-.debt-name{font-size:14px;font-weight:600}
-.debt-apr{font-size:12px;color:var(--t2);margin-top:1px}
-.debt-amount{font-size:16px;font-weight:700;text-align:right}
-.debt-daily{font-size:11px;color:var(--red);text-align:right;margin-top:1px}
+.debt-name{font-size:16px;font-weight:700}
+.debt-apr{font-size:13px;color:var(--t2);margin-top:2px}
+.debt-amount{font-size:22px;font-weight:800;text-align:right;letter-spacing:-0.5px}
+.debt-daily{font-size:14px;font-weight:700;color:var(--red);text-align:right;margin-top:3px}
 .debt-progress{height:4px;background:var(--border2);border-radius:99px;margin-top:8px;overflow:hidden}
 .debt-progress-fill{height:100%;border-radius:99px}
 
@@ -692,7 +692,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   transition:color 0.2s;line-height:1;
 }
 .debt-remove:hover{color:var(--red)}
-.debt-min-pay{font-size:10px;color:var(--green);margin-top:2px}
+.debt-min-pay{font-size:13px;font-weight:700;color:var(--green);margin-top:2px}
 .debt-item-header{display:flex;align-items:center;gap:10px;width:100%}
 .debt-edit-btn{margin-left:auto;background:none;border:1px solid var(--border2);border-radius:6px;padding:3px 9px;font-size:10px;font-weight:700;color:var(--t2);cursor:pointer;transition:all 0.2s;flex-shrink:0;letter-spacing:.3px}
 .debt-edit-btn:hover{border-color:var(--purpleL);color:var(--purpleL)}
@@ -1402,6 +1402,17 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 
+  <!-- Your Debts (moved above pause history) -->
+  <div style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-label" style="display:flex;align-items:center;justify-content:space-between">
+        <span>Your Debts</span>
+        <button class="add-debt-btn" onclick="openAddDebt()">＋ Add Debt</button>
+      </div>
+      <div id="debt-list"></div>
+    </div>
+  </div>
+
   <!-- Row 2b: Pause History -->
   <div style="margin-bottom:16px" id="pause-history-section">
     <div class="card" style="padding:20px 24px">
@@ -1503,19 +1514,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   </div>
 
   <div class="g2" style="margin-bottom:16px">
-    <!-- Debts -->
+    <!-- Health breakdown + notifications (full-width each) -->
     <div class="card">
-      <div class="card-label" style="display:flex;align-items:center;justify-content:space-between">
-        <span>Your Debts</span>
-        <button class="add-debt-btn" onclick="openAddDebt()">＋ Add Debt</button>
-      </div>
-      <div id="debt-list"></div>
-    </div>
-
-    <!-- Health breakdown + notifications -->
-    <div style="display:flex;flex-direction:column;gap:16px">
-      <div class="card">
-        <div class="card-label">Health Score Breakdown</div>
+      <div class="card-label">Health Score Breakdown</div>
         <div class="health-categories">
           <div class="health-row">
             <span class="health-row-label">Debt payments</span>
@@ -1564,7 +1565,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
           </div>
         </div>
       </div>
-    </div>
   </div>
 </section>
 
