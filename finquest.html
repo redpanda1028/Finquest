@@ -31,22 +31,21 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   border-bottom:1px solid var(--border);
 }
 .logo-streak{
-  margin-left:auto;display:flex;align-items:center;gap:5px;
-  background:rgba(249,115,22,0.1);border:1.5px solid rgba(249,115,22,0.28);
-  border-radius:20px;padding:4px 10px;flex-shrink:0;
+  margin-left:auto;display:flex;align-items:center;gap:6px;
+  background:rgba(249,115,22,0.12);border:1.5px solid rgba(249,115,22,0.3);
+  border-radius:20px;padding:6px 13px;flex-shrink:0;
 }
-.logo-streak-fire{font-size:14px;line-height:1}
-.logo-streak-count{font-size:13px;font-weight:900;color:var(--orange);letter-spacing:-0.5px}
+.logo-streak-fire{font-size:20px;line-height:1}
+.logo-streak-count{font-size:17px;font-weight:900;color:var(--orange);letter-spacing:-0.5px}
 /* Header streak badge */
 .header-streak-badge{
-  width:68px;height:68px;border-radius:50%;flex-shrink:0;
-  background:rgba(249,115,22,0.08);border:2px solid rgba(249,115,22,0.3);
+  width:82px;height:82px;border-radius:50%;flex-shrink:0;
+  background:rgba(249,115,22,0.1);border:2.5px solid rgba(249,115,22,0.35);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:1px;
+  gap:0px;box-shadow:0 0 18px rgba(249,115,22,0.15);
 }
-.header-streak-badge-fire{font-size:16px;line-height:1}
-.header-streak-badge-num{font-size:20px;font-weight:900;color:var(--orange);line-height:1;letter-spacing:-1px}
-.header-streak-badge-label{font-size:8px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px}
+.header-streak-badge-fire{font-size:22px;line-height:1}
+.header-streak-badge-num{font-size:26px;font-weight:900;color:var(--orange);line-height:1;letter-spacing:-1.5px}
 .logo-icon{
   width:36px;height:36px;
   background:linear-gradient(135deg,var(--purple),var(--purpleL));
@@ -1171,7 +1170,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     <div class="header-streak-badge">
       <div class="header-streak-badge-fire">🔥</div>
       <div class="header-streak-badge-num" id="header-streak-count">14</div>
-      <div class="header-streak-badge-label">day streak</div>
     </div>
   </div>
 
@@ -1594,7 +1592,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
         </div>
         <div class="impact-item">
           <div class="impact-value" id="impact-interest" style="color:var(--t3)">—</div>
-          <div class="impact-label">Interest saved</div>
+          <div class="impact-label">Interest saved vs worst case</div>
         </div>
         <div class="impact-item">
           <div class="impact-value" id="impact-date" style="color:var(--purpleL);font-size:16px">—</div>
@@ -2726,8 +2724,8 @@ function calcPayoff(extra) {
   return data;
 }
 
-function calcTotalInterestPaid(extra) {
-  const apr = APR[strategy] || APR.avalanche;
+function calcTotalInterestPaid(extra, overrideApr) {
+  const apr = overrideApr !== undefined ? overrideApr : (APR[strategy] || APR.avalanche);
   const monthly = apr / 12;
   let balance = BASE_DEBT;
   let totalInterest = 0;
@@ -2758,9 +2756,12 @@ function updateSim(val) {
   const baseData = calcPayoff(0);
   const newData  = calcPayoff(extra);
   const monthsSaved = Math.max(0, baseData.length - newData.length);
-  const interestBase = calcTotalInterestPaid(0);
-  const interestNew  = calcTotalInterestPaid(extra);
-  const interestSaved = Math.max(0, interestBase - interestNew);
+  // Always compare against snowball + no extra as the worst-case baseline.
+  // This ensures avalanche correctly shows more interest saved than snowball,
+  // since avalanche attacks high-APR debt first and always outperforms snowball.
+  const worstCaseInterest = calcTotalInterestPaid(0, APR.snowball);
+  const interestNew       = calcTotalInterestPaid(extra);
+  const interestSaved     = Math.max(0, worstCaseInterest - interestNew);
 
   const mEl = document.getElementById('impact-months');
   const iEl = document.getElementById('impact-interest');
