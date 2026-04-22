@@ -1012,6 +1012,24 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .goal-progress-bar{height:6px;background:var(--border);border-radius:99px;overflow:hidden}
 .goal-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green),#34d399);transition:width 0.4s}
 .goal-days-left{font-size:11px;color:var(--t2);margin-top:6px;text-align:right}
+/* ── SAVINGS TIMELINE ── */
+.savings-timeline-ttl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--t2);margin-bottom:20px}
+.stl-row{display:flex;gap:0}
+.stl-spine{display:flex;flex-direction:column;align-items:center;width:32px;flex-shrink:0}
+.stl-dot{width:14px;height:14px;border-radius:50%;background:var(--green);border:2.5px solid var(--bg);flex-shrink:0;z-index:1;box-shadow:0 0 0 4px rgba(16,185,129,0.15)}
+.stl-dot.stl-today{background:var(--bg2);border:2.5px solid var(--green)}
+.stl-dot.stl-complete{background:var(--gold);border-color:var(--bg);box-shadow:0 0 0 4px rgba(234,179,8,0.18)}
+.stl-line{width:2px;flex:1;min-height:72px;background:linear-gradient(180deg,rgba(16,185,129,0.45),rgba(16,185,129,0.1));margin:0 auto}
+.stl-content{flex:1;padding:0 0 28px 14px}
+.stl-finish{flex:1;padding:0 0 4px 14px}
+.stl-node-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:5px;margin-top:-1px}
+.stl-completed-goals{margin-bottom:6px}
+.stl-completed-goal{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:3px}
+.stl-daily-amt{font-size:34px;font-weight:900;letter-spacing:-1.5px;color:var(--green);line-height:1}
+.stl-daily-label{font-size:12px;color:var(--t2);margin-top:4px;margin-bottom:10px}
+.stl-pills{display:flex;flex-wrap:wrap;gap:5px}
+.stl-pill{font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(16,185,129,0.1);color:var(--green);border:1px solid rgba(16,185,129,0.2)}
+
 /* Add goal modal */
 .savings-modal-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:300;
@@ -2146,6 +2164,13 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <div class="savings-empty-icon">🎯</div>
       <div class="savings-empty-text">No savings goals yet</div>
       <div class="savings-empty-sub">Add a goal — vacation, car, emergency fund, anything — and we'll tell you exactly what to save each day.</div>
+    </div>
+  </div>
+
+  <!-- Savings Timeline -->
+  <div id="savings-timeline" style="display:none">
+    <div class="card" style="padding:22px 24px">
+      <div id="savings-timeline-inner"></div>
     </div>
   </div>
 </section>
@@ -3517,6 +3542,7 @@ function renderGoals() {
     subEl.innerHTML = 'Add your first goal below to get started';
     list.innerHTML  = '';
     list.appendChild(empty);
+    renderTimeline();
     return;
   }
 
@@ -3524,6 +3550,9 @@ function renderGoals() {
   const totalDaily = savingsGoals.reduce((s, g) => s + calcDailyNeeded(g.amount, g.date), 0);
   totalEl.textContent = '$' + totalDaily.toFixed(2);
   subEl.innerHTML = `across <strong style="color:var(--green)">${savingsGoals.length}</strong> active goal${savingsGoals.length > 1 ? 's' : ''}`;
+
+  // Render timeline
+  renderTimeline();
 
   // Render cards
   list.innerHTML = savingsGoals.map(g => {
@@ -3556,6 +3585,79 @@ function renderGoals() {
       <div class="goal-days-left" style="color:${urgency}">${days.toLocaleString()} days remaining</div>
     </div>`;
   }).join('');
+}
+
+function renderTimeline() {
+  const wrap  = document.getElementById('savings-timeline');
+  const inner = document.getElementById('savings-timeline-inner');
+  if (!wrap || !inner) return;
+
+  const active = savingsGoals.filter(g => calcDaysRemaining(g.date) > 0);
+  if (active.length === 0) { wrap.style.display = 'none'; return; }
+  wrap.style.display = '';
+
+  // Sort goals by target date ascending
+  const sorted = [...active].sort((a, b) => a.date.localeCompare(b.date));
+
+  // Build ordered milestone list: today + each unique goal end date
+  const todayStr = (() => { const d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); })();
+  const uniqueDates = [...new Set(sorted.map(g => g.date))];
+  const milestones  = [todayStr, ...uniqueDates];
+
+  let html = '<div class="savings-timeline-ttl">📅 Savings Timeline</div>';
+
+  milestones.forEach((ms, i) => {
+    const isFirst = i === 0;
+    const isLast  = i === milestones.length - 1;
+    const nextMs  = milestones[i + 1];
+
+    // Goals that complete exactly at this milestone (not at "today")
+    const completing = !isFirst ? sorted.filter(g => g.date === ms) : [];
+
+    // Goals active in the period [ms → nextMs]: those whose end date >= nextMs
+    const periodGoals = nextMs ? sorted.filter(g => g.date >= nextMs) : [];
+    const periodDaily = periodGoals.reduce((s, g) => s + calcDailyNeeded(g.amount, g.date), 0);
+
+    const dotLabel = isFirst
+      ? 'Today'
+      : new Date(ms + 'T00:00:00').toLocaleDateString('en-US', {month:'long', year:'numeric'});
+    const dotClass = isFirst ? 'stl-dot stl-today' : (completing.length ? 'stl-dot stl-complete' : 'stl-dot');
+
+    html += `<div class="stl-row">
+      <div class="stl-spine">
+        <div class="${dotClass}"></div>
+        ${!isLast ? '<div class="stl-line"></div>' : ''}
+      </div>
+      <div class="${isLast ? 'stl-finish' : 'stl-content'}">
+        <div class="stl-node-label">${dotLabel}</div>`;
+
+    // Completed goals announcement
+    if (completing.length) {
+      html += `<div class="stl-completed-goals">`;
+      completing.forEach(g => {
+        html += `<div class="stl-completed-goal">🏆 ${g.name} — $${g.amount.toLocaleString()} reached</div>`;
+      });
+      html += `</div>`;
+    }
+
+    // Period details (between this dot and next)
+    if (!isLast && periodGoals.length > 0) {
+      const untilLabel = new Date(nextMs + 'T00:00:00').toLocaleDateString('en-US', {month:'short', year:'numeric'});
+      html += `
+        <div class="stl-daily-amt">$${periodDaily.toFixed(2)}<span style="font-size:15px;font-weight:600;color:var(--t2)">/day</span></div>
+        <div class="stl-daily-label">Save this until ${untilLabel} &nbsp;·&nbsp; ${periodGoals.length} active goal${periodGoals.length !== 1 ? 's' : ''}</div>
+        <div class="stl-pills">
+          ${periodGoals.map(g => {
+            const d = calcDailyNeeded(g.amount, g.date);
+            return `<div class="stl-pill">${g.name} · $${d.toFixed(2)}/day</div>`;
+          }).join('')}
+        </div>`;
+    }
+
+    html += `</div></div>`;
+  });
+
+  inner.innerHTML = html;
 }
 
 // Init savings tab on first visit
