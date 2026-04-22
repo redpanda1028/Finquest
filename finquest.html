@@ -354,6 +354,28 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .weekly-progress-text{font-size:12px;color:var(--t2);white-space:nowrap}
 .weekly-xp{color:var(--gold);font-weight:700;font-size:14px;white-space:nowrap}
 
+/* ── PROGRESS TOGGLE ── */
+.progress-toggle{display:flex;gap:5px;margin-bottom:0}
+.progress-toggle-btn{padding:5px 12px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--t3);font-size:10px;font-weight:700;cursor:pointer;letter-spacing:.5px;text-transform:uppercase;transition:all 0.2s}
+.progress-toggle-btn.active{background:rgba(16,185,129,0.15);border-color:var(--green);color:var(--green)}
+.goal-bar-dollar{font-size:9px;color:var(--t2);font-weight:600;text-align:center;line-height:1.2;min-height:11px}
+.goal-bar-dollar.has-amt{color:var(--green)}
+
+/* ── MONTHLY CALENDAR ── */
+.month-cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.month-cal-title{font-size:12px;font-weight:800;color:var(--t1);letter-spacing:-.3px}
+.month-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.month-cal-dow{font-size:8px;font-weight:700;text-transform:uppercase;color:var(--t3);text-align:center;padding-bottom:3px;letter-spacing:.5px}
+.month-cal-day{border-radius:5px;padding:3px 2px;text-align:center;background:var(--bg2);border:1px solid transparent;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:1px;cursor:default}
+.month-cal-day.has-data{background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.3)}
+.month-cal-day.today{border-color:var(--green);background:rgba(16,185,129,0.2)}
+.month-cal-day.future{opacity:0.3}
+.month-cal-day.empty{background:transparent;border:none}
+.month-cal-date{font-size:9px;font-weight:700;color:var(--t3);margin-top:2px}
+.month-cal-day.today .month-cal-date{color:var(--green)}
+.month-cal-day.has-data .month-cal-date{color:var(--t2)}
+.month-cal-amt{font-size:8px;font-weight:800;color:var(--green);line-height:1.2}
+
 /* ── SIMULATOR ── */
 .sim-controls{
   display:flex;flex-direction:column;gap:20px;
@@ -1347,21 +1369,34 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
       <!-- Bar Chart -->
       <div class="goal-meter-right">
-        <div class="goal-chart-title">7-Day Progress</div>
-        <div class="goal-bars" id="goal-bars"></div>
-        <div class="goal-summary">
-          <div class="goal-stat">
-            <div class="goal-stat-val" id="goal-days-hit">—</div>
-            <div class="goal-stat-lbl">days hit goal</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div class="goal-chart-title" style="margin-bottom:0">Progress</div>
+          <div class="progress-toggle">
+            <button class="progress-toggle-btn active" id="prog-btn-weekly" onclick="setProgressView('weekly')">Weekly</button>
+            <button class="progress-toggle-btn" id="prog-btn-monthly" onclick="setProgressView('monthly')">Monthly</button>
           </div>
-          <div class="goal-stat">
-            <div class="goal-stat-val" id="goal-avg-pct">—</div>
-            <div class="goal-stat-lbl">avg completion</div>
+        </div>
+        <!-- Weekly view -->
+        <div id="progress-weekly-view">
+          <div class="goal-bars" id="goal-bars"></div>
+          <div class="goal-summary">
+            <div class="goal-stat">
+              <div class="goal-stat-val" id="goal-days-hit">—</div>
+              <div class="goal-stat-lbl">days hit goal</div>
+            </div>
+            <div class="goal-stat">
+              <div class="goal-stat-val" id="goal-avg-pct">—</div>
+              <div class="goal-stat-lbl">avg completion</div>
+            </div>
+            <div class="goal-stat">
+              <div class="goal-stat-val" id="goal-total-paid">—</div>
+              <div class="goal-stat-lbl">paid this week</div>
+            </div>
           </div>
-          <div class="goal-stat">
-            <div class="goal-stat-val" id="goal-total-paid">—</div>
-            <div class="goal-stat-lbl">paid this week</div>
-          </div>
+        </div>
+        <!-- Monthly view -->
+        <div id="progress-monthly-view" style="display:none">
+          <div id="progress-calendar" class="month-cal"></div>
         </div>
       </div>
     </div>
@@ -2713,6 +2748,7 @@ function renderGoalMeter() {
         <div class="goal-bar-fill${d.pct >= 100 ? ' over' : ''}" style="height:${Math.max(d.pct,3)}%"></div>
       </div>
       <div class="goal-bar-day" style="${d.isToday ? 'color:var(--green);font-weight:700' : ''}">${d.label}</div>
+      <div class="goal-bar-dollar${d.paid > 0 ? ' has-amt' : ''}">${d.paid > 0 ? '$' + (d.paid < 10 ? d.paid.toFixed(2) : Math.round(d.paid)) : ''}</div>
     </div>`).join('');
 
   // Summary stats
@@ -2725,7 +2761,60 @@ function renderGoalMeter() {
   if (dhEl) dhEl.textContent = daysHit + '/7';
   if (apEl) apEl.textContent = avgPct + '%';
   if (tpEl) tpEl.textContent = '$' + totalPaid.toFixed(2);
+
+  // Refresh monthly calendar if it's currently visible
+  if (typeof progressView !== 'undefined' && progressView === 'monthly') renderMonthCalendar();
 }
+
+let progressView = 'weekly';
+function setProgressView(v) {
+  progressView = v;
+  document.getElementById('prog-btn-weekly').classList.toggle('active', v === 'weekly');
+  document.getElementById('prog-btn-monthly').classList.toggle('active', v === 'monthly');
+  document.getElementById('progress-weekly-view').style.display  = v === 'weekly'  ? '' : 'none';
+  document.getElementById('progress-monthly-view').style.display = v === 'monthly' ? '' : 'none';
+  if (v === 'monthly') renderMonthCalendar();
+}
+
+function renderMonthCalendar() {
+  const calEl = document.getElementById('progress-calendar');
+  if (!calEl) return;
+  const log = JSON.parse(localStorage.getItem('paymentLog') || '{}');
+  const now   = new Date();
+  const year  = now.getFullYear();
+  const month = now.getMonth();
+  const todayStr = `${year}-${String(month+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDow    = new Date(year, month, 1).getDay(); // 0=Sun
+  const monthName   = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  let html = `<div class="month-cal-header"><div class="month-cal-title">${monthName}</div></div>`;
+  html += `<div class="month-cal-grid">`;
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
+    html += `<div class="month-cal-dow">${d}</div>`;
+  });
+  // Leading empty cells
+  for (let i = 0; i < firstDow; i++) html += `<div class="month-cal-day empty"></div>`;
+  // Day cells
+  for (let d = 1; d <= daysInMonth; d++) {
+    const key   = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const paid  = log[key] || 0;
+    const isToday  = key === todayStr;
+    const isFuture = key > todayStr;
+    const hasData  = paid > 0;
+    let cls = 'month-cal-day';
+    if (isToday)       cls += ' today';
+    else if (isFuture) cls += ' future';
+    else if (hasData)  cls += ' has-data';
+    html += `<div class="${cls}">
+      <div class="month-cal-date">${d}</div>
+      ${hasData ? `<div class="month-cal-amt">$${paid < 10 ? paid.toFixed(2) : Math.round(paid)}</div>` : ''}
+    </div>`;
+  }
+  html += `</div>`;
+  calEl.innerHTML = html;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderGoalMeter();
   // Refresh meter when debts update
