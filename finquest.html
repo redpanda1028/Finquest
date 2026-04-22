@@ -30,6 +30,23 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   padding:22px 20px 20px;display:flex;align-items:center;gap:10px;
   border-bottom:1px solid var(--border);
 }
+.logo-streak{
+  margin-left:auto;display:flex;align-items:center;gap:5px;
+  background:rgba(249,115,22,0.1);border:1.5px solid rgba(249,115,22,0.28);
+  border-radius:20px;padding:4px 10px;flex-shrink:0;
+}
+.logo-streak-fire{font-size:14px;line-height:1}
+.logo-streak-count{font-size:13px;font-weight:900;color:var(--orange);letter-spacing:-0.5px}
+/* Header streak badge */
+.header-streak-badge{
+  width:68px;height:68px;border-radius:50%;flex-shrink:0;
+  background:rgba(249,115,22,0.08);border:2px solid rgba(249,115,22,0.3);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1px;
+}
+.header-streak-badge-fire{font-size:16px;line-height:1}
+.header-streak-badge-num{font-size:20px;font-weight:900;color:var(--orange);line-height:1;letter-spacing:-1px}
+.header-streak-badge-label{font-size:8px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px}
 .logo-icon{
   width:36px;height:36px;
   background:linear-gradient(135deg,var(--purple),var(--purpleL));
@@ -939,6 +956,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <div class="logo">
     <div class="logo-icon">⚡</div>
     <span class="logo-text">IdealU</span>
+    <div class="logo-streak">
+      <span class="logo-streak-fire">🔥</span>
+      <span class="logo-streak-count" id="logo-streak-count">14</span>
+    </div>
   </div>
   <nav class="nav">
     <div class="nav-item active" onclick="nav('dashboard',this)">
@@ -1142,14 +1163,21 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 <!-- ══════════════ DASHBOARD ══════════════ -->
 <section id="dashboard" class="screen active">
-  <div class="page-header">
-    <div class="page-title">Good morning, Alex 👋</div>
-    <div class="page-sub">Wednesday, April 9 · 14-day streak · <span style="color:var(--green)">You're winning today.</span></div>
+  <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+    <div>
+      <div class="page-title">Good morning, Alex 👋</div>
+      <div class="page-sub">Wednesday, April 9 · <span style="color:var(--green)">You're winning today.</span></div>
+    </div>
+    <div class="header-streak-badge">
+      <div class="header-streak-badge-fire">🔥</div>
+      <div class="header-streak-badge-num" id="header-streak-count">14</div>
+      <div class="header-streak-badge-label">day streak</div>
+    </div>
   </div>
 
-  <!-- Row 1: Daily Dollar + BIG Streak -->
+  <!-- Row 1: Daily Dollar (full width, streak moved to header) -->
   <div class="g3" style="margin-bottom:16px">
-    <div class="daily-dollar-card col-span-2">
+    <div class="daily-dollar-card col-span-3">
       <div class="daily-dollar-label">⚡ What your debt costs you every day</div>
       <button class="track-status good" id="track-btn" onclick="toggleTrack()">● On track today</button>
       <div class="daily-split">
@@ -1179,13 +1207,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       </button>
     </div>
 
-    <!-- BIG Streak -->
-    <div class="card streak-hero">
-      <span class="streak-fire-xl">🔥</span>
-      <div class="streak-num-xl">14</div>
-      <div class="streak-label-xl">day streak</div>
-      <div class="streak-shield-btn" onclick="showToast('🛡️ Streak shield activated!',0)">🛡️ Use Streak Shield</div>
-    </div>
   </div>
 
   <!-- Row 2: Health · Debt · Debt-Free -->
@@ -2252,6 +2273,9 @@ function updateDebtStats() {
     if (cdEl) cdEl.textContent = fStr;
     const cdDays = document.querySelector('.countdown-days');
     if (cdDays) cdDays.textContent = `${daysLeft.toLocaleString()} days remaining`;
+    // Keep "Days to Freedom" in sync with the same calculated value
+    const fdEl = document.querySelector('.freedom-days-big');
+    if (fdEl) fdEl.textContent = daysLeft.toLocaleString();
   }
 
   // Sync simulator base values
