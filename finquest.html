@@ -30,6 +30,22 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   padding:22px 20px 20px;display:flex;align-items:center;gap:10px;
   border-bottom:1px solid var(--border);
 }
+.logo-streak{
+  margin-left:auto;display:flex;align-items:center;gap:6px;
+  background:rgba(249,115,22,0.12);border:1.5px solid rgba(249,115,22,0.3);
+  border-radius:20px;padding:6px 13px;flex-shrink:0;
+}
+.logo-streak-fire{font-size:20px;line-height:1}
+.logo-streak-count{font-size:17px;font-weight:900;color:var(--orange);letter-spacing:-0.5px}
+/* Header streak badge */
+.header-streak-badge{
+  width:82px;height:82px;border-radius:50%;flex-shrink:0;
+  background:rgba(249,115,22,0.1);border:2.5px solid rgba(249,115,22,0.35);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:0px;box-shadow:0 0 18px rgba(249,115,22,0.15);
+}
+.header-streak-badge-fire{font-size:22px;line-height:1}
+.header-streak-badge-num{font-size:26px;font-weight:900;color:var(--orange);line-height:1;letter-spacing:-1.5px}
 .logo-icon{
   width:36px;height:36px;
   background:linear-gradient(135deg,var(--purple),var(--purpleL));
@@ -179,10 +195,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .debt-item:last-child{border-bottom:none}
 .debt-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .debt-info{flex:1}
-.debt-name{font-size:14px;font-weight:600}
-.debt-apr{font-size:12px;color:var(--t2);margin-top:1px}
-.debt-amount{font-size:16px;font-weight:700;text-align:right}
-.debt-daily{font-size:11px;color:var(--red);text-align:right;margin-top:1px}
+.debt-name{font-size:16px;font-weight:700}
+.debt-apr{font-size:13px;color:var(--t2);margin-top:2px}
+.debt-amount{font-size:22px;font-weight:800;text-align:right;letter-spacing:-0.5px}
+.debt-daily{font-size:14px;font-weight:700;color:var(--red);text-align:right;margin-top:3px}
 .debt-progress{height:4px;background:var(--border2);border-radius:99px;margin-top:8px;overflow:hidden}
 .debt-progress-fill{height:100%;border-radius:99px}
 
@@ -337,6 +353,28 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 }
 .weekly-progress-text{font-size:12px;color:var(--t2);white-space:nowrap}
 .weekly-xp{color:var(--gold);font-weight:700;font-size:14px;white-space:nowrap}
+
+/* ── PROGRESS TOGGLE ── */
+.progress-toggle{display:flex;gap:5px;margin-bottom:0}
+.progress-toggle-btn{padding:5px 12px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--t3);font-size:10px;font-weight:700;cursor:pointer;letter-spacing:.5px;text-transform:uppercase;transition:all 0.2s}
+.progress-toggle-btn.active{background:rgba(16,185,129,0.15);border-color:var(--green);color:var(--green)}
+.goal-bar-dollar{font-size:9px;color:var(--t2);font-weight:600;text-align:center;line-height:1.2;min-height:11px}
+.goal-bar-dollar.has-amt{color:var(--green)}
+
+/* ── MONTHLY CALENDAR ── */
+.month-cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.month-cal-title{font-size:12px;font-weight:800;color:var(--t1);letter-spacing:-.3px}
+.month-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.month-cal-dow{font-size:8px;font-weight:700;text-transform:uppercase;color:var(--t3);text-align:center;padding-bottom:3px;letter-spacing:.5px}
+.month-cal-day{border-radius:5px;padding:3px 2px;text-align:center;background:var(--bg2);border:1px solid transparent;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:1px;cursor:default}
+.month-cal-day.has-data{background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.3)}
+.month-cal-day.today{border-color:var(--green);background:rgba(16,185,129,0.2)}
+.month-cal-day.future{opacity:0.3}
+.month-cal-day.empty{background:transparent;border:none}
+.month-cal-date{font-size:9px;font-weight:700;color:var(--t3);margin-top:2px}
+.month-cal-day.today .month-cal-date{color:var(--green)}
+.month-cal-day.has-data .month-cal-date{color:var(--t2)}
+.month-cal-amt{font-size:8px;font-weight:800;color:var(--green);line-height:1.2}
 
 /* ── SIMULATOR ── */
 .sim-controls{
@@ -654,7 +692,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   transition:color 0.2s;line-height:1;
 }
 .debt-remove:hover{color:var(--red)}
-.debt-min-pay{font-size:10px;color:var(--green);margin-top:2px}
+.debt-min-pay{font-size:13px;font-weight:700;color:var(--green);margin-top:2px}
 .debt-item-header{display:flex;align-items:center;gap:10px;width:100%}
 .debt-edit-btn{margin-left:auto;background:none;border:1px solid var(--border2);border-radius:6px;padding:3px 9px;font-size:10px;font-weight:700;color:var(--t2);cursor:pointer;transition:all 0.2s;flex-shrink:0;letter-spacing:.3px}
 .debt-edit-btn:hover{border-color:var(--purpleL);color:var(--purpleL)}
@@ -930,6 +968,100 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   background:rgba(16,185,129,0.1);padding:3px 10px;border-radius:99px;
   margin-bottom:14px;
 }
+
+/* ── SAVINGS TAB ── */
+.savings-hero{
+  background:linear-gradient(135deg,#0a2a1a 0%,#0d1f2d 100%);
+  border:1px solid rgba(16,185,129,0.25);border-radius:16px;
+  padding:24px 28px;margin-bottom:20px;position:relative;overflow:hidden;
+}
+.savings-hero::before{
+  content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  background:radial-gradient(circle,rgba(16,185,129,0.12) 0%,transparent 70%);
+  border-radius:50%;
+}
+.savings-hero-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--t2);margin-bottom:6px}
+.savings-hero-amount{font-size:48px;font-weight:900;letter-spacing:-2px;color:var(--green);line-height:1;margin-bottom:4px}
+.savings-hero-sub{font-size:13px;color:var(--t2)}
+.savings-hero-sub span{color:var(--green);font-weight:700}
+.savings-add-btn{
+  width:100%;padding:14px;background:rgba(16,185,129,0.1);border:1.5px dashed rgba(16,185,129,0.35);
+  border-radius:12px;color:var(--green);font-size:15px;font-weight:700;cursor:pointer;
+  transition:all 0.2s;font-family:inherit;margin-bottom:16px;
+}
+.savings-add-btn:hover{background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.6)}
+.savings-empty{
+  text-align:center;padding:48px 20px;color:var(--t2);
+}
+.savings-empty-icon{font-size:48px;margin-bottom:12px}
+.savings-empty-text{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--t1)}
+.savings-empty-sub{font-size:13px;color:var(--t2)}
+.goal-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:18px 20px;margin-bottom:12px;position:relative;
+}
+.goal-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.goal-card-name{font-size:16px;font-weight:700;color:var(--t1)}
+.goal-card-target{font-size:13px;color:var(--t2);margin-top:2px}
+.goal-card-delete{background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;padding:0;line-height:1;transition:color 0.15s}
+.goal-card-delete:hover{color:var(--red)}
+.goal-card-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.goal-stat{background:var(--card2);border-radius:10px;padding:10px 12px}
+.goal-stat-val{font-size:20px;font-weight:900;letter-spacing:-0.5px;line-height:1}
+.goal-stat-label{font-size:10px;color:var(--t2);margin-top:3px;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+.goal-progress-bar{height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+.goal-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green),#34d399);transition:width 0.4s}
+.goal-days-left{font-size:11px;color:var(--t2);margin-top:6px;text-align:right}
+/* ── SAVINGS TIMELINE ── */
+.savings-timeline-ttl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--t2);margin-bottom:20px}
+.stl-row{display:flex;gap:0}
+.stl-spine{display:flex;flex-direction:column;align-items:center;width:32px;flex-shrink:0}
+.stl-dot{width:14px;height:14px;border-radius:50%;background:var(--green);border:2.5px solid var(--bg);flex-shrink:0;z-index:1;box-shadow:0 0 0 4px rgba(16,185,129,0.15)}
+.stl-dot.stl-today{background:var(--bg2);border:2.5px solid var(--green)}
+.stl-dot.stl-complete{background:var(--gold);border-color:var(--bg);box-shadow:0 0 0 4px rgba(234,179,8,0.18)}
+.stl-line{width:2px;flex:1;min-height:72px;background:linear-gradient(180deg,rgba(16,185,129,0.45),rgba(16,185,129,0.1));margin:0 auto}
+.stl-content{flex:1;padding:0 0 28px 14px}
+.stl-finish{flex:1;padding:0 0 4px 14px}
+.stl-node-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:5px;margin-top:-1px}
+.stl-completed-goals{margin-bottom:6px}
+.stl-completed-goal{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:3px}
+.stl-daily-amt{font-size:34px;font-weight:900;letter-spacing:-1.5px;color:var(--green);line-height:1}
+.stl-daily-label{font-size:12px;color:var(--t2);margin-top:4px;margin-bottom:10px}
+.stl-pills{display:flex;flex-wrap:wrap;gap:5px}
+.stl-pill{font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(16,185,129,0.1);color:var(--green);border:1px solid rgba(16,185,129,0.2)}
+
+/* Add goal modal */
+.savings-modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:300;
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.25s;
+}
+.savings-modal-overlay.open{opacity:1;pointer-events:all}
+.savings-modal{
+  background:var(--card);border-radius:20px 20px 0 0;padding:28px 24px 36px;
+  width:100%;max-width:520px;transform:translateY(30px);transition:transform 0.25s;
+}
+.savings-modal-overlay.open .savings-modal{transform:translateY(0)}
+.savings-modal-title{font-size:20px;font-weight:900;margin-bottom:20px;letter-spacing:-0.5px}
+.savings-field{margin-bottom:16px}
+.savings-field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t2);margin-bottom:6px}
+.savings-input{
+  width:100%;padding:13px 14px;background:var(--card2);border:1px solid var(--border);
+  border-radius:10px;font-size:15px;font-weight:600;color:var(--t1);
+  font-family:inherit;outline:none;box-sizing:border-box;transition:border-color 0.15s;
+}
+.savings-input:focus{border-color:var(--green)}
+.savings-modal-actions{display:flex;gap:10px;margin-top:20px}
+.savings-save-btn{
+  flex:1;padding:14px;background:linear-gradient(135deg,var(--green),#34d399);
+  border:none;border-radius:10px;font-size:15px;font-weight:800;color:#0a2a1a;
+  cursor:pointer;font-family:inherit;
+}
+.savings-cancel-btn{
+  padding:14px 20px;background:var(--card2);border:1px solid var(--border);
+  border-radius:10px;font-size:15px;font-weight:600;color:var(--t2);
+  cursor:pointer;font-family:inherit;
+}
 </style>
 </head>
 <body>
@@ -939,6 +1071,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <div class="logo">
     <div class="logo-icon">⚡</div>
     <span class="logo-text">IdealU</span>
+    <div class="logo-streak">
+      <span class="logo-streak-fire">🔥</span>
+      <span class="logo-streak-count" id="logo-streak-count">14</span>
+    </div>
   </div>
   <nav class="nav">
     <div class="nav-item active" onclick="nav('dashboard',this)">
@@ -950,6 +1086,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
     <div class="nav-item" onclick="nav('simulator',this)">
       <span class="nav-icon">🔮</span> What-If
+    </div>
+    <div class="nav-item" onclick="nav('savings',this)">
+      <span class="nav-icon">🏦</span> Savings
     </div>
     <div class="nav-item" onclick="nav('reportcard',this)">
       <span class="nav-icon">📊</span> Report Card
@@ -1142,14 +1281,20 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 <!-- ══════════════ DASHBOARD ══════════════ -->
 <section id="dashboard" class="screen active">
-  <div class="page-header">
-    <div class="page-title">Good morning, Alex 👋</div>
-    <div class="page-sub">Wednesday, April 9 · 14-day streak · <span style="color:var(--green)">You're winning today.</span></div>
+  <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+    <div>
+      <div class="page-title">Good morning, Alex 👋</div>
+      <div class="page-sub">Wednesday, April 9 · <span style="color:var(--green)">You're winning today.</span></div>
+    </div>
+    <div class="header-streak-badge">
+      <div class="header-streak-badge-fire">🔥</div>
+      <div class="header-streak-badge-num" id="header-streak-count">14</div>
+    </div>
   </div>
 
-  <!-- Row 1: Daily Dollar + BIG Streak -->
+  <!-- Row 1: Daily Dollar (full width, streak moved to header) -->
   <div class="g3" style="margin-bottom:16px">
-    <div class="daily-dollar-card col-span-2">
+    <div class="daily-dollar-card col-span-3">
       <div class="daily-dollar-label">⚡ What your debt costs you every day</div>
       <button class="track-status good" id="track-btn" onclick="toggleTrack()">● On track today</button>
       <div class="daily-split">
@@ -1179,23 +1324,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       </button>
     </div>
 
-    <!-- BIG Streak -->
-    <div class="card streak-hero">
-      <span class="streak-fire-xl">🔥</span>
-      <div class="streak-num-xl">14</div>
-      <div class="streak-label-xl">day streak</div>
-      <div class="streak-shield-btn" onclick="showToast('🛡️ Streak shield activated!',0)">🛡️ Use Streak Shield</div>
-    </div>
   </div>
 
-  <!-- Row 2: Health · Debt · Debt-Free -->
-  <div class="g3" style="margin-bottom:16px">
-    <div class="card stat-card">
-      <div class="card-label">Financial Health</div>
-      <div class="health-score-display">B+</div>
-      <div class="stat-sub" style="margin-top:8px">↑ Up from B last month</div>
-      <div class="stat-change up">▲ Improving</div>
-    </div>
+  <!-- Row 2: Debt · Debt-Free -->
+  <div class="g2" style="margin-bottom:16px">
     <div class="card stat-card">
       <div class="card-label">Total Debt</div>
       <div class="stat-value" id="total-debt-display">$18,450</div>
@@ -1255,23 +1387,47 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
       <!-- Bar Chart -->
       <div class="goal-meter-right">
-        <div class="goal-chart-title">7-Day Progress</div>
-        <div class="goal-bars" id="goal-bars"></div>
-        <div class="goal-summary">
-          <div class="goal-stat">
-            <div class="goal-stat-val" id="goal-days-hit">—</div>
-            <div class="goal-stat-lbl">days hit goal</div>
-          </div>
-          <div class="goal-stat">
-            <div class="goal-stat-val" id="goal-avg-pct">—</div>
-            <div class="goal-stat-lbl">avg completion</div>
-          </div>
-          <div class="goal-stat">
-            <div class="goal-stat-val" id="goal-total-paid">—</div>
-            <div class="goal-stat-lbl">paid this week</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div class="goal-chart-title" style="margin-bottom:0">Progress</div>
+          <div class="progress-toggle">
+            <button class="progress-toggle-btn active" id="prog-btn-weekly" onclick="setProgressView('weekly')">Weekly</button>
+            <button class="progress-toggle-btn" id="prog-btn-monthly" onclick="setProgressView('monthly')">Monthly</button>
           </div>
         </div>
+        <!-- Weekly view -->
+        <div id="progress-weekly-view">
+          <div class="goal-bars" id="goal-bars"></div>
+          <div class="goal-summary">
+            <div class="goal-stat">
+              <div class="goal-stat-val" id="goal-days-hit">—</div>
+              <div class="goal-stat-lbl">days hit goal</div>
+            </div>
+            <div class="goal-stat">
+              <div class="goal-stat-val" id="goal-avg-pct">—</div>
+              <div class="goal-stat-lbl">avg completion</div>
+            </div>
+            <div class="goal-stat">
+              <div class="goal-stat-val" id="goal-total-paid">—</div>
+              <div class="goal-stat-lbl">paid this week</div>
+            </div>
+          </div>
+        </div>
+        <!-- Monthly view -->
+        <div id="progress-monthly-view" style="display:none">
+          <div id="progress-calendar" class="month-cal"></div>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Your Debts (moved above pause history) -->
+  <div style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-label" style="display:flex;align-items:center;justify-content:space-between">
+        <span>Your Debts</span>
+        <button class="add-debt-btn" onclick="openAddDebt()">＋ Add Debt</button>
+      </div>
+      <div id="debt-list"></div>
     </div>
   </div>
 
@@ -1376,19 +1532,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   </div>
 
   <div class="g2" style="margin-bottom:16px">
-    <!-- Debts -->
+    <!-- Health breakdown + notifications (full-width each) -->
     <div class="card">
-      <div class="card-label" style="display:flex;align-items:center;justify-content:space-between">
-        <span>Your Debts</span>
-        <button class="add-debt-btn" onclick="openAddDebt()">＋ Add Debt</button>
-      </div>
-      <div id="debt-list"></div>
-    </div>
-
-    <!-- Health breakdown + notifications -->
-    <div style="display:flex;flex-direction:column;gap:16px">
-      <div class="card">
-        <div class="card-label">Health Score Breakdown</div>
+      <div class="card-label">Health Score Breakdown</div>
         <div class="health-categories">
           <div class="health-row">
             <span class="health-row-label">Debt payments</span>
@@ -1437,7 +1583,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
           </div>
         </div>
       </div>
-    </div>
   </div>
 </section>
 
@@ -1573,7 +1718,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
         </div>
         <div class="impact-item">
           <div class="impact-value" id="impact-interest" style="color:var(--t3)">—</div>
-          <div class="impact-label">Interest saved</div>
+          <div class="impact-label">Interest saved vs worst case</div>
         </div>
         <div class="impact-item">
           <div class="impact-value" id="impact-date" style="color:var(--purpleL);font-size:16px">—</div>
@@ -1996,6 +2141,64 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   </div>
 </section>
 
+<!-- ══════════════ SAVINGS ══════════════ -->
+<section id="savings" class="screen">
+  <div class="page-header">
+    <div class="page-title">Savings Goals 🏦</div>
+    <div class="page-sub">Track what you're building toward</div>
+  </div>
+
+  <!-- Hero summary -->
+  <div class="savings-hero">
+    <div class="savings-hero-label">Total daily savings needed</div>
+    <div class="savings-hero-amount" id="savings-total-daily">$0.00</div>
+    <div class="savings-hero-sub" id="savings-total-sub">Add your first goal below to get started</div>
+  </div>
+
+  <!-- Add goal button -->
+  <button class="savings-add-btn" onclick="openAddGoal()">＋ Add Savings Goal</button>
+
+  <!-- Goals list -->
+  <div id="savings-goals-list">
+    <div class="savings-empty" id="savings-empty-state">
+      <div class="savings-empty-icon">🎯</div>
+      <div class="savings-empty-text">No savings goals yet</div>
+      <div class="savings-empty-sub">Add a goal — vacation, car, emergency fund, anything — and we'll tell you exactly what to save each day.</div>
+    </div>
+  </div>
+
+  <!-- Savings Timeline -->
+  <div id="savings-timeline" style="display:none">
+    <div class="card" style="padding:22px 24px">
+      <div id="savings-timeline-inner"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ADD GOAL MODAL ─── -->
+<div class="savings-modal-overlay" id="add-goal-overlay" onclick="closeAddGoalOutside(event)">
+  <div class="savings-modal">
+    <div class="savings-modal-title">New Savings Goal</div>
+    <div class="savings-field">
+      <div class="savings-field-label">Goal name</div>
+      <input class="savings-input" id="sg-name" type="text" placeholder="e.g. New Car, Vacation, Emergency Fund" maxlength="40">
+    </div>
+    <div class="savings-field">
+      <div class="savings-field-label">Target amount ($)</div>
+      <input class="savings-input" id="sg-amount" type="number" placeholder="5,000" min="1">
+    </div>
+    <div class="savings-field">
+      <div class="savings-field-label">Target date</div>
+      <input class="savings-input" id="sg-date" type="date">
+    </div>
+    <div id="sg-preview" style="display:none;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:4px"></div>
+    <div class="savings-modal-actions">
+      <button class="savings-save-btn" onclick="addGoal()">Save Goal</button>
+      <button class="savings-cancel-btn" onclick="closeAddGoal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 </main><!-- end .main -->
 
 <!-- ─── PAUSE MODAL ─── -->
@@ -2252,6 +2455,9 @@ function updateDebtStats() {
     if (cdEl) cdEl.textContent = fStr;
     const cdDays = document.querySelector('.countdown-days');
     if (cdDays) cdDays.textContent = `${daysLeft.toLocaleString()} days remaining`;
+    // Keep "Days to Freedom" in sync with the same calculated value
+    const fdEl = document.querySelector('.freedom-days-big');
+    if (fdEl) fdEl.textContent = daysLeft.toLocaleString();
   }
 
   // Sync simulator base values
@@ -2567,6 +2773,7 @@ function renderGoalMeter() {
         <div class="goal-bar-fill${d.pct >= 100 ? ' over' : ''}" style="height:${Math.max(d.pct,3)}%"></div>
       </div>
       <div class="goal-bar-day" style="${d.isToday ? 'color:var(--green);font-weight:700' : ''}">${d.label}</div>
+      <div class="goal-bar-dollar${d.paid > 0 ? ' has-amt' : ''}">${d.paid > 0 ? '$' + (d.paid < 10 ? d.paid.toFixed(2) : Math.round(d.paid)) : ''}</div>
     </div>`).join('');
 
   // Summary stats
@@ -2579,7 +2786,60 @@ function renderGoalMeter() {
   if (dhEl) dhEl.textContent = daysHit + '/7';
   if (apEl) apEl.textContent = avgPct + '%';
   if (tpEl) tpEl.textContent = '$' + totalPaid.toFixed(2);
+
+  // Refresh monthly calendar if it's currently visible
+  if (typeof progressView !== 'undefined' && progressView === 'monthly') renderMonthCalendar();
 }
+
+let progressView = 'weekly';
+function setProgressView(v) {
+  progressView = v;
+  document.getElementById('prog-btn-weekly').classList.toggle('active', v === 'weekly');
+  document.getElementById('prog-btn-monthly').classList.toggle('active', v === 'monthly');
+  document.getElementById('progress-weekly-view').style.display  = v === 'weekly'  ? '' : 'none';
+  document.getElementById('progress-monthly-view').style.display = v === 'monthly' ? '' : 'none';
+  if (v === 'monthly') renderMonthCalendar();
+}
+
+function renderMonthCalendar() {
+  const calEl = document.getElementById('progress-calendar');
+  if (!calEl) return;
+  const log = JSON.parse(localStorage.getItem('paymentLog') || '{}');
+  const now   = new Date();
+  const year  = now.getFullYear();
+  const month = now.getMonth();
+  const todayStr = `${year}-${String(month+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDow    = new Date(year, month, 1).getDay(); // 0=Sun
+  const monthName   = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  let html = `<div class="month-cal-header"><div class="month-cal-title">${monthName}</div></div>`;
+  html += `<div class="month-cal-grid">`;
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
+    html += `<div class="month-cal-dow">${d}</div>`;
+  });
+  // Leading empty cells
+  for (let i = 0; i < firstDow; i++) html += `<div class="month-cal-day empty"></div>`;
+  // Day cells
+  for (let d = 1; d <= daysInMonth; d++) {
+    const key   = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const paid  = log[key] || 0;
+    const isToday  = key === todayStr;
+    const isFuture = key > todayStr;
+    const hasData  = paid > 0;
+    let cls = 'month-cal-day';
+    if (isToday)       cls += ' today';
+    else if (isFuture) cls += ' future';
+    else if (hasData)  cls += ' has-data';
+    html += `<div class="${cls}">
+      <div class="month-cal-date">${d}</div>
+      ${hasData ? `<div class="month-cal-amt">$${paid < 10 ? paid.toFixed(2) : Math.round(paid)}</div>` : ''}
+    </div>`;
+  }
+  html += `</div>`;
+  calEl.innerHTML = html;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderGoalMeter();
   // Refresh meter when debts update
@@ -2702,8 +2962,8 @@ function calcPayoff(extra) {
   return data;
 }
 
-function calcTotalInterestPaid(extra) {
-  const apr = APR[strategy] || APR.avalanche;
+function calcTotalInterestPaid(extra, overrideApr) {
+  const apr = overrideApr !== undefined ? overrideApr : (APR[strategy] || APR.avalanche);
   const monthly = apr / 12;
   let balance = BASE_DEBT;
   let totalInterest = 0;
@@ -2734,9 +2994,12 @@ function updateSim(val) {
   const baseData = calcPayoff(0);
   const newData  = calcPayoff(extra);
   const monthsSaved = Math.max(0, baseData.length - newData.length);
-  const interestBase = calcTotalInterestPaid(0);
-  const interestNew  = calcTotalInterestPaid(extra);
-  const interestSaved = Math.max(0, interestBase - interestNew);
+  // Always compare against snowball + no extra as the worst-case baseline.
+  // This ensures avalanche correctly shows more interest saved than snowball,
+  // since avalanche attacks high-APR debt first and always outperforms snowball.
+  const worstCaseInterest = calcTotalInterestPaid(0, APR.snowball);
+  const interestNew       = calcTotalInterestPaid(extra);
+  const interestSaved     = Math.max(0, worstCaseInterest - interestNew);
 
   const mEl = document.getElementById('impact-months');
   const iEl = document.getElementById('impact-interest');
@@ -3187,6 +3450,218 @@ initFreedomChart();
     if (start >= target) clearInterval(interval);
   }, 20);
 })();
+
+// ─────────────────────────────
+//  SAVINGS GOALS
+// ─────────────────────────────
+let savingsGoals = [];
+let sgNextId = 1;
+
+function calcDaysRemaining(targetDateStr) {
+  const target = new Date(targetDateStr);
+  const today  = new Date();
+  today.setHours(0, 0, 0, 0);
+  return Math.max(0, Math.ceil((target - today) / 86400000));
+}
+
+function calcDailyNeeded(amount, targetDateStr) {
+  const days = calcDaysRemaining(targetDateStr);
+  if (days <= 0) return 0;
+  return amount / days;
+}
+
+function openAddGoal() {
+  // Set default date to 1 year from today
+  const d = new Date();
+  d.setFullYear(d.getFullYear() + 1);
+  document.getElementById('sg-date').value = d.toISOString().split('T')[0];
+  document.getElementById('sg-name').value   = '';
+  document.getElementById('sg-amount').value = '';
+  document.getElementById('sg-preview').style.display = 'none';
+  document.getElementById('add-goal-overlay').classList.add('open');
+  // Live preview on input
+  ['sg-name','sg-amount','sg-date'].forEach(id =>
+    document.getElementById(id).addEventListener('input', previewGoal, { once:false })
+  );
+}
+
+function previewGoal() {
+  const amount = parseFloat(document.getElementById('sg-amount').value);
+  const dateVal = document.getElementById('sg-date').value;
+  const preview = document.getElementById('sg-preview');
+  if (!amount || !dateVal || amount <= 0) { preview.style.display = 'none'; return; }
+  const days    = calcDaysRemaining(dateVal);
+  const daily   = calcDailyNeeded(amount, dateVal);
+  const monthly = daily * 30.4;
+  if (days <= 0) { preview.style.display = 'none'; return; }
+  const targetFmt = new Date(dateVal).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+  preview.style.display = 'block';
+  preview.innerHTML =
+    `To save <strong style="color:var(--green)">$${amount.toLocaleString()}</strong> by <strong>${targetFmt}</strong>:<br>` +
+    `Save <strong style="color:var(--green)">$${daily.toFixed(2)}/day</strong> &nbsp;·&nbsp; ` +
+    `<strong>$${monthly.toFixed(2)}/month</strong> &nbsp;·&nbsp; <strong>${days.toLocaleString()} days</strong> to go`;
+}
+
+function closeAddGoal() {
+  document.getElementById('add-goal-overlay').classList.remove('open');
+}
+
+function closeAddGoalOutside(e) {
+  if (e.target === document.getElementById('add-goal-overlay')) closeAddGoal();
+}
+
+function addGoal() {
+  const name   = document.getElementById('sg-name').value.trim();
+  const amount = parseFloat(document.getElementById('sg-amount').value);
+  const date   = document.getElementById('sg-date').value;
+  if (!name || !amount || amount <= 0 || !date) {
+    showToast('⚠️ Fill in all fields', 0); return;
+  }
+  if (calcDaysRemaining(date) <= 0) {
+    showToast('⚠️ Pick a future date', 0); return;
+  }
+  savingsGoals.push({ id: sgNextId++, name, amount, date });
+  closeAddGoal();
+  renderGoals();
+}
+
+function removeGoal(id) {
+  savingsGoals = savingsGoals.filter(g => g.id !== id);
+  renderGoals();
+}
+
+function renderGoals() {
+  const list     = document.getElementById('savings-goals-list');
+  const empty    = document.getElementById('savings-empty-state');
+  const totalEl  = document.getElementById('savings-total-daily');
+  const subEl    = document.getElementById('savings-total-sub');
+
+  if (savingsGoals.length === 0) {
+    empty.style.display = '';
+    totalEl.textContent = '$0.00';
+    subEl.innerHTML = 'Add your first goal below to get started';
+    list.innerHTML  = '';
+    list.appendChild(empty);
+    renderTimeline();
+    return;
+  }
+
+  // Compute totals
+  const totalDaily = savingsGoals.reduce((s, g) => s + calcDailyNeeded(g.amount, g.date), 0);
+  totalEl.textContent = '$' + totalDaily.toFixed(2);
+  subEl.innerHTML = `across <strong style="color:var(--green)">${savingsGoals.length}</strong> active goal${savingsGoals.length > 1 ? 's' : ''}`;
+
+  // Render timeline
+  renderTimeline();
+
+  // Render cards
+  list.innerHTML = savingsGoals.map(g => {
+    const daily   = calcDailyNeeded(g.amount, g.date);
+    const monthly = daily * 30.4;
+    const days    = calcDaysRemaining(g.date);
+    const dateFmt = new Date(g.date).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+    // Color urgency: red < 30d, gold < 90d, green otherwise
+    const urgency = days < 30 ? '#F87171' : days < 90 ? 'var(--gold)' : 'var(--green)';
+    return `
+    <div class="goal-card">
+      <div class="goal-card-header">
+        <div>
+          <div class="goal-card-name">${g.name}</div>
+          <div class="goal-card-target">Target: $${g.amount.toLocaleString()} by ${dateFmt}</div>
+        </div>
+        <button class="goal-card-delete" onclick="removeGoal(${g.id})">×</button>
+      </div>
+      <div class="goal-card-stats">
+        <div class="goal-stat">
+          <div class="goal-stat-val" style="color:${urgency}">$${daily.toFixed(2)}</div>
+          <div class="goal-stat-label">Per Day</div>
+        </div>
+        <div class="goal-stat">
+          <div class="goal-stat-val" style="color:${urgency}">$${monthly.toFixed(2)}</div>
+          <div class="goal-stat-label">Per Month</div>
+        </div>
+      </div>
+      <div class="goal-progress-bar"><div class="goal-progress-fill" style="width:0%"></div></div>
+      <div class="goal-days-left" style="color:${urgency}">${days.toLocaleString()} days remaining</div>
+    </div>`;
+  }).join('');
+}
+
+function renderTimeline() {
+  const wrap  = document.getElementById('savings-timeline');
+  const inner = document.getElementById('savings-timeline-inner');
+  if (!wrap || !inner) return;
+
+  const active = savingsGoals.filter(g => calcDaysRemaining(g.date) > 0);
+  if (active.length === 0) { wrap.style.display = 'none'; return; }
+  wrap.style.display = '';
+
+  // Sort goals by target date ascending
+  const sorted = [...active].sort((a, b) => a.date.localeCompare(b.date));
+
+  // Build ordered milestone list: today + each unique goal end date
+  const todayStr = (() => { const d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); })();
+  const uniqueDates = [...new Set(sorted.map(g => g.date))];
+  const milestones  = [todayStr, ...uniqueDates];
+
+  let html = '<div class="savings-timeline-ttl">📅 Savings Timeline</div>';
+
+  milestones.forEach((ms, i) => {
+    const isFirst = i === 0;
+    const isLast  = i === milestones.length - 1;
+    const nextMs  = milestones[i + 1];
+
+    // Goals that complete exactly at this milestone (not at "today")
+    const completing = !isFirst ? sorted.filter(g => g.date === ms) : [];
+
+    // Goals active in the period [ms → nextMs]: those whose end date >= nextMs
+    const periodGoals = nextMs ? sorted.filter(g => g.date >= nextMs) : [];
+    const periodDaily = periodGoals.reduce((s, g) => s + calcDailyNeeded(g.amount, g.date), 0);
+
+    const dotLabel = isFirst
+      ? 'Today'
+      : new Date(ms + 'T00:00:00').toLocaleDateString('en-US', {month:'long', year:'numeric'});
+    const dotClass = isFirst ? 'stl-dot stl-today' : (completing.length ? 'stl-dot stl-complete' : 'stl-dot');
+
+    html += `<div class="stl-row">
+      <div class="stl-spine">
+        <div class="${dotClass}"></div>
+        ${!isLast ? '<div class="stl-line"></div>' : ''}
+      </div>
+      <div class="${isLast ? 'stl-finish' : 'stl-content'}">
+        <div class="stl-node-label">${dotLabel}</div>`;
+
+    // Completed goals announcement
+    if (completing.length) {
+      html += `<div class="stl-completed-goals">`;
+      completing.forEach(g => {
+        html += `<div class="stl-completed-goal">🏆 ${g.name} — $${g.amount.toLocaleString()} reached</div>`;
+      });
+      html += `</div>`;
+    }
+
+    // Period details (between this dot and next)
+    if (!isLast && periodGoals.length > 0) {
+      const untilLabel = new Date(nextMs + 'T00:00:00').toLocaleDateString('en-US', {month:'short', year:'numeric'});
+      html += `
+        <div class="stl-daily-amt">$${periodDaily.toFixed(2)}<span style="font-size:15px;font-weight:600;color:var(--t2)">/day</span></div>
+        <div class="stl-daily-label">Save this until ${untilLabel} &nbsp;·&nbsp; ${periodGoals.length} active goal${periodGoals.length !== 1 ? 's' : ''}</div>
+        <div class="stl-pills">
+          ${periodGoals.map(g => {
+            const d = calcDailyNeeded(g.amount, g.date);
+            return `<div class="stl-pill">${g.name} · $${d.toFixed(2)}/day</div>`;
+          }).join('')}
+        </div>`;
+    }
+
+    html += `</div></div>`;
+  });
+
+  inner.innerHTML = html;
+}
+
+// Init savings tab on first visit
+renderGoals();
 </script>
 </body>
 </html>
