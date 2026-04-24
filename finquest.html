@@ -95,9 +95,40 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 }
 
 /* ── MAIN ── */
-.main{margin-left:240px;flex:1;overflow-y:auto;height:100vh}
-.screen{display:none;padding:32px;min-height:100vh;animation:fadeIn 0.25s ease}
+.main{margin-left:240px;flex:1;overflow-y:auto;height:100vh;min-width:0}
+.screen{display:none;padding:32px;min-height:100vh;animation:fadeIn 0.25s ease;max-width:1100px}
 .screen.active{display:block}
+
+/* ── BOTTOM NAV (mobile only) ── */
+.bottom-nav{display:none}
+
+@media(max-width:640px){
+  .sidebar{display:none}
+  .main{margin-left:0;padding-bottom:72px}
+  .screen{padding:16px 14px}
+  .g2,.g3,.g4{grid-template-columns:1fr!important}
+  .col-span-2{grid-column:span 1!important}
+  .goal-meter-card{flex-direction:column}
+  .daily-split{grid-template-columns:1fr 1fr}
+  .ob-plan-row{grid-template-columns:1fr 1fr}
+  .bottom-nav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;z-index:200;
+    background:var(--bg2);border-top:1px solid var(--border2);
+    padding:8px 0 calc(8px + env(safe-area-inset-bottom));
+  }
+  .bn-item{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    cursor:pointer;padding:4px 0;color:var(--t3);transition:color 0.15s;
+    font-size:10px;font-weight:600;position:relative;
+  }
+  .bn-item.active{color:var(--green)}
+  .bn-icon{font-size:20px;line-height:1}
+  .bn-badge{
+    position:absolute;top:0;right:calc(50% - 18px);
+    background:var(--red);color:#fff;font-size:9px;font-weight:700;
+    border-radius:99px;padding:1px 5px;
+  }
+}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── TYPOGRAPHY ── */
@@ -804,6 +835,53 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .track-status.bad{background:rgba(239,68,68,0.12);color:var(--red);border:1px solid rgba(239,68,68,0.2)}
 
 /* ── ONBOARDING OVERLAY ── */
+/* ── LANDING SCREEN ── */
+#landing{
+  position:fixed;inset:0;z-index:3000;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px;text-align:center;
+  transition:opacity 0.5s ease,transform 0.5s ease;
+}
+#landing.hidden{display:none}
+.landing-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:48px}
+.landing-logo-icon{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,var(--green),var(--greenL));
+  display:flex;align-items:center;justify-content:center;font-size:26px;
+  box-shadow:0 0 32px rgba(16,185,129,0.3);
+}
+.landing-logo-text{font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--t1)}
+.landing-headline{
+  font-size:clamp(32px,5vw,52px);font-weight:900;letter-spacing:-1.5px;
+  line-height:1.1;color:var(--t1);max-width:620px;margin-bottom:16px;
+}
+.landing-headline span{
+  background:linear-gradient(135deg,var(--green),var(--greenL));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.landing-sub{font-size:18px;color:var(--t2);line-height:1.6;max-width:480px;margin-bottom:40px}
+.landing-stat-row{
+  display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;
+}
+.landing-stat{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:16px;padding:18px 28px;
+}
+.landing-stat-val{font-size:26px;font-weight:900;color:var(--green);letter-spacing:-0.5px}
+.landing-stat-lbl{font-size:12px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.landing-cta{
+  padding:18px 48px;border-radius:14px;font-size:17px;font-weight:800;
+  background:linear-gradient(135deg,var(--green),var(--greenL));
+  color:#fff;border:none;cursor:pointer;letter-spacing:0.2px;
+  box-shadow:0 0 40px rgba(16,185,129,0.35);transition:all 0.2s;
+  font-family:'Inter',sans-serif;
+}
+.landing-cta:hover{transform:translateY(-2px);box-shadow:0 0 56px rgba(16,185,129,0.5)}
+.landing-returning{margin-top:20px;font-size:13px;color:var(--t3)}
+.landing-returning a{color:var(--green);font-weight:600;cursor:pointer;text-decoration:none}
+.landing-returning a:hover{text-decoration:underline}
+
 #onboarding{
   position:fixed;inset:0;z-index:2000;background:var(--bg);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -1114,7 +1192,56 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   </div>
 </aside>
 
+<!-- ─── BOTTOM NAV (mobile) ─── -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="bn-item active" id="bn-dashboard" onclick="nav('dashboard',this);bnActivate('bn-dashboard')">
+    <span class="bn-icon">🏠</span><span>Home</span>
+  </div>
+  <div class="bn-item" id="bn-missions" onclick="nav('missions',this);bnActivate('bn-missions')">
+    <span class="bn-icon">🎯</span><span>Missions</span>
+    <span class="bn-badge" id="bn-missions-badge">3</span>
+  </div>
+  <div class="bn-item" id="bn-whatif" onclick="nav('whatif',this);bnActivate('bn-whatif')">
+    <span class="bn-icon">🔮</span><span>What-If</span>
+  </div>
+  <div class="bn-item" id="bn-savings" onclick="nav('savings',this);bnActivate('bn-savings')">
+    <span class="bn-icon">🏦</span><span>Savings</span>
+  </div>
+  <div class="bn-item" id="bn-profile" onclick="nav('profile',this);bnActivate('bn-profile')">
+    <span class="bn-icon">👤</span><span>Profile</span>
+  </div>
+</nav>
+
 <!-- ─── ONBOARDING ─── -->
+<!-- ─── LANDING SCREEN ─── -->
+<div id="landing">
+  <div class="landing-logo">
+    <div class="landing-logo-icon">⚡</div>
+    <span class="landing-logo-text">IdealU</span>
+  </div>
+
+  <h1 class="landing-headline">Get rid of debt<br><span>your way.</span></h1>
+  <p class="landing-sub">Most people don't know what their debt costs them today. IdealU shows you — and gives you a plan that fits your life, not a spreadsheet.</p>
+
+  <div class="landing-stat-row">
+    <div class="landing-stat">
+      <div class="landing-stat-val">$3.29</div>
+      <div class="landing-stat-lbl">avg daily interest<br>users were paying blind</div>
+    </div>
+    <div class="landing-stat">
+      <div class="landing-stat-val">14 days</div>
+      <div class="landing-stat-lbl">avg streak before<br>users see real progress</div>
+    </div>
+    <div class="landing-stat">
+      <div class="landing-stat-val">$280</div>
+      <div class="landing-stat-lbl">avg saved per week<br>using the Pause Feature</div>
+    </div>
+  </div>
+
+  <button class="landing-cta" onclick="landingStart()">Get started free →</button>
+  <div class="landing-returning">Already have an account? <a onclick="landingReturn()">Go to dashboard</a></div>
+</div>
+
 <div id="onboarding">
   <div class="ob-progress">
     <div class="ob-dot active" id="dot-0"></div>
@@ -1200,6 +1327,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
           </div>
           <div class="ob-toggle-input visible" id="ob-payment-wrap">
             <div class="ob-pfx"><input class="ob-input" id="ob-payment" type="number" placeholder="Min monthly payment ($)" min="1" oninput="obValidate()"></div>
+            <div id="ob-payment-warning" style="display:none;margin-top:8px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:10px;padding:10px 12px;font-size:13px;color:#FCA5A5;line-height:1.5">
+              ⚠️ <strong>This payment won't cover your monthly interest.</strong> Your debt will grow even as you pay — you need at least <strong id="ob-min-payment-hint">$0</strong>/mo just to break even.
+            </div>
           </div>
           <div class="ob-toggle-input" id="ob-expiry-wrap">
             <div style="display:flex;gap:10px">
@@ -1331,8 +1461,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     <div class="card stat-card">
       <div class="card-label">Total Debt</div>
       <div class="stat-value" id="total-debt-display">$18,450</div>
-      <div class="stat-sub" id="total-debt-sub">Down $320 this month</div>
-      <div class="stat-change up">▼ $320 paid off</div>
+      <div class="stat-sub" id="total-debt-sub">Add your debts below to track progress</div>
+      <div class="stat-change up" id="total-debt-change" style="display:none">▼ tracking</div>
     </div>
     <div class="card">
       <div class="card-label">🏁 Debt-Free Date</div>
@@ -1375,7 +1505,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
         <div style="font-size:11px;color:var(--t3);margin-top:8px;text-align:center">
           Goal: <strong id="goal-target-display" style="color:var(--t1)">$10.37</strong>/day
           &nbsp;·&nbsp;
-          <button onclick="toggleGoalBreakdown()" style="font-size:11px;color:var(--purpleL);background:none;border:none;cursor:pointer;padding:0;font-family:'Inter',sans-serif;font-weight:600">How?</button>
+          <button onclick="toggleGoalBreakdown()" style="font-size:11px;color:var(--green);background:none;border:none;cursor:pointer;padding:0;font-family:'Inter',sans-serif;font-weight:600">How?</button>
         </div>
         <div id="goal-breakdown" style="display:none;margin-top:10px;background:var(--card);border-radius:10px;padding:10px 14px;text-align:left;width:100%;box-sizing:border-box">
           <div id="goal-breakdown-rows" style="font-size:12px;color:var(--t2);display:flex;flex-direction:column;gap:6px"></div>
@@ -1983,7 +2113,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <div class="profile-hero">
     <div class="profile-avatar-lg">A</div>
     <div style="flex:1">
-      <div class="profile-name">Alex Johnson</div>
+      <div class="profile-name" id="profile-name-display">Alex Johnson</div>
       <div class="profile-since">Member since October 2025 · 6 months of crushing debt</div>
       <div class="profile-stats">
         <div class="profile-stat">
@@ -2435,7 +2565,9 @@ function updateDebtStats() {
 
   // Update total debt card
   const tdEl = document.getElementById('total-debt-display');
-  if (tdEl) tdEl.textContent = '$' + total.toLocaleString();
+  if (tdEl) tdEl.textContent = total > 0 ? '$' + total.toLocaleString() : '$0';
+  const tdSub = document.getElementById('total-debt-sub');
+  if (tdSub) tdSub.textContent = total > 0 ? 'Being tracked across ' + debts.length + ' debt' + (debts.length !== 1 ? 's' : '') : 'Add your debts below to get started';
 
   // Update debt-free countdown
   const avgApr = total > 0 ? debts.reduce((s,d) => s + d.apr * d.balance, 0) / total : 13.7;
@@ -2554,6 +2686,7 @@ function confirmAddDebt() {
   debts.push({ id: nextDebtId++, name, type: adType, balance, origBalance: balance, apr, payment, termMonths, color });
   renderDebts();
   updateDebtStats();
+  saveAppState();
   closeAddDebt();
 
   showToast('💳', 0);
@@ -2568,10 +2701,16 @@ function nav(id, el) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  el.classList.add('active');
+  if (el) el.classList.add('active');
 
   if (id === 'simulator' && !simChart) initSimChart();
   if (id === 'reportcard' && !trendChart) initTrendChart();
+  window.scrollTo(0,0);
+}
+function bnActivate(bnId) {
+  document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById(bnId);
+  if (el) el.classList.add('active');
 }
 
 // ─────────────────────────────
@@ -2696,10 +2835,17 @@ function todayKey() {
 function getDailyLog() {
   return JSON.parse(localStorage.getItem('dailyGoalLog') || '{}');
 }
-function getDailyTarget() {
+function getDailyDebtTarget() {
   const el = document.getElementById('daily-min-payment');
   if (el) return parseFloat(el.textContent.replace(/[^0-9.]/g,'')) || 10.37;
   return 10.37;
+}
+function getDailySavingsTarget() {
+  if (typeof savingsGoals === 'undefined') return 0;
+  return savingsGoals.reduce((s, g) => s + calcDailyNeeded(g.amount, g.date), 0);
+}
+function getDailyTarget() {
+  return getDailyDebtTarget() + getDailySavingsTarget();
 }
 function toggleGoalBreakdown() {
   const el = document.getElementById('goal-breakdown');
@@ -2712,17 +2858,35 @@ function renderGoalBreakdown() {
   const rows = document.getElementById('goal-breakdown-rows');
   if (!rows) return;
   const icons = {credit:'💳',student:'🎓',personal:'💼',auto:'🚗'};
-  rows.innerHTML = debts.map(d => {
+
+  const debtRows = debts.map(d => {
     const monthly = calcMinMonthlyPayment(d.balance, d.apr, d.termMonths || 60);
     const daily = monthly / 30.4;
     return `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
       <span>${icons[d.type] || '💰'} ${d.name}</span>
       <span style="font-weight:700;color:var(--t1);white-space:nowrap">$${daily.toFixed(2)}/day</span>
     </div>`;
-  }).join('') + `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid var(--border);margin-top:6px;padding-top:6px;font-weight:800;color:var(--green)">
-    <span>Total goal</span>
-    <span>$${getDailyTarget().toFixed(2)}/day</span>
-  </div>`;
+  }).join('');
+
+  const savingsRows = (typeof savingsGoals !== 'undefined' && savingsGoals.length > 0)
+    ? `<div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.4px;margin-top:8px;margin-bottom:4px">Savings Goals</div>` +
+      savingsGoals.map(g => {
+        const daily = calcDailyNeeded(g.amount, g.date);
+        const days = calcDaysRemaining(g.date);
+        return `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <span>🏦 ${g.name} <span style="color:var(--t3);font-size:11px">(${days}d left)</span></span>
+          <span style="font-weight:700;color:var(--t1);white-space:nowrap">$${daily.toFixed(2)}/day</span>
+        </div>`;
+      }).join('')
+    : '';
+
+  rows.innerHTML =
+    `<div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Debt Payments</div>` +
+    debtRows + savingsRows +
+    `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid var(--border);margin-top:8px;padding-top:8px;font-weight:800;color:var(--green)">
+      <span>Total daily goal</span>
+      <span>$${getDailyTarget().toFixed(2)}/day</span>
+    </div>`;
 }
 function logDailyPayment() {
   const input = document.getElementById('goal-log-input');
@@ -2932,6 +3096,7 @@ function saveDebt(id) {
   }
   renderDebts();
   updateDebtStats();
+  saveAppState();
   showToast('✅', 0);
   document.getElementById('toast-text').textContent = 'Debt updated';
   document.getElementById('toast-amount').style.display = 'none';
@@ -3223,8 +3388,14 @@ function obValidate() {
   if (obPayMode === 'payment') {
     const p    = parseFloat(document.getElementById('ob-payment').value);
     const minP = b * (a / 100 / 12);
-    ok = b > 0 && a >= 0 && p > 0 && p > minP;
-    document.getElementById('ob-payment').style.borderColor = (p > 0 && b > 0 && p <= minP) ? 'var(--red)' : '';
+    ok = b > 0 && a >= 0 && p > 0 && p >= minP;
+    const isBad = p > 0 && b > 0 && p < minP;
+    document.getElementById('ob-payment').style.borderColor = isBad ? 'var(--red)' : '';
+    const warning = document.getElementById('ob-payment-warning');
+    if (warning) {
+      warning.style.display = isBad ? 'block' : 'none';
+      if (isBad) document.getElementById('ob-min-payment-hint').textContent = '$' + minP.toFixed(2);
+    }
   } else {
     const m = document.getElementById('ob-expiry-month').value;
     const y = document.getElementById('ob-expiry-year').value;
@@ -3353,14 +3524,39 @@ function obFinish() {
       nextDebtId = 2;
       renderDebts();
       updateDebtStats();
+      saveAppState();
     }
   } catch(e) {
     console.warn('obFinish dashboard update error:', e);
   }
 }
 
-// Skip onboarding if already completed
+// ─────────────────────────────
+//  LANDING SCREEN
+// ─────────────────────────────
+function landingStart() {
+  // Animate out landing, show onboarding
+  const landing = document.getElementById('landing');
+  landing.style.opacity = '0';
+  landing.style.transform = 'scale(0.97)';
+  setTimeout(() => {
+    landing.classList.add('hidden');
+    document.getElementById('onboarding').classList.remove('hidden');
+  }, 450);
+}
+function landingReturn() {
+  // Skip straight to dashboard
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('onboarding').classList.add('hidden');
+}
+
+// Route on load
 if (localStorage.getItem('fq_onboarded')) {
+  // Returning user — skip both landing and onboarding
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('onboarding').classList.add('hidden');
+} else {
+  // New user — show landing, hide onboarding until they click CTA
   document.getElementById('onboarding').classList.add('hidden');
 }
 
@@ -3430,8 +3626,53 @@ function initFreedomChart() {
 }
 
 // ─────────────────────────────
+//  PERSIST & RESTORE STATE
+// ─────────────────────────────
+function saveAppState() {
+  localStorage.setItem('fq_debts', JSON.stringify(debts));
+  localStorage.setItem('fq_nextDebtId', String(nextDebtId));
+}
+function loadAppState() {
+  // Restore user name everywhere
+  const name = localStorage.getItem('fq_user_name') || '';
+  if (name) {
+    const greet = document.querySelector('#dashboard .page-title');
+    if (greet) greet.textContent = `Good morning, ${name} 👋`;
+    const profileName = document.getElementById('profile-name-display');
+    if (profileName) profileName.textContent = name;
+    document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
+    const avatarEls = document.querySelectorAll('.avatar');
+    avatarEls.forEach(el => { if (!el.dataset.custom) el.textContent = name.charAt(0).toUpperCase(); });
+  }
+  // Restore streak
+  const streak = parseInt(localStorage.getItem('fq_streak') || '0');
+  document.querySelectorAll('#logo-streak-count, #header-streak-count').forEach(el => {
+    if (el) el.textContent = streak || '0';
+  });
+  // Restore debts
+  const saved = localStorage.getItem('fq_debts');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        debts = parsed;
+        nextDebtId = parseInt(localStorage.getItem('fq_nextDebtId') || String(parsed.length + 1));
+      }
+    } catch(e) {}
+  }
+}
+
+// Patch saveDebt/removeDebt to persist
+const _origRemoveDebt = window.removeDebt;
+function removeDebt(id) {
+  debts = debts.filter(d => d.id !== id);
+  renderDebts(); updateDebtStats(); saveAppState();
+}
+
+// ─────────────────────────────
 //  INIT
 // ─────────────────────────────
+loadAppState();
 renderDebts();
 updateDebtStats();
 updateXP();
@@ -3523,11 +3764,13 @@ function addGoal() {
   savingsGoals.push({ id: sgNextId++, name, amount, date });
   closeAddGoal();
   renderGoals();
+  renderGoalMeter();
 }
 
 function removeGoal(id) {
   savingsGoals = savingsGoals.filter(g => g.id !== id);
   renderGoals();
+  renderGoalMeter();
 }
 
 function renderGoals() {
