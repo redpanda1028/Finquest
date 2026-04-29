@@ -680,6 +680,138 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .achievement-desc{font-size:12px;color:var(--t2);margin-top:2px}
 .achievement.locked .achievement-name{color:var(--t3)}
 
+/* ── SETTINGS TAB ── */
+.settings-section{margin-bottom:20px}
+.settings-section-header{
+  display:flex;align-items:center;gap:10px;padding:18px 22px;
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  cursor:pointer;transition:border-color 0.2s,background 0.2s;user-select:none;
+}
+.settings-section-header:hover{border-color:var(--border2);background:var(--card2)}
+.settings-section-header.open{
+  border-radius:16px 16px 0 0;border-bottom-color:transparent;
+  background:var(--card2);
+}
+.settings-section-icon{font-size:22px;line-height:1;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--bg2);flex-shrink:0}
+.settings-section-title{font-size:15px;font-weight:700;flex:1}
+.settings-section-sub{font-size:12px;color:var(--t3);margin-top:1px}
+.settings-section-chevron{font-size:18px;color:var(--t3);transition:transform 0.2s;margin-left:auto}
+.settings-section-header.open .settings-section-chevron{transform:rotate(180deg)}
+.settings-section-body{
+  background:var(--card);border:1px solid var(--border);border-top:none;
+  border-radius:0 0 16px 16px;padding:20px 22px;display:none;
+}
+.settings-section-body.open{display:block}
+.settings-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 0;border-bottom:1px solid var(--border);
+}
+.settings-row:last-child{border-bottom:none;padding-bottom:0}
+.settings-row:first-child{padding-top:0}
+.settings-row-label{font-size:14px;font-weight:600}
+.settings-row-sub{font-size:12px;color:var(--t3);margin-top:2px}
+/* Toggle switch */
+.toggle-wrap{position:relative;width:44px;height:24px;flex-shrink:0}
+.toggle-wrap input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{
+  position:absolute;inset:0;border-radius:99px;
+  background:var(--border2);cursor:pointer;transition:background 0.2s;
+}
+.toggle-slider::before{
+  content:'';position:absolute;left:3px;top:3px;
+  width:18px;height:18px;border-radius:50%;
+  background:#fff;transition:transform 0.2s;
+}
+.toggle-wrap input:checked + .toggle-slider{background:var(--green)}
+.toggle-wrap input:checked + .toggle-slider::before{transform:translateX(20px)}
+/* Radio strategy */
+.strategy-option{
+  display:flex;align-items:flex-start;gap:12px;padding:14px;
+  border-radius:12px;border:1.5px solid var(--border);
+  cursor:pointer;transition:border-color 0.2s,background 0.2s;margin-bottom:10px;
+}
+.strategy-option:last-child{margin-bottom:0}
+.strategy-option.selected{border-color:var(--green);background:rgba(16,185,129,0.07)}
+.strategy-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--border2);margin-top:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s}
+.strategy-option.selected .strategy-radio{border-color:var(--green)}
+.strategy-radio-dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:none}
+.strategy-option.selected .strategy-radio-dot{display:block}
+.strategy-name{font-size:14px;font-weight:700}
+.strategy-desc{font-size:12px;color:var(--t3);margin-top:3px;line-height:1.5}
+.strategy-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin-top:6px;display:inline-block}
+/* Education accordion */
+.edu-lesson{
+  border-radius:12px;border:1px solid var(--border);
+  margin-bottom:10px;overflow:hidden;
+}
+.edu-lesson:last-child{margin-bottom:0}
+.edu-lesson-header{
+  display:flex;align-items:center;gap:12px;padding:14px 16px;
+  cursor:pointer;transition:background 0.15s;
+}
+.edu-lesson-header:hover{background:var(--bg2)}
+.edu-lesson-emoji{font-size:20px;line-height:1;width:32px;text-align:center;flex-shrink:0}
+.edu-lesson-title{font-size:13px;font-weight:700;flex:1}
+.edu-lesson-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:rgba(16,185,129,0.12);color:var(--green);flex-shrink:0}
+.edu-lesson-arrow{font-size:14px;color:var(--t3);transition:transform 0.2s;margin-left:4px}
+.edu-lesson.open .edu-lesson-arrow{transform:rotate(90deg)}
+.edu-lesson-body{
+  padding:0 16px;max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s;
+}
+.edu-lesson.open .edu-lesson-body{max-height:600px;padding:0 16px 16px}
+.edu-lesson-text{font-size:13px;color:var(--t2);line-height:1.65}
+.edu-lesson-text strong{color:var(--t1)}
+.edu-lesson-callout{
+  margin-top:12px;padding:12px 14px;border-radius:10px;
+  background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);
+  font-size:13px;font-weight:600;color:var(--green);
+}
+.edu-lesson-formula{
+  margin-top:10px;padding:10px 14px;background:var(--bg);border-radius:8px;
+  font-family:monospace;font-size:12px;color:var(--t1);border:1px solid var(--border2);
+}
+/* Settings buttons */
+.settings-btn{
+  width:100%;padding:12px 16px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--bg2);color:var(--t1);font-size:14px;font-weight:600;
+  cursor:pointer;text-align:left;transition:border-color 0.2s,background 0.2s;margin-bottom:8px;
+  display:flex;align-items:center;gap:10px;
+}
+.settings-btn:last-child{margin-bottom:0}
+.settings-btn:hover{border-color:var(--border2);background:var(--card2)}
+.settings-btn.danger{border-color:rgba(239,68,68,0.3);color:var(--red)}
+.settings-btn.danger:hover{border-color:var(--red);background:rgba(239,68,68,0.07)}
+.settings-input-row{
+  display:flex;flex-direction:column;gap:6px;margin-bottom:14px;
+}
+.settings-input-row:last-child{margin-bottom:0}
+.settings-input-label{font-size:12px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:0.7px}
+.settings-input{
+  padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--bg2);color:var(--t1);font-size:14px;font-weight:500;
+  font-family:inherit;outline:none;transition:border-color 0.2s;
+}
+.settings-input:focus{border-color:var(--green)}
+.settings-save-btn{
+  margin-top:14px;width:100%;padding:12px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,var(--purple),var(--purpleL));
+  color:#fff;font-size:14px;font-weight:700;cursor:pointer;
+  transition:opacity 0.2s;
+}
+.settings-save-btn:hover{opacity:0.88}
+/* About card */
+.about-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 0;border-bottom:1px solid var(--border);
+  font-size:14px;
+}
+.about-row:last-child{border-bottom:none;padding-bottom:0}
+.about-row:first-child{padding-top:0}
+.about-row-label{color:var(--t2)}
+.about-row-val{font-weight:600}
+.about-row-link{color:var(--green);font-weight:600;cursor:pointer;text-decoration:none}
+.about-row-link:hover{text-decoration:underline}
+
 /* ── PAUSE MODAL ── */
 .modal-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,0.85);
@@ -1262,6 +1394,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     <div class="nav-item" onclick="nav('profile',this)">
       <span class="nav-icon">👤</span> Profile
     </div>
+    <div class="nav-item" onclick="nav('settings',this)">
+      <span class="nav-icon">⚙️</span> Settings
+    </div>
   </nav>
   <div class="sidebar-footer">
     <div class="sidebar-user">
@@ -1294,6 +1429,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   </div>
   <div class="bn-item" id="bn-profile" onclick="nav('profile',this);bnActivate('bn-profile')">
     <span class="bn-icon">👤</span><span>Profile</span>
+  </div>
+  <div class="bn-item" id="bn-settings" onclick="nav('settings',this);bnActivate('bn-settings')">
+    <span class="bn-icon">⚙️</span><span>Settings</span>
   </div>
 </nav>
 
@@ -2405,6 +2543,442 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   </div>
 </div>
 
+<!-- ══════════════ SETTINGS ══════════════ -->
+<section id="settings" class="screen">
+  <div class="page-header">
+    <div class="page-title">Settings ⚙️</div>
+    <div class="page-sub">Customize IdealU to fit your life</div>
+  </div>
+
+  <!-- 1. Profile Information -->
+  <div class="settings-section">
+    <div class="settings-section-header" onclick="toggleSettings(this)">
+      <div class="settings-section-icon">👤</div>
+      <div style="flex:1">
+        <div class="settings-section-title">Profile Information</div>
+        <div class="settings-section-sub">Edit your name and avatar</div>
+      </div>
+      <span class="settings-section-chevron">▾</span>
+    </div>
+    <div class="settings-section-body">
+      <div class="settings-input-row">
+        <div class="settings-input-label">Display Name</div>
+        <input class="settings-input" id="settings-name-input" type="text" placeholder="Your name" maxlength="30">
+      </div>
+      <div class="settings-input-row">
+        <div class="settings-input-label">Member Since</div>
+        <input class="settings-input" id="settings-member-since" type="text" disabled style="opacity:0.5;cursor:not-allowed">
+      </div>
+      <button class="settings-save-btn" onclick="saveProfileSettings()">Save Changes</button>
+    </div>
+  </div>
+
+  <!-- 2. Login & Security -->
+  <div class="settings-section">
+    <div class="settings-section-header" onclick="toggleSettings(this)">
+      <div class="settings-section-icon">🔒</div>
+      <div style="flex:1">
+        <div class="settings-section-title">Login &amp; Security</div>
+        <div class="settings-section-sub">Email, password, and account protection</div>
+      </div>
+      <span class="settings-section-chevron">▾</span>
+    </div>
+    <div class="settings-section-body">
+      <div class="settings-input-row">
+        <div class="settings-input-label">Email Address</div>
+        <input class="settings-input" id="settings-email" type="email" placeholder="your@email.com">
+      </div>
+      <div class="settings-input-row">
+        <div class="settings-input-label">Password</div>
+        <input class="settings-input" type="password" placeholder="••••••••••">
+      </div>
+      <div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+        <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:4px">🚧 Coming Soon</div>
+        <div style="font-size:12px;color:var(--t3);line-height:1.5">Account sync across devices with Firebase Auth is in progress. Your data is currently saved locally on this device.</div>
+      </div>
+      <button class="settings-save-btn" onclick="showToast('📧 Account sync coming soon — stay tuned!',0)">Save Account Info</button>
+    </div>
+  </div>
+
+  <!-- 3. Notifications & Reminders -->
+  <div class="settings-section">
+    <div class="settings-section-header" onclick="toggleSettings(this)">
+      <div class="settings-section-icon">🔔</div>
+      <div style="flex:1">
+        <div class="settings-section-title">Notifications &amp; Reminders</div>
+        <div class="settings-section-sub">Daily nudges, streaks, and milestones</div>
+      </div>
+      <span class="settings-section-chevron">▾</span>
+    </div>
+    <div class="settings-section-body">
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">Daily Goal Reminder</div>
+          <div class="settings-row-sub">Remind me to log progress each day</div>
+        </div>
+        <label class="toggle-wrap">
+          <input type="checkbox" id="notif-daily" onchange="saveNotifSettings()" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">Streak Alerts</div>
+          <div class="settings-row-sub">Warn me before I lose my streak</div>
+        </div>
+        <label class="toggle-wrap">
+          <input type="checkbox" id="notif-streak" onchange="saveNotifSettings()" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">Milestone Celebrations</div>
+          <div class="settings-row-sub">Celebrate when I hit debt payoff goals</div>
+        </div>
+        <label class="toggle-wrap">
+          <input type="checkbox" id="notif-milestone" onchange="saveNotifSettings()" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">Pause Feature Prompts</div>
+          <div class="settings-row-sub">Encourage me to pause before purchases</div>
+        </div>
+        <label class="toggle-wrap">
+          <input type="checkbox" id="notif-pause" onchange="saveNotifSettings()" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Debt Strategy -->
+  <div class="settings-section">
+    <div class="settings-section-header" onclick="toggleSettings(this)">
+      <div class="settings-section-icon">🎯</div>
+      <div style="flex:1">
+        <div class="settings-section-title">Debt Strategy</div>
+        <div class="settings-section-sub">How IdealU prioritizes your debts</div>
+      </div>
+      <span class="settings-section-chevron">▾</span>
+    </div>
+    <div class="settings-section-body">
+      <div style="font-size:13px;color:var(--t3);margin-bottom:14px;line-height:1.5">Choose how your debts are ordered in the payoff plan. This affects the Simulator and your debt priority order.</div>
+      <div class="strategy-option selected" id="strategy-avalanche" onclick="selectStrategy('avalanche')">
+        <div class="strategy-radio"><div class="strategy-radio-dot"></div></div>
+        <div style="flex:1">
+          <div class="strategy-name">🔥 Avalanche Method</div>
+          <div class="strategy-desc">Pay minimums on everything, then throw extra money at the highest-APR debt first. Saves the most money in interest over time.</div>
+          <span class="strategy-tag" style="background:rgba(16,185,129,0.12);color:var(--green)">Best for saving money</span>
+        </div>
+      </div>
+      <div class="strategy-option" id="strategy-snowball" onclick="selectStrategy('snowball')">
+        <div class="strategy-radio"><div class="strategy-radio-dot"></div></div>
+        <div style="flex:1">
+          <div class="strategy-name">❄️ Snowball Method</div>
+          <div class="strategy-desc">Pay minimums on everything, then attack the smallest balance first. Each debt you eliminate builds momentum and motivation.</div>
+          <span class="strategy-tag" style="background:rgba(59,130,246,0.12);color:var(--blue)">Best for motivation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. App Preferences -->
+  <div class="settings-section">
+    <div class="settings-section-header" onclick="toggleSettings(this)">
+      <div class="settings-section-icon">🎨</div>
+      <div style="flex:1">
+        <div class="settings-section-title">App Preferences</div>
+        <div class="settings-section-sub">Currency, display, and formatting</div>
+      </div>
+      <span class="settings-section-chevron">▾</span>
+    </div>
+    <div class="settings-section-body">
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">Currency</div>
+          <div class="settings-row-sub">How dollar amounts are displayed</div>
+        </div>
+        <select id="pref-currency" onchange="savePrefs()" style="padding:7px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg2);color:var(--t1);font-size:13px;font-weight:600;font-family:inherit;outline:none;cursor:pointer">
+          <option value="USD">USD ($)</option>
+          <option value="EUR">EUR (€)</option>
+          <option value="GBP">GBP (£)</option>
+          <option value="CAD">CAD ($)</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">Show Cents</div>
+          <div class="settings-row-sub">Display .00 on whole dollar amounts</div>
+        </div>
+        <label class="toggle-wrap">
+          <input type="checkbox" id="pref-cents" onchange="savePrefs()" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">Compact Numbers</div>
+          <div class="settings-row-sub">Show $12.4K instead of $12,400</div>
+        </div>
+        <label class="toggle-wrap">
+          <input type="checkbox" id="pref-compact" onchange="savePrefs()">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Education -->
+  <div class="settings-section">
+    <div class="settings-section-header" onclick="toggleSettings(this)">
+      <div class="settings-section-icon">📚</div>
+      <div style="flex:1">
+        <div class="settings-section-title">Education</div>
+        <div class="settings-section-sub">Learn the financial concepts behind IdealU</div>
+      </div>
+      <span class="settings-section-chevron">▾</span>
+    </div>
+    <div class="settings-section-body">
+      <div style="font-size:13px;color:var(--t3);margin-bottom:16px;line-height:1.5">Tap any lesson to expand it. Understanding these concepts will help you get the most out of every feature in the app.</div>
+
+      <!-- Lesson 1 -->
+      <div class="edu-lesson">
+        <div class="edu-lesson-header" onclick="toggleLesson(this)">
+          <span class="edu-lesson-emoji">📊</span>
+          <span class="edu-lesson-title">What is APR and why does it matter?</span>
+          <span class="edu-lesson-tag">Core</span>
+          <span class="edu-lesson-arrow">▶</span>
+        </div>
+        <div class="edu-lesson-body">
+          <div class="edu-lesson-text">
+            <strong>APR</strong> stands for Annual Percentage Rate. It's the yearly cost of borrowing money, expressed as a percentage. A 24% APR means you're being charged 24% of your balance per year in interest.
+            <br><br>
+            But here's the catch — interest compounds <em>daily</em> on most cards. So every single day you carry a balance, you're paying interest on interest.
+          </div>
+          <div class="edu-lesson-formula">Daily rate = APR ÷ 365<br>e.g. 24% APR → 0.0657% per day</div>
+          <div class="edu-lesson-callout">💡 A $5,000 balance at 24% APR costs you ~$3.29 every single day you don't pay it off.</div>
+        </div>
+      </div>
+
+      <!-- Lesson 2 -->
+      <div class="edu-lesson">
+        <div class="edu-lesson-header" onclick="toggleLesson(this)">
+          <span class="edu-lesson-emoji">❄️</span>
+          <span class="edu-lesson-title">Avalanche vs Snowball: which is right for you?</span>
+          <span class="edu-lesson-tag">Strategy</span>
+          <span class="edu-lesson-arrow">▶</span>
+        </div>
+        <div class="edu-lesson-body">
+          <div class="edu-lesson-text">
+            Both methods have you pay the minimum on every debt, then throw any extra money at one debt at a time. The difference is <strong>which debt you attack first</strong>.
+            <br><br>
+            <strong>Avalanche:</strong> Attack the highest APR debt first. You'll save the most money in interest — sometimes thousands of dollars.
+            <br><br>
+            <strong>Snowball:</strong> Attack the smallest balance first. You get quick wins that build momentum. Research shows this helps people stick with their plan.
+          </div>
+          <div class="edu-lesson-callout">💡 If you struggle with motivation, start with Snowball. If you're focused and want to save the most money, use Avalanche.</div>
+        </div>
+      </div>
+
+      <!-- Lesson 3 -->
+      <div class="edu-lesson">
+        <div class="edu-lesson-header" onclick="toggleLesson(this)">
+          <span class="edu-lesson-emoji">🧮</span>
+          <span class="edu-lesson-title">Compound interest: the real cost of debt</span>
+          <span class="edu-lesson-tag">Core</span>
+          <span class="edu-lesson-arrow">▶</span>
+        </div>
+        <div class="edu-lesson-body">
+          <div class="edu-lesson-text">
+            Compound interest means you pay interest on your interest. The longer you carry a balance, the bigger it grows — not linearly, but <strong>exponentially</strong>.
+            <br><br>
+            If you only make minimum payments on a $5,000 credit card at 24% APR, you'll pay it off in roughly <strong>17+ years</strong> and spend over $7,000 in interest alone.
+          </div>
+          <div class="edu-lesson-formula">Balance × (1 + r/n)^(n×t)<br>r = rate, n = compounds/year, t = years</div>
+          <div class="edu-lesson-callout">💡 The What-If Simulator in IdealU shows you exactly how compound interest affects your payoff date.</div>
+        </div>
+      </div>
+
+      <!-- Lesson 4 -->
+      <div class="edu-lesson">
+        <div class="edu-lesson-header" onclick="toggleLesson(this)">
+          <span class="edu-lesson-emoji">⚠️</span>
+          <span class="edu-lesson-title">Why minimum payments keep you in debt forever</span>
+          <span class="edu-lesson-tag">Core</span>
+          <span class="edu-lesson-arrow">▶</span>
+        </div>
+        <div class="edu-lesson-body">
+          <div class="edu-lesson-text">
+            Credit card companies set minimums low — usually 1-2% of your balance — on purpose. The longer you stay in debt, the more interest they collect.
+            <br><br>
+            On a $5,000 balance at 24% APR, the minimum payment might be just $100/month. But $100/month barely covers the interest charged, leaving only a tiny amount to reduce your principal.
+          </div>
+          <div class="edu-lesson-callout">💡 In IdealU, your "Daily Dollar" target is designed to keep you <em>above</em> minimum payments — so you're always making real progress.</div>
+        </div>
+      </div>
+
+      <!-- Lesson 5 -->
+      <div class="edu-lesson">
+        <div class="edu-lesson-header" onclick="toggleLesson(this)">
+          <span class="edu-lesson-emoji">🎯</span>
+          <span class="edu-lesson-title">What is the Daily Dollar?</span>
+          <span class="edu-lesson-tag">IdealU Feature</span>
+          <span class="edu-lesson-arrow">▶</span>
+        </div>
+        <div class="edu-lesson-body">
+          <div class="edu-lesson-text">
+            The Daily Dollar is the minimum amount you need to set aside <em>each day</em> to stay on track with all your debt minimums and savings goals combined.
+            <br><br>
+            Instead of thinking about $400/month payments, IdealU breaks it down to something manageable: <strong>$13.20 today</strong>. Small daily decisions add up to total financial freedom.
+          </div>
+          <div class="edu-lesson-formula">Daily Dollar = (Total monthly minimums + savings goals) ÷ 30</div>
+          <div class="edu-lesson-callout">💡 Tap "How?" on the Daily Goal meter on your dashboard to see exactly how your number is calculated.</div>
+        </div>
+      </div>
+
+      <!-- Lesson 6 -->
+      <div class="edu-lesson">
+        <div class="edu-lesson-header" onclick="toggleLesson(this)">
+          <span class="edu-lesson-emoji">⏸️</span>
+          <span class="edu-lesson-title">How the Pause Feature saves you money</span>
+          <span class="edu-lesson-tag">IdealU Feature</span>
+          <span class="edu-lesson-arrow">▶</span>
+        </div>
+        <div class="edu-lesson-body">
+          <div class="edu-lesson-text">
+            Impulse purchases are one of the biggest reasons people stay in debt. The Pause Feature creates a <strong>forced waiting period</strong> before you buy something.
+            <br><br>
+            When you tap Pause, IdealU shows you exactly how many days of debt interest that purchase equals. A $50 impulse buy might represent 15 days of hard-earned interest payments.
+          </div>
+          <div class="edu-lesson-callout">💡 Studies show a 24-hour pause on impulse purchases reduces unplanned spending by up to 56%. Your future self will thank you.</div>
+        </div>
+      </div>
+
+      <!-- Lesson 7 -->
+      <div class="edu-lesson">
+        <div class="edu-lesson-header" onclick="toggleLesson(this)">
+          <span class="edu-lesson-emoji">🏦</span>
+          <span class="edu-lesson-title">Emergency fund basics</span>
+          <span class="edu-lesson-tag">Foundations</span>
+          <span class="edu-lesson-arrow">▶</span>
+        </div>
+        <div class="edu-lesson-body">
+          <div class="edu-lesson-text">
+            An emergency fund is 3-6 months of living expenses kept in a savings account. It's not for vacations or wants — it's for true emergencies: job loss, car breakdown, medical bills.
+            <br><br>
+            Without one, the next emergency goes on a credit card — undoing months of debt payoff progress in a single day. Building even a small $1,000 buffer first is a game changer.
+          </div>
+          <div class="edu-lesson-callout">💡 Add an "Emergency Fund" savings goal in IdealU — even saving $3/day gets you to $1,000 in under a year.</div>
+        </div>
+      </div>
+
+      <!-- Lesson 8 -->
+      <div class="edu-lesson">
+        <div class="edu-lesson-header" onclick="toggleLesson(this)">
+          <span class="edu-lesson-emoji">📈</span>
+          <span class="edu-lesson-title">Debt-to-Income Ratio (DTI)</span>
+          <span class="edu-lesson-tag">Foundations</span>
+          <span class="edu-lesson-arrow">▶</span>
+        </div>
+        <div class="edu-lesson-body">
+          <div class="edu-lesson-text">
+            DTI is your total monthly debt payments divided by your gross monthly income. Lenders use it to decide if you can handle more debt. A lower DTI = better loan terms and lower interest rates.
+            <br><br>
+            <strong>Under 36%</strong> is considered healthy. Over 50% is a red flag to lenders — and to yourself.
+          </div>
+          <div class="edu-lesson-formula">DTI = (Monthly debt payments ÷ Gross monthly income) × 100</div>
+          <div class="edu-lesson-callout">💡 As you pay off debts in IdealU, your DTI drops — unlocking better rates when you refinance or apply for new credit.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. History -->
+  <div class="settings-section">
+    <div class="settings-section-header" onclick="toggleSettings(this)">
+      <div class="settings-section-icon">📋</div>
+      <div style="flex:1">
+        <div class="settings-section-title">History</div>
+        <div class="settings-section-sub">Pause history and transaction log</div>
+      </div>
+      <span class="settings-section-chevron">▾</span>
+    </div>
+    <div class="settings-section-body">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--t3);margin-bottom:10px">⏸️ Pause History</div>
+      <div id="settings-pause-history-list">
+        <div style="text-align:center;padding:18px 0;color:var(--t3);font-size:13px">No pauses recorded yet.</div>
+      </div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--t3);margin:18px 0 10px">💳 Recent Transactions</div>
+      <div id="settings-txn-history-list">
+        <div style="text-align:center;padding:18px 0;color:var(--t3);font-size:13px">No transactions logged yet.</div>
+      </div>
+      <button class="settings-btn danger" style="margin-top:14px" onclick="if(confirm('Clear ALL history? This cannot be undone.')){clearAllHistory();renderSettingsHistory()}">🗑️ Clear All History</button>
+    </div>
+  </div>
+
+  <!-- 8. Data & Privacy -->
+  <div class="settings-section">
+    <div class="settings-section-header" onclick="toggleSettings(this)">
+      <div class="settings-section-icon">🔐</div>
+      <div style="flex:1">
+        <div class="settings-section-title">Data &amp; Privacy</div>
+        <div class="settings-section-sub">Export, manage, and understand your data</div>
+      </div>
+      <span class="settings-section-chevron">▾</span>
+    </div>
+    <div class="settings-section-body">
+      <div style="font-size:13px;color:var(--t3);line-height:1.55;margin-bottom:16px">
+        All your data is stored <strong style="color:var(--t2)">locally on this device</strong> using browser localStorage. Nothing is sent to a server. You own your data completely.
+      </div>
+      <button class="settings-btn" onclick="exportData()">📤 Export My Data (JSON)</button>
+      <button class="settings-btn" onclick="exportDataCSV()">📊 Export Transactions (CSV)</button>
+      <button class="settings-btn danger" onclick="if(confirm('Reset ALL app data? This deletes your debts, history, and settings — and cannot be undone.')){resetAllData()}">⚠️ Reset All App Data</button>
+    </div>
+  </div>
+
+  <!-- 9. About -->
+  <div class="settings-section">
+    <div class="settings-section-header" onclick="toggleSettings(this)">
+      <div class="settings-section-icon">ℹ️</div>
+      <div style="flex:1">
+        <div class="settings-section-title">About IdealU</div>
+        <div class="settings-section-sub">Version, feedback, and legal</div>
+      </div>
+      <span class="settings-section-chevron">▾</span>
+    </div>
+    <div class="settings-section-body">
+      <div class="about-row">
+        <span class="about-row-label">App Version</span>
+        <span class="about-row-val">1.0.0-beta</span>
+      </div>
+      <div class="about-row">
+        <span class="about-row-label">Built by</span>
+        <span class="about-row-val">Carson Frederick</span>
+      </div>
+      <div class="about-row">
+        <span class="about-row-label">Send Feedback</span>
+        <span class="about-row-link" onclick="showToast('📬 Feedback feature coming soon!',0)">feedback@idealu.app →</span>
+      </div>
+      <div class="about-row">
+        <span class="about-row-label">Rate the App</span>
+        <span class="about-row-link" onclick="showToast('⭐ Rating feature coming soon!',0)">Leave a review →</span>
+      </div>
+      <div class="about-row">
+        <span class="about-row-label">Privacy Policy</span>
+        <span class="about-row-link" onclick="showToast('📄 Privacy policy coming soon.',0)">View →</span>
+      </div>
+      <div class="about-row">
+        <span class="about-row-label">Terms of Service</span>
+        <span class="about-row-link" onclick="showToast('📄 Terms coming soon.',0)">View →</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
 </main><!-- end .main -->
 
 <!-- ─── PAUSE MODAL ─── -->
@@ -2783,6 +3357,7 @@ function nav(id, el) {
   if (id === 'simulator' && !simChart) initSimChart();
   if (id === 'reportcard' && !trendChart) initTrendChart();
   if (id === 'profile') renderProfilePauseHistory();
+  if (id === 'settings') initSettingsValues();
   window.scrollTo(0,0);
 }
 function bnActivate(bnId) {
@@ -4261,6 +4836,208 @@ function updateCI() {
 document.addEventListener('DOMContentLoaded', () => {
   updateCI();
 });
+
+// ─────────────────────────────
+//  SETTINGS
+// ─────────────────────────────
+function toggleSettings(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  // Close all other sections
+  document.querySelectorAll('.settings-section-header.open').forEach(h => {
+    h.classList.remove('open');
+    h.nextElementSibling.classList.remove('open');
+  });
+  if (!isOpen) {
+    header.classList.add('open');
+    body.classList.add('open');
+  }
+}
+
+function toggleLesson(header) {
+  const lesson = header.closest('.edu-lesson');
+  lesson.classList.toggle('open');
+}
+
+function initSettingsValues() {
+  // Profile name
+  const nameInput = document.getElementById('settings-name-input');
+  if (nameInput) nameInput.value = localStorage.getItem('fq_user_name') || '';
+  // Member since
+  const since = document.getElementById('settings-member-since');
+  if (since) since.value = localStorage.getItem('fq_member_since') || 'This month';
+  // Notification toggles
+  const notifPref = JSON.parse(localStorage.getItem('fq_notif_prefs') || '{}');
+  const dailyChk = document.getElementById('notif-daily');
+  const streakChk = document.getElementById('notif-streak');
+  const milestoneChk = document.getElementById('notif-milestone');
+  const pauseChk = document.getElementById('notif-pause');
+  if (dailyChk) dailyChk.checked = notifPref.daily !== false;
+  if (streakChk) streakChk.checked = notifPref.streak !== false;
+  if (milestoneChk) milestoneChk.checked = notifPref.milestone !== false;
+  if (pauseChk) pauseChk.checked = notifPref.pause !== false;
+  // Strategy
+  const strategy = localStorage.getItem('fq_strategy') || 'avalanche';
+  selectStrategy(strategy, true);
+  // Prefs
+  const prefs = JSON.parse(localStorage.getItem('fq_display_prefs') || '{}');
+  const currSel = document.getElementById('pref-currency');
+  const centsChk = document.getElementById('pref-cents');
+  const compactChk = document.getElementById('pref-compact');
+  if (currSel) currSel.value = prefs.currency || 'USD';
+  if (centsChk) centsChk.checked = prefs.cents !== false;
+  if (compactChk) compactChk.checked = prefs.compact === true;
+  // History
+  renderSettingsHistory();
+}
+
+function saveProfileSettings() {
+  const name = document.getElementById('settings-name-input').value.trim();
+  if (!name) { showToast('⚠️ Name cannot be empty',0); return; }
+  localStorage.setItem('fq_user_name', name);
+  // Update all name displays
+  document.querySelectorAll('.user-name, #profile-name-display').forEach(el => el.textContent = name);
+  const av = document.querySelector('.avatar');
+  if (av) av.textContent = name[0].toUpperCase();
+  const avLg = document.querySelector('.profile-avatar-lg');
+  if (avLg) avLg.textContent = name[0].toUpperCase();
+  showToast('✅ Profile updated!', 0);
+}
+
+function saveNotifSettings() {
+  const prefs = {
+    daily: document.getElementById('notif-daily').checked,
+    streak: document.getElementById('notif-streak').checked,
+    milestone: document.getElementById('notif-milestone').checked,
+    pause: document.getElementById('notif-pause').checked
+  };
+  localStorage.setItem('fq_notif_prefs', JSON.stringify(prefs));
+  showToast('🔔 Notification preferences saved', 0);
+}
+
+function selectStrategy(name, silent) {
+  localStorage.setItem('fq_strategy', name);
+  const avEl = document.getElementById('strategy-avalanche');
+  const snEl = document.getElementById('strategy-snowball');
+  if (!avEl || !snEl) return;
+  avEl.classList.toggle('selected', name === 'avalanche');
+  snEl.classList.toggle('selected', name === 'snowball');
+  if (!silent) showToast(name === 'avalanche' ? '🔥 Avalanche strategy selected' : '❄️ Snowball strategy selected', 0);
+}
+
+function savePrefs() {
+  const prefs = {
+    currency: document.getElementById('pref-currency').value,
+    cents: document.getElementById('pref-cents').checked,
+    compact: document.getElementById('pref-compact').checked
+  };
+  localStorage.setItem('fq_display_prefs', JSON.stringify(prefs));
+  showToast('✅ Preferences saved', 0);
+}
+
+function renderSettingsHistory() {
+  // Pause history
+  const pauseList = document.getElementById('settings-pause-history-list');
+  if (pauseList) {
+    const ph = JSON.parse(localStorage.getItem('pauseHistory') || '[]');
+    if (!ph.length) {
+      pauseList.innerHTML = '<div style="text-align:center;padding:14px 0;color:var(--t3);font-size:13px">No pauses recorded yet.</div>';
+    } else {
+      pauseList.innerHTML = ph.slice(-10).reverse().map(h => {
+        const date = new Date(h.date);
+        const dateStr = date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        const icon = h.skipped ? '✅' : '🛒';
+        const label = h.skipped ? 'Skipped' : 'Proceeded';
+        const amtStr = h.amount > 0 ? ` · $${h.amount.toLocaleString()}` : '';
+        return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:18px">${icon}</span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${h.name}</div>
+            <div style="font-size:11px;color:var(--t3)">${label}${amtStr} · ${dateStr}</div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
+  // Transaction history
+  const txnList = document.getElementById('settings-txn-history-list');
+  if (txnList) {
+    const txns = JSON.parse(localStorage.getItem('txnLog') || '[]');
+    if (!txns.length) {
+      txnList.innerHTML = '<div style="text-align:center;padding:14px 0;color:var(--t3);font-size:13px">No transactions logged yet.</div>';
+    } else {
+      txnList.innerHTML = txns.slice(-10).reverse().map(t => {
+        const date = new Date(t.date);
+        const dateStr = date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:18px">${t.icon || '📦'}</span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:600">${t.cat} ${t.merchant ? '· '+t.merchant : ''}</div>
+            <div style="font-size:11px;color:var(--t3)">${dateStr}</div>
+          </div>
+          <div style="font-size:14px;font-weight:700;color:var(--red)">-$${parseFloat(t.amount).toFixed(2)}</div>
+        </div>`;
+      }).join('');
+    }
+  }
+}
+
+function clearAllHistory() {
+  localStorage.removeItem('pauseHistory');
+  localStorage.removeItem('txnLog');
+  localStorage.removeItem('txnDaysOffset');
+  renderSettingsHistory();
+  const ph = document.getElementById('profile-pause-history-list');
+  if (ph) renderProfilePauseHistory();
+  showToast('🗑️ All history cleared', 0);
+}
+
+function exportData() {
+  const data = {
+    exportDate: new Date().toISOString(),
+    user: localStorage.getItem('fq_user_name'),
+    debts: JSON.parse(localStorage.getItem('fq_debts') || '[]'),
+    pauseHistory: JSON.parse(localStorage.getItem('pauseHistory') || '[]'),
+    transactions: JSON.parse(localStorage.getItem('txnLog') || '[]'),
+    savingsGoals: JSON.parse(localStorage.getItem('fq_savings_goals') || '[]'),
+    streak: localStorage.getItem('fq_streak'),
+    settings: {
+      strategy: localStorage.getItem('fq_strategy'),
+      notifPrefs: JSON.parse(localStorage.getItem('fq_notif_prefs') || '{}'),
+      displayPrefs: JSON.parse(localStorage.getItem('fq_display_prefs') || '{}')
+    }
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'idealu-data.json'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('📤 Data exported!', 0);
+}
+
+function exportDataCSV() {
+  const txns = JSON.parse(localStorage.getItem('txnLog') || '[]');
+  if (!txns.length) { showToast('No transactions to export', 0); return; }
+  const header = 'Date,Category,Merchant,Amount,Notes';
+  const rows = txns.map(t =>
+    [new Date(t.date).toLocaleDateString(), t.cat, t.merchant||'', t.amount, t.notes||''].map(v => `"${v}"`).join(',')
+  );
+  const csv = [header, ...rows].join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'idealu-transactions.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('📊 CSV exported!', 0);
+}
+
+function resetAllData() {
+  const keysToKeep = [];
+  const keys = Object.keys(localStorage).filter(k => k.startsWith('fq_') || ['pauseHistory','txnLog','txnDaysOffset','dailyGoalLog'].includes(k));
+  keys.forEach(k => localStorage.removeItem(k));
+  showToast('⚠️ All data reset. Reload to restart onboarding.', 0);
+  setTimeout(() => location.reload(), 1800);
+}
 </script>
 </body>
 </html>
