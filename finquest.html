@@ -1630,21 +1630,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 
-  <!-- Row 2b: Pause History -->
-  <div style="margin-bottom:16px" id="pause-history-section">
-    <div class="card" style="padding:20px 24px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <div class="card-label" style="margin-bottom:0">⏸️ Pause History</div>
-        <button onclick="clearPauseHistory()" style="font-size:11px;font-weight:600;color:var(--t3);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color 0.2s" onmouseover="this.style.color='var(--t1)'" onmouseout="this.style.color='var(--t3)'">Clear all</button>
-      </div>
-      <div id="pause-history-list">
-        <div id="pause-history-empty" style="text-align:center;padding:24px 0;color:var(--t3);font-size:14px">
-          No pauses yet — next time you're about to spend, hit the Pause button.
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Row 3: Transactions + Days-to-Freedom Trend -->
   <div class="g2" style="margin-bottom:16px">
     <!-- Transaction Feed -->
@@ -1668,59 +1653,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 
-  <div class="g2" style="margin-bottom:16px">
-    <!-- Health breakdown + notifications (full-width each) -->
-    <div class="card">
-      <div class="card-label">Health Score Breakdown</div>
-        <div class="health-categories">
-          <div class="health-row">
-            <span class="health-row-label">Debt payments</span>
-            <div class="health-bar"><div class="health-bar-fill" style="background:var(--green);width:85%"></div></div>
-            <span class="health-grade" style="color:var(--green)">A</span>
-          </div>
-          <div class="health-row">
-            <span class="health-row-label">Spending control</span>
-            <div class="health-bar"><div class="health-bar-fill" style="background:var(--gold);width:72%"></div></div>
-            <span class="health-grade" style="color:var(--gold)">B</span>
-          </div>
-          <div class="health-row">
-            <span class="health-row-label">Savings rate</span>
-            <div class="health-bar"><div class="health-bar-fill" style="background:var(--orange);width:58%"></div></div>
-            <span class="health-grade" style="color:var(--orange)">C+</span>
-          </div>
-          <div class="health-row">
-            <span class="health-row-label">Streak consistency</span>
-            <div class="health-bar"><div class="health-bar-fill" style="background:var(--green);width:93%"></div></div>
-            <span class="health-grade" style="color:var(--green)">A+</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-label">Live Notifications</div>
-        <div class="notif">
-          <div class="notif-icon">🍕</div>
-          <div>
-            <div class="notif-text">Skipping takeout tonight <strong>saves you 2 days of debt</strong></div>
-            <div class="notif-time">Just now</div>
-          </div>
-        </div>
-        <div class="notif">
-          <div class="notif-icon">📅</div>
-          <div>
-            <div class="notif-text">Your debt-free date moved <strong>3 days closer</strong> after yesterday's extra payment</div>
-            <div class="notif-time">Yesterday</div>
-          </div>
-        </div>
-        <div class="notif">
-          <div class="notif-icon">⚠️</div>
-          <div>
-            <div class="notif-text">That <strong>$47 DoorDash order</strong> on Monday pushed your debt-free date back 3 days</div>
-            <div class="notif-time">3 days ago</div>
-          </div>
-        </div>
-      </div>
-  </div>
 </section>
 
 <!-- ══════════════ MISSIONS ══════════════ -->
@@ -1959,6 +1891,32 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
           <div class="report-cat-desc">Saved $120 of $4,200 income (2.9%)</div>
         </div>
         <div class="report-cat-grade" style="color:var(--orange)">C</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-label">🏥 Health Score Breakdown</div>
+    <div class="health-categories">
+      <div class="health-row">
+        <span class="health-row-label">Debt payments</span>
+        <div class="health-bar"><div class="health-bar-fill" style="background:var(--green);width:85%"></div></div>
+        <span class="health-grade" style="color:var(--green)">A</span>
+      </div>
+      <div class="health-row">
+        <span class="health-row-label">Spending control</span>
+        <div class="health-bar"><div class="health-bar-fill" style="background:var(--gold);width:72%"></div></div>
+        <span class="health-grade" style="color:var(--gold)">B</span>
+      </div>
+      <div class="health-row">
+        <span class="health-row-label">Savings rate</span>
+        <div class="health-bar"><div class="health-bar-fill" style="background:var(--orange);width:58%"></div></div>
+        <span class="health-grade" style="color:var(--orange)">C+</span>
+      </div>
+      <div class="health-row">
+        <span class="health-row-label">Streak consistency</span>
+        <div class="health-bar"><div class="health-bar-fill" style="background:var(--green);width:93%"></div></div>
+        <span class="health-grade" style="color:var(--green)">A+</span>
       </div>
     </div>
   </div>
