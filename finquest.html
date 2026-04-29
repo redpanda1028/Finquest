@@ -2294,6 +2294,21 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       </div>
     </div>
   </div>
+
+  <!-- History -->
+  <div style="margin-top:24px">
+    <div class="card" style="padding:20px 24px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div class="card-label" style="margin-bottom:0">⏸️ Pause History</div>
+        <button onclick="clearPauseHistory();renderProfilePauseHistory()" style="font-size:11px;font-weight:600;color:var(--t3);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color 0.2s" onmouseover="this.style.color='var(--t1)'" onmouseout="this.style.color='var(--t3)'">Clear all</button>
+      </div>
+      <div id="profile-pause-history-list">
+        <div style="text-align:center;padding:24px 0;color:var(--t3);font-size:14px">
+          No pauses yet — use the Pause Feature before your next purchase.
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ══════════════ SAVINGS ══════════════ -->
@@ -2643,7 +2658,8 @@ function updateDebtStats() {
     const freeDate = new Date(2026, 3, 1);
     freeDate.setMonth(freeDate.getMonth() + Math.ceil(months));
     const fStr = freeDate.toLocaleDateString('en-US', {month:'short', year:'numeric'});
-    const daysLeft = Math.ceil(months * 30.44);
+    const txnOffset = parseFloat(localStorage.getItem('txnDaysOffset') || '0');
+    const daysLeft = Math.ceil(months * 30.44) + Math.round(txnOffset);
     const cdEl = document.querySelector('.countdown-date');
     if (cdEl) cdEl.textContent = fStr;
     const cdDays = document.querySelector('.countdown-days');
@@ -2766,6 +2782,7 @@ function nav(id, el) {
 
   if (id === 'simulator' && !simChart) initSimChart();
   if (id === 'reportcard' && !trendChart) initTrendChart();
+  if (id === 'profile') renderProfilePauseHistory();
   window.scrollTo(0,0);
 }
 function bnActivate(bnId) {
@@ -2915,6 +2932,33 @@ function toggleGoalBreakdown() {
   el.style.display = open ? 'none' : 'block';
   if (!open) renderGoalBreakdown();
 }
+function renderProfilePauseHistory() {
+  const list = document.getElementById('profile-pause-history-list');
+  if (!list) return;
+  const history = JSON.parse(localStorage.getItem('pauseHistory') || '[]');
+  if (!history.length) {
+    list.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--t3);font-size:14px">No pauses yet — use the Pause Feature before your next purchase.</div>';
+    return;
+  }
+  const icons = {credit:'💳',student:'🎓',personal:'💼',auto:'🚗'};
+  list.innerHTML = history.map(h => {
+    const date = new Date(h.date);
+    const dateStr = date.toLocaleDateString('en-US', {month:'short', day:'numeric'}) + ' · ' + date.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'});
+    const cls = h.skipped ? 'skipped' : 'proceeded';
+    const icon = h.skipped ? '✅' : '🛒';
+    const label = h.skipped ? 'Skipped' : 'Proceeded';
+    const amountStr = h.amount > 0 ? `$${h.amount.toLocaleString()}` : '—';
+    return `<div class="pause-history-item">
+      <div class="pause-history-badge ${cls}">${icon}</div>
+      <div class="pause-history-info">
+        <div class="pause-history-name">${h.name}</div>
+        <div class="pause-history-meta">${label} · ${dateStr}</div>
+      </div>
+      <div class="pause-history-amount ${cls}">${amountStr}</div>
+    </div>`;
+  }).join('');
+}
+
 function renderGoalBreakdown() {
   const rows = document.getElementById('goal-breakdown-rows');
   if (!rows) return;
@@ -4048,9 +4092,16 @@ function saveTxn() {
 
   txnLog.unshift(txn); // newest first
   localStorage.setItem('txnLog', JSON.stringify(txnLog));
+
+  // Accumulate days offset and refresh freedom date
+  const prevOffset = parseFloat(localStorage.getItem('txnDaysOffset') || '0');
+  localStorage.setItem('txnDaysOffset', String(prevOffset + daysAdded));
+  updateDebtStats();
+
   closeTxnSheet();
   renderTxns();
-  showToast(`✅ Logged $${amtRaw.toFixed(2)} · +${daysAdded.toFixed(1)} days of debt`, 0);
+  const daysStr = daysAdded >= 0.1 ? ` · +${daysAdded.toFixed(1)} days to freedom` : '';
+  showToast(`✅ Logged $${amtRaw.toFixed(2)}${daysStr}`, 0);
 }
 
 function renderTxns() {
