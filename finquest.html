@@ -1706,7 +1706,200 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <button class="ob-btn" id="ob-finish-btn" onclick="obFinish()">Start crushing debt →</button>
     </div>
 
-  </div><!-- end ob-screens -->
+  </div><!-- end ob-screens (debt path) -->
+
+  <!-- ═══ INVESTING ONBOARDING PATH ═══ -->
+  <div id="ob-invest-path" style="display:none">
+    <div class="ob-screens">
+
+      <!-- Inv-1: Monthly investment amount -->
+      <div class="ob-screen active" id="ob-inv-1">
+        <span class="ob-emoji">💰</span>
+        <div class="ob-headline">How much can you<br>invest each month?</div>
+        <div class="ob-sub">Even $50/month makes a real difference over time.</div>
+        <div class="ob-pfx" style="margin-bottom:8px">
+          <input class="ob-input" id="inv-monthly" type="number" placeholder="200" min="1" oninput="invValidate1()" style="font-size:28px;font-weight:900;text-align:center">
+        </div>
+        <div id="inv-monthly-hint" style="font-size:13px;color:var(--t3);margin-bottom:24px;min-height:20px;text-align:center">Enter any amount — we'll show you what it grows to.</div>
+        <button class="ob-btn" id="inv-next-1" onclick="invGoTo(2)" disabled>Next →</button>
+      </div>
+
+      <!-- Inv-2: Risk tolerance -->
+      <div class="ob-screen" id="ob-inv-2">
+        <span class="ob-emoji">⚖️</span>
+        <div class="ob-headline">What's your<br>risk tolerance?</div>
+        <div class="ob-sub">No wrong answers — just be honest about how you'd feel during a down market.</div>
+        <div style="display:flex;flex-direction:column;gap:12px;width:100%;margin-bottom:28px">
+          <div class="goal-card" id="inv-risk-conservative" onclick="selectInvRisk(this,'conservative')">
+            <span class="goal-icon">🛡️</span>
+            <div>
+              <div class="goal-title">Conservative</div>
+              <div class="goal-desc">Safety first — I'd rather grow slow than lose anything</div>
+            </div>
+          </div>
+          <div class="goal-card" id="inv-risk-moderate" onclick="selectInvRisk(this,'moderate')">
+            <span class="goal-icon">⚖️</span>
+            <div>
+              <div class="goal-title">Moderate</div>
+              <div class="goal-desc">I can handle some ups and downs for better long-term growth</div>
+            </div>
+          </div>
+          <div class="goal-card" id="inv-risk-aggressive" onclick="selectInvRisk(this,'aggressive')">
+            <span class="goal-icon">🚀</span>
+            <div>
+              <div class="goal-title">Aggressive</div>
+              <div class="goal-desc">I'm in it for the long haul — short-term dips don't scare me</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inv-3: Time horizon -->
+      <div class="ob-screen" id="ob-inv-3">
+        <span class="ob-emoji">⏳</span>
+        <div class="ob-headline">When will you need<br>this money?</div>
+        <div class="ob-sub">Your time horizon shapes the right strategy for you.</div>
+        <div style="display:flex;flex-direction:column;gap:12px;width:100%;margin-bottom:28px">
+          <div class="goal-card" id="inv-horizon-short" onclick="selectInvHorizon(this,'short')">
+            <span class="goal-icon">📅</span>
+            <div>
+              <div class="goal-title">1–3 years</div>
+              <div class="goal-desc">Short-term goal — I may need access soon</div>
+            </div>
+          </div>
+          <div class="goal-card" id="inv-horizon-medium" onclick="selectInvHorizon(this,'medium')">
+            <span class="goal-icon">📆</span>
+            <div>
+              <div class="goal-title">4–10 years</div>
+              <div class="goal-desc">Medium-term — building toward something bigger</div>
+            </div>
+          </div>
+          <div class="goal-card" id="inv-horizon-long" onclick="selectInvHorizon(this,'long')">
+            <span class="goal-icon">🌅</span>
+            <div>
+              <div class="goal-title">10+ years</div>
+              <div class="goal-desc">Long-term wealth — retirement or financial independence</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inv-4: Plan reveal -->
+      <div class="ob-screen" id="ob-inv-4">
+        <span class="ob-emoji">🚀</span>
+        <div class="ob-headline">Your investing<br>plan is ready.</div>
+        <div class="ob-sub" id="inv-plan-sub">Here's what consistent investing looks like for you.</div>
+        <div style="width:100%;margin-bottom:20px">
+          <div class="ob-reveal-num" id="inv-reveal-projection" style="font-size:42px">$—</div>
+          <div style="font-size:14px;color:var(--t2);margin-bottom:20px">projected in 10 years at 7% avg return</div>
+          <div class="ob-plan-row">
+            <div class="ob-plan-stat"><div class="ob-plan-stat-val" id="inv-monthly-display" style="color:var(--blue)">—</div><div class="ob-plan-stat-lbl">Monthly investment</div></div>
+            <div class="ob-plan-stat"><div class="ob-plan-stat-val" id="inv-profile-display" style="color:var(--green)">—</div><div class="ob-plan-stat-lbl">Risk profile</div></div>
+            <div class="ob-plan-stat"><div class="ob-plan-stat-val" id="inv-5yr-display" style="color:var(--gold)">$—</div><div class="ob-plan-stat-lbl">5-year milestone</div></div>
+          </div>
+        </div>
+        <div style="width:100%;padding:14px 16px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:12px;margin-bottom:20px;text-align:left">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--blue);margin-bottom:6px">🎯 Your first step</div>
+          <div style="font-size:13px;font-weight:600" id="inv-first-step">Open a Roth IRA or brokerage account this week</div>
+          <div style="font-size:11px;color:var(--t2);margin-top:2px">+100 XP on completion</div>
+        </div>
+        <input class="ob-name-input" id="inv-name" type="text" placeholder="Your first name (optional)" maxlength="20" style="margin-bottom:14px">
+        <button class="ob-btn" onclick="invFinish()">Start building wealth →</button>
+      </div>
+
+    </div><!-- end invest ob-screens -->
+    <div class="ob-nav">
+      <button class="ob-back-btn" id="ob-inv-back" onclick="invGoBack()" style="visibility:hidden">← Back</button>
+      <div style="font-size:12px;color:var(--t3)" id="ob-inv-step-lbl">Step 1 of 4</div>
+      <div style="width:60px"></div>
+    </div>
+  </div><!-- end ob-invest-path -->
+
+  <!-- ═══ SAVING ONBOARDING PATH ═══ -->
+  <div id="ob-save-path" style="display:none">
+    <div class="ob-screens">
+
+      <!-- Sav-1: What are you saving for? -->
+      <div class="ob-screen active" id="ob-sav-1">
+        <span class="ob-emoji">🏦</span>
+        <div class="ob-headline">What are you<br>saving for?</div>
+        <div class="ob-sub">Pick your main goal — you can add more later.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-bottom:28px">
+          <div class="goal-card" onclick="selectSavGoal(this,'emergency')"><span class="goal-icon">🛡️</span><div><div class="goal-title">Emergency Fund</div><div class="goal-desc">3–6 months of expenses as a safety net</div></div></div>
+          <div class="goal-card" onclick="selectSavGoal(this,'vacation')"><span class="goal-icon">✈️</span><div><div class="goal-title">Vacation</div><div class="goal-desc">Save for your next trip</div></div></div>
+          <div class="goal-card" onclick="selectSavGoal(this,'car')"><span class="goal-icon">🚗</span><div><div class="goal-title">New Car</div><div class="goal-desc">Save for a down payment or full purchase</div></div></div>
+          <div class="goal-card" onclick="selectSavGoal(this,'home')"><span class="goal-icon">🏠</span><div><div class="goal-title">Home</div><div class="goal-desc">Down payment on a house</div></div></div>
+          <div class="goal-card" onclick="selectSavGoal(this,'wedding')"><span class="goal-icon">💍</span><div><div class="goal-title">Wedding</div><div class="goal-desc">Save for your big day</div></div></div>
+          <div class="goal-card" onclick="selectSavGoal(this,'other')"><span class="goal-icon">🎯</span><div><div class="goal-title">Other Goal</div><div class="goal-desc">Any savings target you set</div></div></div>
+        </div>
+      </div>
+
+      <!-- Sav-2: Target amount + date -->
+      <div class="ob-screen" id="ob-sav-2">
+        <span class="ob-emoji" id="sav-goal-emoji">🎯</span>
+        <div class="ob-headline" id="sav-goal-headline">How much do<br>you need?</div>
+        <div class="ob-sub">Set a realistic target and when you want to hit it.</div>
+        <div class="ob-pfx" style="margin-bottom:14px">
+          <input class="ob-input" id="sav-amount" type="number" placeholder="5,000" min="1" oninput="savValidate2()" style="font-size:28px;font-weight:900;text-align:center">
+        </div>
+        <div style="margin-bottom:24px;width:100%">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t2);margin-bottom:8px;text-align:center">Target Date</div>
+          <div style="display:flex;gap:10px;justify-content:center">
+            <select id="sav-month" onchange="savValidate2()" style="flex:1;max-width:160px;color:var(--t1);background:var(--card);border:1px solid var(--border2);border-radius:14px;font-family:Inter,sans-serif;font-size:15px;outline:none;padding:12px;-webkit-appearance:none;appearance:none;text-align:center;cursor:pointer">
+              <option value="1">January</option><option value="2">February</option><option value="3">March</option>
+              <option value="4">April</option><option value="5">May</option><option value="6">June</option>
+              <option value="7">July</option><option value="8">August</option><option value="9">September</option>
+              <option value="10">October</option><option value="11">November</option><option value="12">December</option>
+            </select>
+            <select id="sav-year" onchange="savValidate2()" style="flex:1;max-width:120px;color:var(--t1);background:var(--card);border:1px solid var(--border2);border-radius:14px;font-family:Inter,sans-serif;font-size:15px;outline:none;padding:12px;-webkit-appearance:none;appearance:none;text-align:center;cursor:pointer">
+            </select>
+          </div>
+          <div id="sav-date-hint" style="font-size:13px;color:var(--t3);margin-top:10px;text-align:center;min-height:20px"></div>
+        </div>
+        <button class="ob-btn" id="sav-next-2" onclick="savGoTo(3)" disabled>Next →</button>
+      </div>
+
+      <!-- Sav-3: Monthly income -->
+      <div class="ob-screen" id="ob-sav-3">
+        <span class="ob-emoji">💵</span>
+        <div class="ob-headline">What's your monthly<br>take-home income?</div>
+        <div class="ob-sub">This helps us show how achievable your goal is.</div>
+        <div class="ob-pfx" style="margin-bottom:8px">
+          <input class="ob-input" id="sav-income" type="number" placeholder="3,500" min="1" oninput="savValidate3()" style="font-size:28px;font-weight:900;text-align:center">
+        </div>
+        <div id="sav-income-hint" style="font-size:13px;color:var(--t3);margin-bottom:24px;min-height:20px;text-align:center">You can skip this — it's used to show feasibility.</div>
+        <button class="ob-btn" onclick="savGoTo(4)">Next →</button>
+      </div>
+
+      <!-- Sav-4: Plan reveal -->
+      <div class="ob-screen" id="ob-sav-4">
+        <span class="ob-emoji">✅</span>
+        <div class="ob-headline">Your savings<br>plan is ready.</div>
+        <div class="ob-sub">Here's exactly what it takes to hit your goal.</div>
+        <div style="width:100%;margin-bottom:20px">
+          <div class="ob-reveal-num" id="sav-reveal-daily" style="font-size:42px">$—</div>
+          <div style="font-size:14px;color:var(--t2);margin-bottom:20px">to save every day to hit your goal</div>
+          <div class="ob-plan-row">
+            <div class="ob-plan-stat"><div class="ob-plan-stat-val" id="sav-goal-display" style="color:var(--green)">—</div><div class="ob-plan-stat-lbl">Savings goal</div></div>
+            <div class="ob-plan-stat"><div class="ob-plan-stat-val" id="sav-monthly-display" style="color:var(--blue)">—</div><div class="ob-plan-stat-lbl">Per month</div></div>
+            <div class="ob-plan-stat"><div class="ob-plan-stat-val" id="sav-date-display" style="color:var(--gold)">—</div><div class="ob-plan-stat-lbl">Target date</div></div>
+          </div>
+        </div>
+        <div style="width:100%;padding:14px 16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:12px;margin-bottom:20px;text-align:left" id="sav-income-feasibility" style="display:none">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--green);margin-bottom:6px">📊 Feasibility Check</div>
+          <div style="font-size:13px;font-weight:600" id="sav-feasibility-text">Loading...</div>
+        </div>
+        <input class="ob-name-input" id="sav-name" type="text" placeholder="Your first name (optional)" maxlength="20" style="margin-bottom:14px">
+        <button class="ob-btn" onclick="savFinish()">Start saving →</button>
+      </div>
+
+    </div><!-- end save ob-screens -->
+    <div class="ob-nav">
+      <button class="ob-back-btn" id="ob-sav-back" onclick="savGoBack()" style="visibility:hidden">← Back</button>
+      <div style="font-size:12px;color:var(--t3)" id="ob-sav-step-lbl">Step 1 of 4</div>
+      <div style="width:60px"></div>
+    </div>
+  </div><!-- end ob-save-path -->
 
   <div class="ob-nav">
     <button class="ob-back-btn" id="ob-back" onclick="obBack()" style="visibility:hidden">← Back</button>
@@ -4234,16 +4427,22 @@ function initTrendChart() {
 let obStep = 0;
 let obData = { goal:'debt', targetYear:2028, income:0, balance:0, apr:24, payment:0, type:'credit', daily:0, months:0 };
 
-// Populate year dropdown: current year through +15 years
+// Populate year dropdowns
 (function() {
-  const sel = document.getElementById('ob-expiry-year');
-  if (!sel) return;
   const thisYear = new Date().getFullYear();
-  for (let y = thisYear; y <= thisYear + 15; y++) {
-    const opt = document.createElement('option');
-    opt.value = y; opt.textContent = y;
-    sel.appendChild(opt);
-  }
+  ['ob-expiry-year', 'sav-year'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    for (let y = thisYear; y <= thisYear + 15; y++) {
+      const opt = document.createElement('option');
+      opt.value = y; opt.textContent = y;
+      sel.appendChild(opt);
+    }
+  });
+  // Default sav-month to next month
+  const nextMonth = new Date().getMonth() + 2;
+  const savMonth = document.getElementById('sav-month');
+  if (savMonth) savMonth.value = nextMonth > 12 ? 1 : nextMonth;
 })();
 
 function obGoTo(step, dir) {
@@ -4268,7 +4467,26 @@ function selectGoal(el, goal) {
   document.querySelectorAll('.goal-card').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
   obData.goal = goal;
-  setTimeout(() => obNext(), 320);
+  setTimeout(() => {
+    if (goal === 'invest') {
+      // Switch to investing path
+      document.querySelector('.ob-screens').style.display = 'none';
+      document.getElementById('ob-back').style.visibility = 'hidden';
+      document.getElementById('ob-step-lbl').textContent = '';
+      document.getElementById('ob-invest-path').style.display = 'block';
+      invStep = 1; invGoTo(1);
+    } else if (goal === 'savings') {
+      // Switch to saving path
+      document.querySelector('.ob-screens').style.display = 'none';
+      document.getElementById('ob-back').style.visibility = 'hidden';
+      document.getElementById('ob-step-lbl').textContent = '';
+      document.getElementById('ob-save-path').style.display = 'block';
+      savStep = 1; savGoTo(1);
+    } else {
+      // Debt path — existing flow
+      obNext();
+    }
+  }, 320);
 }
 
 function updateTargetYear(val) {
@@ -4465,6 +4683,232 @@ function obFinish() {
   } catch(e) {
     console.warn('obFinish dashboard update error:', e);
   }
+}
+
+// ─────────────────────────────
+//  INVESTING ONBOARDING PATH
+// ─────────────────────────────
+let invStep = 1;
+let invData = { monthly: 0, risk: '', horizon: '' };
+
+function invGoTo(step) {
+  document.getElementById(`ob-inv-${invStep}`).classList.remove('active');
+  invStep = step;
+  const s = document.getElementById(`ob-inv-${step}`);
+  s.classList.add('active');
+  document.getElementById('ob-inv-back').style.visibility = step > 1 ? 'visible' : 'hidden';
+  document.getElementById('ob-inv-step-lbl').textContent = `Step ${step} of 4`;
+  if (step === 4) buildInvPlan();
+}
+
+function invGoBack() {
+  if (invStep === 1) {
+    // Go back to goal selection
+    document.getElementById('ob-invest-path').style.display = 'none';
+    document.querySelector('.ob-screens').style.display = 'block';
+    obGoTo(0, 'back');
+    document.getElementById('ob-back').style.visibility = 'hidden';
+    document.getElementById('ob-step-lbl').textContent = 'Step 1 of 5';
+  } else {
+    invGoTo(invStep - 1);
+  }
+}
+
+function invValidate1() {
+  const val = parseFloat(document.getElementById('inv-monthly').value);
+  const btn = document.getElementById('inv-next-1');
+  const hint = document.getElementById('inv-monthly-hint');
+  if (val > 0) {
+    invData.monthly = val;
+    btn.disabled = false;
+    const yr10 = calcFutureValue(val, 7, 10);
+    hint.textContent = `In 10 years at 7% avg return → $${yr10.toLocaleString('en-US',{maximumFractionDigits:0})}`;
+    hint.style.color = 'var(--green)';
+  } else {
+    btn.disabled = true;
+    hint.textContent = 'Enter any amount — we\'ll show you what it grows to.';
+    hint.style.color = 'var(--t3)';
+  }
+}
+
+function selectInvRisk(el, risk) {
+  document.querySelectorAll('#ob-inv-2 .goal-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  invData.risk = risk;
+  setTimeout(() => invGoTo(3), 280);
+}
+
+function selectInvHorizon(el, horizon) {
+  document.querySelectorAll('#ob-inv-3 .goal-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  invData.horizon = horizon;
+  setTimeout(() => invGoTo(4), 280);
+}
+
+function buildInvPlan() {
+  const monthly = invData.monthly || 200;
+  const yrs10 = calcFutureValue(monthly, 7, 10);
+  const yrs5  = calcFutureValue(monthly, 7, 5);
+  const riskNames = { conservative: '🛡️ Conservative', moderate: '⚖️ Moderate', aggressive: '🚀 Aggressive' };
+  const firstSteps = {
+    short: 'Open a high-yield savings account (HYSA) for near-term goals',
+    medium: 'Open a brokerage account and invest in a target-date fund',
+    long: 'Open a Roth IRA and automate monthly contributions into VTI or VOO'
+  };
+  document.getElementById('inv-reveal-projection').textContent = '$' + yrs10.toLocaleString('en-US',{maximumFractionDigits:0});
+  document.getElementById('inv-monthly-display').textContent = '$' + monthly.toLocaleString();
+  document.getElementById('inv-profile-display').textContent = riskNames[invData.risk] || '⚖️ Moderate';
+  document.getElementById('inv-5yr-display').textContent = '$' + yrs5.toLocaleString('en-US',{maximumFractionDigits:0});
+  document.getElementById('inv-first-step').textContent = firstSteps[invData.horizon] || firstSteps['long'];
+}
+
+function invFinish() {
+  const name = document.getElementById('inv-name').value.trim() || 'Friend';
+  localStorage.setItem('fq_onboarded', '1');
+  localStorage.setItem('fq_user_name', name);
+  localStorage.setItem('fq_path', 'invest');
+  localStorage.setItem('fq_risk_profile', String(
+    invData.risk === 'conservative' ? 0 : invData.risk === 'aggressive' ? 2 : 1
+  ));
+  const ob = document.getElementById('onboarding');
+  ob.style.transition = 'opacity 0.48s ease, transform 0.48s ease';
+  ob.style.opacity = '0'; ob.style.transform = 'scale(0.97)';
+  setTimeout(() => ob.classList.add('hidden'), 480);
+  const greet = document.querySelector('#dashboard .page-title');
+  if (greet) greet.textContent = `Good morning, ${name} 👋`;
+  try { loadAppState(); } catch(e) {}
+}
+
+// ─────────────────────────────
+//  SAVING ONBOARDING PATH
+// ─────────────────────────────
+let savStep = 1;
+let savData = { goal: '', emoji: '🎯', amount: 0, month: 1, year: 2027, income: 0 };
+const SAV_GOAL_META = {
+  emergency: { emoji:'🛡️', title:'Emergency Fund', placeholder: 10000 },
+  vacation:  { emoji:'✈️', title:'Vacation',        placeholder: 3000 },
+  car:       { emoji:'🚗', title:'New Car',          placeholder: 8000 },
+  home:      { emoji:'🏠', title:'Home Down Payment',placeholder: 30000 },
+  wedding:   { emoji:'💍', title:'Wedding',          placeholder: 15000 },
+  other:     { emoji:'🎯', title:'Savings Goal',     placeholder: 5000 }
+};
+
+function savGoTo(step) {
+  document.getElementById(`ob-sav-${savStep}`).classList.remove('active');
+  savStep = step;
+  const s = document.getElementById(`ob-sav-${step}`);
+  s.classList.add('active');
+  document.getElementById('ob-sav-back').style.visibility = step > 1 ? 'visible' : 'hidden';
+  document.getElementById('ob-sav-step-lbl').textContent = `Step ${step} of 4`;
+  if (step === 4) buildSavPlan();
+}
+
+function savGoBack() {
+  if (savStep === 1) {
+    document.getElementById('ob-save-path').style.display = 'none';
+    document.querySelector('.ob-screens').style.display = 'block';
+    obGoTo(0, 'back');
+    document.getElementById('ob-back').style.visibility = 'hidden';
+    document.getElementById('ob-step-lbl').textContent = 'Step 1 of 5';
+  } else {
+    savGoTo(savStep - 1);
+  }
+}
+
+function selectSavGoal(el, goal) {
+  document.querySelectorAll('#ob-sav-1 .goal-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  savData.goal = goal;
+  const meta = SAV_GOAL_META[goal];
+  savData.emoji = meta.emoji;
+  setTimeout(() => {
+    // Pre-fill headline and emoji on next screen
+    document.getElementById('sav-goal-emoji').textContent = meta.emoji;
+    document.getElementById('sav-goal-headline').textContent = `How much do you need for\nyour ${meta.title.toLowerCase()}?`;
+    document.getElementById('sav-amount').placeholder = meta.placeholder.toLocaleString();
+    savGoTo(2);
+  }, 280);
+}
+
+function savValidate2() {
+  const amount = parseFloat(document.getElementById('sav-amount').value);
+  const month = parseInt(document.getElementById('sav-month').value);
+  const year = parseInt(document.getElementById('sav-year').value);
+  const btn = document.getElementById('sav-next-2');
+  const hint = document.getElementById('sav-date-hint');
+  if (amount > 0 && year) {
+    savData.amount = amount; savData.month = month; savData.year = year;
+    const target = new Date(year, month - 1, 1);
+    const now = new Date();
+    const months = Math.max(1, Math.round((target - now) / (1000*60*60*24*30.44)));
+    const daily = amount / (months * 30.44);
+    hint.textContent = `${months} months away · $${daily.toFixed(2)}/day`;
+    hint.style.color = 'var(--green)';
+    btn.disabled = false;
+  } else {
+    btn.disabled = true;
+    hint.textContent = '';
+  }
+}
+
+function savValidate3() {
+  const val = parseFloat(document.getElementById('sav-income').value);
+  const hint = document.getElementById('sav-income-hint');
+  if (val > 0) {
+    savData.income = val;
+    const monthly = savData.amount / Math.max(1, Math.round((new Date(savData.year, savData.month-1) - new Date()) / (1000*60*60*24*30.44)));
+    const pct = ((monthly / val) * 100).toFixed(0);
+    hint.textContent = `That's ${pct}% of your income — ${pct < 20 ? 'very achievable!' : pct < 35 ? 'challenging but doable.' : 'ambitious — consider a longer timeline.'}`;
+    hint.style.color = pct < 20 ? 'var(--green)' : pct < 35 ? 'var(--gold)' : 'var(--red)';
+  } else {
+    hint.textContent = 'You can skip this — it\'s used to show feasibility.';
+    hint.style.color = 'var(--t3)';
+  }
+}
+
+function buildSavPlan() {
+  const target = new Date(savData.year, savData.month - 1, 1);
+  const now = new Date();
+  const months = Math.max(1, Math.round((target - now) / (1000*60*60*24*30.44)));
+  const daily = savData.amount / (months * 30.44);
+  const monthly = daily * 30.44;
+  const meta = SAV_GOAL_META[savData.goal] || SAV_GOAL_META.other;
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('sav-reveal-daily').textContent = '$' + daily.toFixed(2);
+  document.getElementById('sav-goal-display').textContent = meta.emoji + ' $' + savData.amount.toLocaleString();
+  document.getElementById('sav-monthly-display').textContent = '$' + monthly.toFixed(0) + '/mo';
+  document.getElementById('sav-date-display').textContent = monthNames[savData.month-1] + ' ' + savData.year;
+  // Feasibility
+  const feas = document.getElementById('sav-income-feasibility');
+  const feasText = document.getElementById('sav-feasibility-text');
+  if (savData.income > 0) {
+    feas.style.display = 'block';
+    const pct = ((monthly / savData.income) * 100).toFixed(0);
+    feasText.textContent = `This goal requires ${pct}% of your monthly income. ${pct < 15 ? "That's very manageable — you're in great shape." : pct < 25 ? "Achievable with some adjustments to discretionary spending." : "Consider extending your timeline or reducing the target to make it more realistic."}`;
+  } else {
+    feas.style.display = 'none';
+  }
+}
+
+function savFinish() {
+  const name = document.getElementById('sav-name').value.trim() || 'Friend';
+  localStorage.setItem('fq_onboarded', '1');
+  localStorage.setItem('fq_user_name', name);
+  localStorage.setItem('fq_path', 'savings');
+  // Pre-load their savings goal
+  try {
+    const target = new Date(savData.year, savData.month - 1, 1);
+    const meta = SAV_GOAL_META[savData.goal] || SAV_GOAL_META.other;
+    const goals = [{ id:1, name: meta.title, amount: savData.amount, date: target.toISOString().slice(0,10), icon: meta.emoji }];
+    localStorage.setItem('fq_savings_goals', JSON.stringify(goals));
+  } catch(e) {}
+  const ob = document.getElementById('onboarding');
+  ob.style.transition = 'opacity 0.48s ease, transform 0.48s ease';
+  ob.style.opacity = '0'; ob.style.transform = 'scale(0.97)';
+  setTimeout(() => ob.classList.add('hidden'), 480);
+  const greet = document.querySelector('#dashboard .page-title');
+  if (greet) greet.textContent = `Good morning, ${name} 👋`;
+  try { loadAppState(); } catch(e) {}
 }
 
 // ─────────────────────────────
