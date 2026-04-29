@@ -46,6 +46,74 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 }
 .header-streak-badge-fire{font-size:22px;line-height:1}
 .header-streak-badge-num{font-size:26px;font-weight:900;color:var(--orange);line-height:1;letter-spacing:-1.5px}
+/* ── TRANSACTION FAB ── */
+.txn-fab{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green),var(--greenL));
+  border:none;cursor:pointer;font-size:22px;font-weight:300;color:#fff;
+  box-shadow:0 2px 12px rgba(16,185,129,0.45);
+  transition:transform 0.15s,box-shadow 0.15s;
+  flex-shrink:0;line-height:1;
+}
+.txn-fab:hover{transform:scale(1.1);box-shadow:0 4px 18px rgba(16,185,129,0.55)}
+.txn-fab:active{transform:scale(0.95)}
+
+/* ── TXN BOTTOM SHEET ── */
+.txn-sheet-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:400;
+  display:flex;align-items:flex-end;
+  opacity:0;pointer-events:none;transition:opacity 0.25s;
+}
+.txn-sheet-overlay.open{opacity:1;pointer-events:all}
+.txn-sheet{
+  background:var(--card);border-radius:24px 24px 0 0;
+  padding:20px 20px 32px;flex:1;
+  transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.32,0.72,0,1);
+}
+.txn-sheet-overlay.open .txn-sheet{transform:translateY(0)}
+.txn-sheet-handle{width:40px;height:4px;border-radius:99px;background:var(--border2);margin:0 auto 20px}
+.txn-sheet-title{font-size:18px;font-weight:900;letter-spacing:-.5px;margin-bottom:18px;text-align:center}
+.txn-amt-wrap{display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:20px}
+.txn-amt-prefix{font-size:36px;font-weight:900;color:var(--t2)}
+.txn-amt-input{
+  font-size:48px;font-weight:900;letter-spacing:-2px;color:var(--t1);
+  background:none;border:none;outline:none;width:180px;text-align:center;
+  font-family:inherit;
+}
+.txn-amt-input::placeholder{color:var(--border2)}
+.txn-cat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:10px}
+.txn-cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.txn-cat-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  padding:10px 6px;border-radius:12px;border:1.5px solid var(--border);
+  background:var(--bg2);cursor:pointer;transition:all 0.15s;
+}
+.txn-cat-btn:hover{border-color:var(--green);background:rgba(16,185,129,0.08)}
+.txn-cat-btn.selected{border-color:var(--green);background:rgba(16,185,129,0.15)}
+.txn-cat-icon{font-size:22px;line-height:1}
+.txn-cat-name{font-size:10px;font-weight:700;color:var(--t2)}
+.txn-cat-btn.selected .txn-cat-name{color:var(--green)}
+.txn-optional-toggle{
+  font-size:12px;font-weight:600;color:var(--t3);cursor:pointer;
+  text-align:center;margin-bottom:12px;text-decoration:underline;text-underline-offset:2px;
+}
+.txn-optional-fields{display:none;gap:10px;flex-direction:column;margin-bottom:16px}
+.txn-optional-fields.open{display:flex}
+.txn-field-input{
+  width:100%;padding:11px 14px;background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:10px;color:var(--t1);font-size:14px;font-family:inherit;outline:none;
+  box-sizing:border-box;transition:border-color 0.2s;
+}
+.txn-field-input:focus{border-color:var(--green)}
+.txn-field-input::placeholder{color:var(--t3)}
+.txn-save-btn{
+  width:100%;padding:16px;background:linear-gradient(135deg,var(--green),var(--greenL));
+  border:none;border-radius:14px;color:#fff;font-size:16px;font-weight:800;
+  cursor:pointer;font-family:inherit;transition:opacity 0.2s;
+}
+.txn-save-btn:hover{opacity:0.9}
+
 .logo-icon{
   width:36px;height:36px;
   background:linear-gradient(135deg,var(--purple),var(--purpleL));
@@ -135,7 +203,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .page-title{font-size:26px;font-weight:800;letter-spacing:-0.5px}
 .page-sub{font-size:14px;color:var(--t2);margin-top:3px}
 .page-header{margin-bottom:28px}
-.card-label{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px}
+.card-label{font-size:13px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px}
 
 /* ── CARDS ── */
 .card{
@@ -183,7 +251,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .reframe strong{color:var(--t1)}
 
 .stat-card{display:flex;flex-direction:column;gap:4px}
-.stat-value{font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1}
+.stat-value{font-size:52px;font-weight:900;letter-spacing:-2px;line-height:1}
 .stat-sub{font-size:12px;color:var(--t2);margin-top:2px}
 .stat-change{
   display:inline-flex;align-items:center;gap:4px;
@@ -246,11 +314,12 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 /* debt-free countdown */
 .countdown-date{
-  font-size:36px;font-weight:900;letter-spacing:-1.5px;
+  font-size:52px;font-weight:900;letter-spacing:-2px;
   background:linear-gradient(135deg,var(--gold),var(--goldL));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;
 }
-.countdown-days{font-size:13px;color:var(--t2);margin-top:4px}
+.countdown-days{font-size:16px;font-weight:700;color:var(--t1);margin-top:6px}
 .countdown-bar{
   height:8px;background:var(--border2);border-radius:99px;
   margin-top:16px;overflow:hidden;
@@ -297,8 +366,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .goal-bar-day{font-size:10px;color:var(--t3);font-weight:500}
 .goal-summary{margin-top:16px;display:flex;gap:16px;flex-wrap:wrap}
 .goal-stat{display:flex;flex-direction:column;gap:2px}
-.goal-stat-val{font-size:16px;font-weight:800;color:var(--t1)}
-.goal-stat-lbl{font-size:11px;color:var(--t3)}
+.goal-stat-val{font-size:22px;font-weight:900;color:var(--t1);letter-spacing:-0.5px}
+.goal-stat-lbl{font-size:12px;font-weight:600;color:var(--t3)}
 
 /* ── MISSIONS ── */
 .level-banner{
@@ -406,6 +475,21 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .month-cal-day.today .month-cal-date{color:var(--green)}
 .month-cal-day.has-data .month-cal-date{color:var(--t2)}
 .month-cal-amt{font-size:8px;font-weight:800;color:var(--green);line-height:1.2}
+
+/* ── COMPOUND INTEREST CALC ── */
+.ci-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.ci-field{display:flex;flex-direction:column;gap:6px}
+.ci-field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t2)}
+.ci-input{
+  padding:11px 14px;background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:10px;color:var(--t1);font-size:18px;font-weight:700;font-family:inherit;
+  outline:none;width:100%;box-sizing:border-box;transition:border-color 0.2s;
+}
+.ci-input:focus{border-color:var(--purpleL)}
+.ci-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.ci-stat{background:var(--bg2);border-radius:12px;padding:14px 10px;text-align:center;border:1px solid var(--border)}
+.ci-stat-val{font-size:20px;font-weight:900;letter-spacing:-0.5px;line-height:1}
+.ci-stat-label{font-size:11px;color:var(--t2);margin-top:5px;font-weight:600}
 
 /* ── SIMULATOR ── */
 .sim-controls{
@@ -1153,6 +1237,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <span class="logo-streak-fire">🔥</span>
       <span class="logo-streak-count" id="logo-streak-count">14</span>
     </div>
+    <button class="txn-fab" onclick="openTxnSheet()" title="Log transaction">＋</button>
   </div>
   <nav class="nav">
     <div class="nav-item active" onclick="nav('dashboard',this)">
@@ -1502,10 +1587,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
           <input class="goal-log-input" id="goal-log-input" type="number" placeholder="$0.00" min="0.01" step="0.01">
           <button class="goal-log-btn" onclick="logDailyPayment()">+ Log</button>
         </div>
-        <div style="font-size:11px;color:var(--t3);margin-top:8px;text-align:center">
-          Goal: <strong id="goal-target-display" style="color:var(--t1)">$10.37</strong>/day
-          &nbsp;·&nbsp;
-          <button onclick="toggleGoalBreakdown()" style="font-size:11px;color:var(--green);background:none;border:none;cursor:pointer;padding:0;font-family:'Inter',sans-serif;font-weight:600">How?</button>
+        <div style="margin-top:12px;text-align:center">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:4px">Daily Goal</div>
+          <div style="font-size:32px;font-weight:900;letter-spacing:-1px;line-height:1;color:var(--green)"><span id="goal-target-display">$10.37</span><span style="font-size:16px;font-weight:700;color:var(--t2)">/day</span></div>
+          <button onclick="toggleGoalBreakdown()" style="font-size:12px;color:var(--green);background:none;border:none;cursor:pointer;padding:4px 0 0;font-family:'Inter',sans-serif;font-weight:600;opacity:0.8">How is this calculated? →</button>
         </div>
         <div id="goal-breakdown" style="display:none;margin-top:10px;background:var(--card);border-radius:10px;padding:10px 14px;text-align:left;width:100%;box-sizing:border-box">
           <div id="goal-breakdown-rows" style="font-size:12px;color:var(--t2);display:flex;flex-direction:column;gap:6px"></div>
@@ -1561,92 +1646,15 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 
-  <!-- Row 2b: Pause History -->
-  <div style="margin-bottom:16px" id="pause-history-section">
-    <div class="card" style="padding:20px 24px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <div class="card-label" style="margin-bottom:0">⏸️ Pause History</div>
-        <button onclick="clearPauseHistory()" style="font-size:11px;font-weight:600;color:var(--t3);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color 0.2s" onmouseover="this.style.color='var(--t1)'" onmouseout="this.style.color='var(--t3)'">Clear all</button>
-      </div>
-      <div id="pause-history-list">
-        <div id="pause-history-empty" style="text-align:center;padding:24px 0;color:var(--t3);font-size:14px">
-          No pauses yet — next time you're about to spend, hit the Pause button.
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Row 3: Transactions + Days-to-Freedom Trend -->
   <div class="g2" style="margin-bottom:16px">
     <!-- Transaction Feed -->
     <div class="card">
-      <div class="card-label">Recent Transactions</div>
-      <div class="txn-item">
-        <div class="merchant-chip" style="background:#FFF1E6">🌯</div>
-        <div class="txn-info">
-          <div class="txn-name">Chipotle</div>
-          <div class="txn-meta">Food &amp; Drink · Today, 12:30pm</div>
-        </div>
-        <div class="txn-right">
-          <div class="txn-amount neg">−$12.47</div>
-          <div class="txn-impact">+0.9 days of debt</div>
-        </div>
+      <div class="card-label" style="display:flex;align-items:center;justify-content:space-between">
+        <span>Recent Transactions</span>
+        <button onclick="openTxnSheet()" style="font-size:11px;font-weight:700;color:var(--green);background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:8px;padding:4px 10px;cursor:pointer;font-family:inherit">＋ Add</button>
       </div>
-      <div class="txn-item">
-        <div class="merchant-chip" style="background:#F0FFF4">🛒</div>
-        <div class="txn-info">
-          <div class="txn-name">Whole Foods</div>
-          <div class="txn-meta">Groceries · Today, 9:15am</div>
-        </div>
-        <div class="txn-right">
-          <div class="txn-amount neg">−$67.23</div>
-          <div class="txn-impact">+4.7 days of debt</div>
-        </div>
-      </div>
-      <div class="txn-item">
-        <div class="merchant-chip" style="background:#F0F9FF">💼</div>
-        <div class="txn-info">
-          <div class="txn-name">Direct Deposit</div>
-          <div class="txn-meta">Income · Yesterday</div>
-        </div>
-        <div class="txn-right">
-          <div class="txn-amount pos">+$2,100.00</div>
-          <div class="txn-impact" style="color:var(--green)">−147 days of debt</div>
-        </div>
-      </div>
-      <div class="txn-item">
-        <div class="merchant-chip" style="background:#FFF8F0">☕</div>
-        <div class="txn-info">
-          <div class="txn-name">Starbucks</div>
-          <div class="txn-meta">Coffee · Yesterday, 8:02am</div>
-        </div>
-        <div class="txn-right">
-          <div class="txn-amount neg">−$6.50</div>
-          <div class="txn-impact">+0.5 days of debt</div>
-        </div>
-      </div>
-      <div class="txn-item">
-        <div class="merchant-chip" style="background:#F5F0FF">🎬</div>
-        <div class="txn-info">
-          <div class="txn-name">Netflix</div>
-          <div class="txn-meta">Subscriptions · Apr 7</div>
-        </div>
-        <div class="txn-right">
-          <div class="txn-amount neg">−$15.99</div>
-          <div class="txn-impact">+1.1 days of debt</div>
-        </div>
-      </div>
-      <div class="txn-item">
-        <div class="merchant-chip" style="background:#F0F4FF">🏋️</div>
-        <div class="txn-info">
-          <div class="txn-name">Planet Fitness</div>
-          <div class="txn-meta">Health · Apr 6</div>
-        </div>
-        <div class="txn-right">
-          <div class="txn-amount neg">−$24.99</div>
-          <div class="txn-impact">+1.8 days of debt</div>
-        </div>
-      </div>
+      <div id="txn-list"></div>
     </div>
 
     <!-- Days to Freedom Trend -->
@@ -1661,59 +1669,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 
-  <div class="g2" style="margin-bottom:16px">
-    <!-- Health breakdown + notifications (full-width each) -->
-    <div class="card">
-      <div class="card-label">Health Score Breakdown</div>
-        <div class="health-categories">
-          <div class="health-row">
-            <span class="health-row-label">Debt payments</span>
-            <div class="health-bar"><div class="health-bar-fill" style="background:var(--green);width:85%"></div></div>
-            <span class="health-grade" style="color:var(--green)">A</span>
-          </div>
-          <div class="health-row">
-            <span class="health-row-label">Spending control</span>
-            <div class="health-bar"><div class="health-bar-fill" style="background:var(--gold);width:72%"></div></div>
-            <span class="health-grade" style="color:var(--gold)">B</span>
-          </div>
-          <div class="health-row">
-            <span class="health-row-label">Savings rate</span>
-            <div class="health-bar"><div class="health-bar-fill" style="background:var(--orange);width:58%"></div></div>
-            <span class="health-grade" style="color:var(--orange)">C+</span>
-          </div>
-          <div class="health-row">
-            <span class="health-row-label">Streak consistency</span>
-            <div class="health-bar"><div class="health-bar-fill" style="background:var(--green);width:93%"></div></div>
-            <span class="health-grade" style="color:var(--green)">A+</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-label">Live Notifications</div>
-        <div class="notif">
-          <div class="notif-icon">🍕</div>
-          <div>
-            <div class="notif-text">Skipping takeout tonight <strong>saves you 2 days of debt</strong></div>
-            <div class="notif-time">Just now</div>
-          </div>
-        </div>
-        <div class="notif">
-          <div class="notif-icon">📅</div>
-          <div>
-            <div class="notif-text">Your debt-free date moved <strong>3 days closer</strong> after yesterday's extra payment</div>
-            <div class="notif-time">Yesterday</div>
-          </div>
-        </div>
-        <div class="notif">
-          <div class="notif-icon">⚠️</div>
-          <div>
-            <div class="notif-text">That <strong>$47 DoorDash order</strong> on Monday pushed your debt-free date back 3 days</div>
-            <div class="notif-time">3 days ago</div>
-          </div>
-        </div>
-      </div>
-  </div>
 </section>
 
 <!-- ══════════════ MISSIONS ══════════════ -->
@@ -1863,6 +1818,50 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 
+  <!-- Compound Interest Calculator -->
+  <div class="card section-gap">
+    <div class="card-label">📈 Compound Interest Calculator</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:16px;line-height:1.5">See what investing even a small amount each month could grow into over time.</div>
+
+    <div class="ci-inputs">
+      <div class="ci-field">
+        <div class="ci-field-label">Initial Deposit ($)</div>
+        <input class="ci-input" id="ci-principal" type="number" value="1000" min="0" step="100" oninput="updateCI()">
+      </div>
+      <div class="ci-field">
+        <div class="ci-field-label">Monthly Contribution ($)</div>
+        <input class="ci-input" id="ci-monthly" type="number" value="100" min="0" step="25" oninput="updateCI()">
+      </div>
+      <div class="ci-field">
+        <div class="ci-field-label">Years Invested</div>
+        <input class="ci-input" id="ci-years" type="number" value="10" min="1" max="50" step="1" oninput="updateCI()">
+      </div>
+      <div class="ci-field">
+        <div class="ci-field-label">Avg Annual Return (%)</div>
+        <input class="ci-input" id="ci-rate" type="number" value="7" min="0.1" max="30" step="0.5" oninput="updateCI()">
+      </div>
+    </div>
+
+    <!-- Output stats -->
+    <div class="ci-stats">
+      <div class="ci-stat">
+        <div class="ci-stat-val" id="ci-total-invested" style="color:var(--t1)">—</div>
+        <div class="ci-stat-label">Total Invested</div>
+      </div>
+      <div class="ci-stat" style="border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.06)">
+        <div class="ci-stat-val" id="ci-interest-earned" style="color:var(--green)">—</div>
+        <div class="ci-stat-label">Interest Earned</div>
+      </div>
+      <div class="ci-stat" style="border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.06)">
+        <div class="ci-stat-val" id="ci-final-balance" style="color:var(--purpleL)">—</div>
+        <div class="ci-stat-label">Final Balance</div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <canvas id="ciChart" height="200"></canvas>
+  </div>
+
   <!-- Loan Transparency Card -->
   <div class="card section-gap" style="border-color:rgba(59,130,246,0.2)">
     <div class="card-label">💡 Refinancing Opportunity — Full Transparency</div>
@@ -1952,6 +1951,32 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
           <div class="report-cat-desc">Saved $120 of $4,200 income (2.9%)</div>
         </div>
         <div class="report-cat-grade" style="color:var(--orange)">C</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-label">🏥 Health Score Breakdown</div>
+    <div class="health-categories">
+      <div class="health-row">
+        <span class="health-row-label">Debt payments</span>
+        <div class="health-bar"><div class="health-bar-fill" style="background:var(--green);width:85%"></div></div>
+        <span class="health-grade" style="color:var(--green)">A</span>
+      </div>
+      <div class="health-row">
+        <span class="health-row-label">Spending control</span>
+        <div class="health-bar"><div class="health-bar-fill" style="background:var(--gold);width:72%"></div></div>
+        <span class="health-grade" style="color:var(--gold)">B</span>
+      </div>
+      <div class="health-row">
+        <span class="health-row-label">Savings rate</span>
+        <div class="health-bar"><div class="health-bar-fill" style="background:var(--orange);width:58%"></div></div>
+        <span class="health-grade" style="color:var(--orange)">C+</span>
+      </div>
+      <div class="health-row">
+        <span class="health-row-label">Streak consistency</span>
+        <div class="health-bar"><div class="health-bar-fill" style="background:var(--green);width:93%"></div></div>
+        <span class="health-grade" style="color:var(--green)">A+</span>
       </div>
     </div>
   </div>
@@ -2304,6 +2329,42 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 </section>
+
+<!-- ─── TRANSACTION SHEET ─── -->
+<div class="txn-sheet-overlay" id="txn-sheet-overlay" onclick="closeTxnSheetOutside(event)">
+  <div class="txn-sheet">
+    <div class="txn-sheet-handle"></div>
+    <div class="txn-sheet-title">Log a Transaction</div>
+
+    <!-- Amount -->
+    <div class="txn-amt-wrap">
+      <span class="txn-amt-prefix">$</span>
+      <input class="txn-amt-input" id="txn-amt" type="number" min="0.01" step="0.01" placeholder="0" inputmode="decimal">
+    </div>
+
+    <!-- Category grid -->
+    <div class="txn-cat-label">Category</div>
+    <div class="txn-cat-grid" id="txn-cat-grid">
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Food','🍔','#FFF1E6')"><span class="txn-cat-icon">🍔</span><span class="txn-cat-name">Food</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Transport','🚗','#EFF6FF')"><span class="txn-cat-icon">🚗</span><span class="txn-cat-name">Transport</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Coffee','☕','#FFF8F0')"><span class="txn-cat-icon">☕</span><span class="txn-cat-name">Coffee</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Shopping','🛍️','#FDF4FF')"><span class="txn-cat-icon">🛍️</span><span class="txn-cat-name">Shopping</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Entertainment','🎬','#F5F0FF')"><span class="txn-cat-icon">🎬</span><span class="txn-cat-name">Entertain</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Health','💊','#F0FFF4')"><span class="txn-cat-icon">💊</span><span class="txn-cat-name">Health</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Bills','🏠','#F0F4FF')"><span class="txn-cat-icon">🏠</span><span class="txn-cat-name">Bills</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Other','📦','#F8F8F8')"><span class="txn-cat-icon">📦</span><span class="txn-cat-name">Other</span></button>
+    </div>
+
+    <!-- Optional fields toggle -->
+    <div class="txn-optional-toggle" onclick="toggleTxnOptional()">＋ Add merchant name &amp; notes</div>
+    <div class="txn-optional-fields" id="txn-optional-fields">
+      <input class="txn-field-input" id="txn-merchant" type="text" placeholder="Merchant name (e.g. Starbucks)" maxlength="40">
+      <input class="txn-field-input" id="txn-notes" type="text" placeholder="Notes (optional)" maxlength="80">
+    </div>
+
+    <button class="txn-save-btn" onclick="saveTxn()">Save Transaction</button>
+  </div>
+</div>
 
 <!-- ─── ADD GOAL MODAL ─── -->
 <div class="savings-modal-overlay" id="add-goal-overlay" onclick="closeAddGoalOutside(event)">
@@ -3905,6 +3966,250 @@ function renderTimeline() {
 
 // Init savings tab on first visit
 renderGoals();
+
+// ─────────────────────────────
+//  TRANSACTION LOGGING
+// ─────────────────────────────
+const TXN_CATS = {
+  Food:          { icon:'🍔', bg:'#FFF1E6' },
+  Transport:     { icon:'🚗', bg:'#EFF6FF' },
+  Coffee:        { icon:'☕', bg:'#FFF8F0' },
+  Shopping:      { icon:'🛍️', bg:'#FDF4FF' },
+  Entertainment: { icon:'🎬', bg:'#F5F0FF' },
+  Health:        { icon:'💊', bg:'#F0FFF4' },
+  Bills:         { icon:'🏠', bg:'#F0F4FF' },
+  Other:         { icon:'📦', bg:'#F4F4F4' },
+};
+
+let txnLog     = JSON.parse(localStorage.getItem('txnLog') || '[]');
+let txnNextId  = txnLog.length ? Math.max(...txnLog.map(t => t.id)) + 1 : 1;
+let txnSelCat  = null;
+let txnSelBtn  = null;
+
+function openTxnSheet() {
+  txnSelCat = null;
+  txnSelBtn = null;
+  document.getElementById('txn-amt').value      = '';
+  document.getElementById('txn-merchant').value = '';
+  document.getElementById('txn-notes').value    = '';
+  document.querySelectorAll('.txn-cat-btn').forEach(b => b.classList.remove('selected'));
+  const opt = document.getElementById('txn-optional-fields');
+  opt.classList.remove('open');
+  document.getElementById('txn-sheet-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('txn-amt').focus(), 350);
+}
+
+function closeTxnSheet() {
+  document.getElementById('txn-sheet-overlay').classList.remove('open');
+}
+
+function closeTxnSheetOutside(e) {
+  if (e.target === document.getElementById('txn-sheet-overlay')) closeTxnSheet();
+}
+
+function selectTxnCat(btn, cat) {
+  if (txnSelBtn) txnSelBtn.classList.remove('selected');
+  btn.classList.add('selected');
+  txnSelCat = cat;
+  txnSelBtn = btn;
+}
+
+function toggleTxnOptional() {
+  document.getElementById('txn-optional-fields').classList.toggle('open');
+}
+
+function saveTxn() {
+  const amtRaw = parseFloat(document.getElementById('txn-amt').value);
+  if (!amtRaw || amtRaw <= 0) { showToast('⚠️ Enter an amount', 0); return; }
+  if (!txnSelCat)              { showToast('⚠️ Pick a category', 0); return; }
+
+  const cat       = TXN_CATS[txnSelCat];
+  const merchant  = document.getElementById('txn-merchant').value.trim() || txnSelCat;
+  const notes     = document.getElementById('txn-notes').value.trim();
+  const todayStr  = (() => { const d = new Date(); return d.toISOString().split('T')[0]; })();
+
+  // Days of debt = spend / total daily interest across all debts
+  const dailyInterest = debts.length
+    ? debts.reduce((s, d) => s + d.balance * d.apr / 100 / 365, 0)
+    : 3.29;
+  const daysAdded = dailyInterest > 0 ? amtRaw / dailyInterest : 0;
+
+  const txn = {
+    id: txnNextId++,
+    amount:   amtRaw,
+    cat:      txnSelCat,
+    icon:     cat.icon,
+    bg:       cat.bg,
+    merchant,
+    notes,
+    date:     todayStr,
+    daysAdded,
+  };
+
+  txnLog.unshift(txn); // newest first
+  localStorage.setItem('txnLog', JSON.stringify(txnLog));
+  closeTxnSheet();
+  renderTxns();
+  showToast(`✅ Logged $${amtRaw.toFixed(2)} · +${daysAdded.toFixed(1)} days of debt`, 0);
+}
+
+function renderTxns() {
+  const el = document.getElementById('txn-list');
+  if (!el) return;
+
+  // Show up to 5 most recent
+  const recent = txnLog.slice(0, 5);
+
+  if (recent.length === 0) {
+    el.innerHTML = '<div style="padding:20px 0;text-align:center;color:var(--t3);font-size:13px">No transactions yet — tap ＋ Add to log one.</div>';
+    return;
+  }
+
+  const today     = new Date().toISOString().split('T')[0];
+  const yesterday = (() => { const d = new Date(); d.setDate(d.getDate()-1); return d.toISOString().split('T')[0]; })();
+
+  el.innerHTML = recent.map(t => {
+    const dateLabel = t.date === today     ? 'Today'
+                    : t.date === yesterday ? 'Yesterday'
+                    : new Date(t.date + 'T00:00:00').toLocaleDateString('en-US', {month:'short', day:'numeric'});
+    const daysStr  = t.daysAdded > 0 ? `+${t.daysAdded.toFixed(1)} days of debt` : '';
+    return `
+    <div class="txn-item">
+      <div class="merchant-chip" style="background:${t.bg}">${t.icon}</div>
+      <div class="txn-info">
+        <div class="txn-name">${t.merchant}</div>
+        <div class="txn-meta">${t.cat} · ${dateLabel}</div>
+      </div>
+      <div class="txn-right">
+        <div class="txn-amount neg">−$${t.amount.toFixed(2)}</div>
+        ${daysStr ? `<div class="txn-impact">${daysStr}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Render on load
+renderTxns();
+
+// ─────────────────────────────
+//  COMPOUND INTEREST CALCULATOR
+// ─────────────────────────────
+let ciChartInstance = null;
+
+function updateCI() {
+  const P   = Math.max(0, parseFloat(document.getElementById('ci-principal').value) || 0);
+  const PMT = Math.max(0, parseFloat(document.getElementById('ci-monthly').value)   || 0);
+  const yrs = Math.min(50, Math.max(1, parseInt(document.getElementById('ci-years').value) || 10));
+  const ann = Math.max(0.01, parseFloat(document.getElementById('ci-rate').value)   || 7);
+
+  const r = ann / 100 / 12; // monthly rate
+
+  const labels      = [];
+  const balanceData = [];
+  const investedData = [];
+
+  for (let y = 0; y <= yrs; y++) {
+    const m       = y * 12;
+    const balance = r > 0
+      ? P * Math.pow(1 + r, m) + PMT * (Math.pow(1 + r, m) - 1) / r
+      : P + PMT * m;
+    const invested = P + PMT * m;
+    labels.push(y === 0 ? 'Now' : 'Yr ' + y);
+    balanceData.push(Math.round(balance));
+    investedData.push(Math.round(invested));
+  }
+
+  const finalBalance  = balanceData[balanceData.length - 1];
+  const totalInvested = investedData[investedData.length - 1];
+  const interestEarned = Math.max(0, finalBalance - totalInvested);
+
+  const fmt = v => v >= 1000000
+    ? '$' + (v / 1000000).toFixed(2) + 'M'
+    : '$' + Math.round(v).toLocaleString();
+
+  document.getElementById('ci-total-invested').textContent  = fmt(totalInvested);
+  document.getElementById('ci-interest-earned').textContent = fmt(interestEarned);
+  document.getElementById('ci-final-balance').textContent   = fmt(finalBalance);
+
+  // Thin out labels if many years
+  const displayLabels = labels.map((l, i) => (yrs <= 15 || i % 5 === 0 || i === yrs) ? l : '');
+
+  if (ciChartInstance) ciChartInstance.destroy();
+  const ctx = document.getElementById('ciChart');
+  if (!ctx) return;
+
+  ciChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: displayLabels,
+      datasets: [
+        {
+          label: 'Portfolio Value',
+          data: balanceData,
+          borderColor: '#a78bfa',
+          backgroundColor: 'rgba(167,139,250,0.12)',
+          fill: true,
+          tension: 0.45,
+          borderWidth: 2.5,
+          pointRadius: yrs <= 15 ? 3 : 0,
+          pointHoverRadius: 5,
+        },
+        {
+          label: 'Total Invested',
+          data: investedData,
+          borderColor: '#10b981',
+          backgroundColor: 'rgba(16,185,129,0.07)',
+          fill: true,
+          tension: 0.45,
+          borderWidth: 2,
+          borderDash: [5, 4],
+          pointRadius: yrs <= 15 ? 3 : 0,
+          pointHoverRadius: 5,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true,
+          labels: { color: '#9ca3af', font: { size: 12, family: 'Inter' }, boxWidth: 14, padding: 16 }
+        },
+        tooltip: {
+          backgroundColor: '#1f2937',
+          titleColor: '#f9fafb',
+          bodyColor: '#9ca3af',
+          borderColor: '#374151',
+          borderWidth: 1,
+          callbacks: {
+            label: c => ` ${c.dataset.label}: $${c.raw.toLocaleString()}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#6b7280', font: { size: 11 }, maxRotation: 0 },
+          grid: { color: 'rgba(255,255,255,0.04)' }
+        },
+        y: {
+          ticks: {
+            color: '#6b7280', font: { size: 11 },
+            callback: v => v >= 1000000 ? '$' + (v/1000000).toFixed(1)+'M'
+                         : v >= 1000    ? '$' + (v/1000).toFixed(0)+'k'
+                         : '$' + v
+          },
+          grid: { color: 'rgba(255,255,255,0.04)' }
+        }
+      }
+    }
+  });
+}
+
+// Init on first load
+document.addEventListener('DOMContentLoaded', () => {
+  updateCI();
+});
 </script>
 </body>
 </html>
