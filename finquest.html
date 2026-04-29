@@ -46,6 +46,74 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 }
 .header-streak-badge-fire{font-size:22px;line-height:1}
 .header-streak-badge-num{font-size:26px;font-weight:900;color:var(--orange);line-height:1;letter-spacing:-1.5px}
+/* ── TRANSACTION FAB ── */
+.txn-fab{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green),var(--greenL));
+  border:none;cursor:pointer;font-size:22px;font-weight:300;color:#fff;
+  box-shadow:0 2px 12px rgba(16,185,129,0.45);
+  transition:transform 0.15s,box-shadow 0.15s;
+  flex-shrink:0;line-height:1;
+}
+.txn-fab:hover{transform:scale(1.1);box-shadow:0 4px 18px rgba(16,185,129,0.55)}
+.txn-fab:active{transform:scale(0.95)}
+
+/* ── TXN BOTTOM SHEET ── */
+.txn-sheet-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:400;
+  display:flex;align-items:flex-end;
+  opacity:0;pointer-events:none;transition:opacity 0.25s;
+}
+.txn-sheet-overlay.open{opacity:1;pointer-events:all}
+.txn-sheet{
+  background:var(--card);border-radius:24px 24px 0 0;
+  padding:20px 20px 32px;flex:1;
+  transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.32,0.72,0,1);
+}
+.txn-sheet-overlay.open .txn-sheet{transform:translateY(0)}
+.txn-sheet-handle{width:40px;height:4px;border-radius:99px;background:var(--border2);margin:0 auto 20px}
+.txn-sheet-title{font-size:18px;font-weight:900;letter-spacing:-.5px;margin-bottom:18px;text-align:center}
+.txn-amt-wrap{display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:20px}
+.txn-amt-prefix{font-size:36px;font-weight:900;color:var(--t2)}
+.txn-amt-input{
+  font-size:48px;font-weight:900;letter-spacing:-2px;color:var(--t1);
+  background:none;border:none;outline:none;width:180px;text-align:center;
+  font-family:inherit;
+}
+.txn-amt-input::placeholder{color:var(--border2)}
+.txn-cat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:10px}
+.txn-cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.txn-cat-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  padding:10px 6px;border-radius:12px;border:1.5px solid var(--border);
+  background:var(--bg2);cursor:pointer;transition:all 0.15s;
+}
+.txn-cat-btn:hover{border-color:var(--green);background:rgba(16,185,129,0.08)}
+.txn-cat-btn.selected{border-color:var(--green);background:rgba(16,185,129,0.15)}
+.txn-cat-icon{font-size:22px;line-height:1}
+.txn-cat-name{font-size:10px;font-weight:700;color:var(--t2)}
+.txn-cat-btn.selected .txn-cat-name{color:var(--green)}
+.txn-optional-toggle{
+  font-size:12px;font-weight:600;color:var(--t3);cursor:pointer;
+  text-align:center;margin-bottom:12px;text-decoration:underline;text-underline-offset:2px;
+}
+.txn-optional-fields{display:none;gap:10px;flex-direction:column;margin-bottom:16px}
+.txn-optional-fields.open{display:flex}
+.txn-field-input{
+  width:100%;padding:11px 14px;background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:10px;color:var(--t1);font-size:14px;font-family:inherit;outline:none;
+  box-sizing:border-box;transition:border-color 0.2s;
+}
+.txn-field-input:focus{border-color:var(--green)}
+.txn-field-input::placeholder{color:var(--t3)}
+.txn-save-btn{
+  width:100%;padding:16px;background:linear-gradient(135deg,var(--green),var(--greenL));
+  border:none;border-radius:14px;color:#fff;font-size:16px;font-weight:800;
+  cursor:pointer;font-family:inherit;transition:opacity 0.2s;
+}
+.txn-save-btn:hover{opacity:0.9}
+
 .logo-icon{
   width:36px;height:36px;
   background:linear-gradient(135deg,var(--purple),var(--purpleL));
@@ -1153,6 +1221,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <span class="logo-streak-fire">🔥</span>
       <span class="logo-streak-count" id="logo-streak-count">14</span>
     </div>
+    <button class="txn-fab" onclick="openTxnSheet()" title="Log transaction">＋</button>
   </div>
   <nav class="nav">
     <div class="nav-item active" onclick="nav('dashboard',this)">
@@ -1580,73 +1649,11 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <div class="g2" style="margin-bottom:16px">
     <!-- Transaction Feed -->
     <div class="card">
-      <div class="card-label">Recent Transactions</div>
-      <div class="txn-item">
-        <div class="merchant-chip" style="background:#FFF1E6">🌯</div>
-        <div class="txn-info">
-          <div class="txn-name">Chipotle</div>
-          <div class="txn-meta">Food &amp; Drink · Today, 12:30pm</div>
-        </div>
-        <div class="txn-right">
-          <div class="txn-amount neg">−$12.47</div>
-          <div class="txn-impact">+0.9 days of debt</div>
-        </div>
+      <div class="card-label" style="display:flex;align-items:center;justify-content:space-between">
+        <span>Recent Transactions</span>
+        <button onclick="openTxnSheet()" style="font-size:11px;font-weight:700;color:var(--green);background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:8px;padding:4px 10px;cursor:pointer;font-family:inherit">＋ Add</button>
       </div>
-      <div class="txn-item">
-        <div class="merchant-chip" style="background:#F0FFF4">🛒</div>
-        <div class="txn-info">
-          <div class="txn-name">Whole Foods</div>
-          <div class="txn-meta">Groceries · Today, 9:15am</div>
-        </div>
-        <div class="txn-right">
-          <div class="txn-amount neg">−$67.23</div>
-          <div class="txn-impact">+4.7 days of debt</div>
-        </div>
-      </div>
-      <div class="txn-item">
-        <div class="merchant-chip" style="background:#F0F9FF">💼</div>
-        <div class="txn-info">
-          <div class="txn-name">Direct Deposit</div>
-          <div class="txn-meta">Income · Yesterday</div>
-        </div>
-        <div class="txn-right">
-          <div class="txn-amount pos">+$2,100.00</div>
-          <div class="txn-impact" style="color:var(--green)">−147 days of debt</div>
-        </div>
-      </div>
-      <div class="txn-item">
-        <div class="merchant-chip" style="background:#FFF8F0">☕</div>
-        <div class="txn-info">
-          <div class="txn-name">Starbucks</div>
-          <div class="txn-meta">Coffee · Yesterday, 8:02am</div>
-        </div>
-        <div class="txn-right">
-          <div class="txn-amount neg">−$6.50</div>
-          <div class="txn-impact">+0.5 days of debt</div>
-        </div>
-      </div>
-      <div class="txn-item">
-        <div class="merchant-chip" style="background:#F5F0FF">🎬</div>
-        <div class="txn-info">
-          <div class="txn-name">Netflix</div>
-          <div class="txn-meta">Subscriptions · Apr 7</div>
-        </div>
-        <div class="txn-right">
-          <div class="txn-amount neg">−$15.99</div>
-          <div class="txn-impact">+1.1 days of debt</div>
-        </div>
-      </div>
-      <div class="txn-item">
-        <div class="merchant-chip" style="background:#F0F4FF">🏋️</div>
-        <div class="txn-info">
-          <div class="txn-name">Planet Fitness</div>
-          <div class="txn-meta">Health · Apr 6</div>
-        </div>
-        <div class="txn-right">
-          <div class="txn-amount neg">−$24.99</div>
-          <div class="txn-impact">+1.8 days of debt</div>
-        </div>
-      </div>
+      <div id="txn-list"></div>
     </div>
 
     <!-- Days to Freedom Trend -->
@@ -2304,6 +2311,42 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 </section>
+
+<!-- ─── TRANSACTION SHEET ─── -->
+<div class="txn-sheet-overlay" id="txn-sheet-overlay" onclick="closeTxnSheetOutside(event)">
+  <div class="txn-sheet">
+    <div class="txn-sheet-handle"></div>
+    <div class="txn-sheet-title">Log a Transaction</div>
+
+    <!-- Amount -->
+    <div class="txn-amt-wrap">
+      <span class="txn-amt-prefix">$</span>
+      <input class="txn-amt-input" id="txn-amt" type="number" min="0.01" step="0.01" placeholder="0" inputmode="decimal">
+    </div>
+
+    <!-- Category grid -->
+    <div class="txn-cat-label">Category</div>
+    <div class="txn-cat-grid" id="txn-cat-grid">
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Food','🍔','#FFF1E6')"><span class="txn-cat-icon">🍔</span><span class="txn-cat-name">Food</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Transport','🚗','#EFF6FF')"><span class="txn-cat-icon">🚗</span><span class="txn-cat-name">Transport</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Coffee','☕','#FFF8F0')"><span class="txn-cat-icon">☕</span><span class="txn-cat-name">Coffee</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Shopping','🛍️','#FDF4FF')"><span class="txn-cat-icon">🛍️</span><span class="txn-cat-name">Shopping</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Entertainment','🎬','#F5F0FF')"><span class="txn-cat-icon">🎬</span><span class="txn-cat-name">Entertain</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Health','💊','#F0FFF4')"><span class="txn-cat-icon">💊</span><span class="txn-cat-name">Health</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Bills','🏠','#F0F4FF')"><span class="txn-cat-icon">🏠</span><span class="txn-cat-name">Bills</span></button>
+      <button class="txn-cat-btn" onclick="selectTxnCat(this,'Other','📦','#F8F8F8')"><span class="txn-cat-icon">📦</span><span class="txn-cat-name">Other</span></button>
+    </div>
+
+    <!-- Optional fields toggle -->
+    <div class="txn-optional-toggle" onclick="toggleTxnOptional()">＋ Add merchant name &amp; notes</div>
+    <div class="txn-optional-fields" id="txn-optional-fields">
+      <input class="txn-field-input" id="txn-merchant" type="text" placeholder="Merchant name (e.g. Starbucks)" maxlength="40">
+      <input class="txn-field-input" id="txn-notes" type="text" placeholder="Notes (optional)" maxlength="80">
+    </div>
+
+    <button class="txn-save-btn" onclick="saveTxn()">Save Transaction</button>
+  </div>
+</div>
 
 <!-- ─── ADD GOAL MODAL ─── -->
 <div class="savings-modal-overlay" id="add-goal-overlay" onclick="closeAddGoalOutside(event)">
@@ -3905,6 +3948,130 @@ function renderTimeline() {
 
 // Init savings tab on first visit
 renderGoals();
+
+// ─────────────────────────────
+//  TRANSACTION LOGGING
+// ─────────────────────────────
+const TXN_CATS = {
+  Food:          { icon:'🍔', bg:'#FFF1E6' },
+  Transport:     { icon:'🚗', bg:'#EFF6FF' },
+  Coffee:        { icon:'☕', bg:'#FFF8F0' },
+  Shopping:      { icon:'🛍️', bg:'#FDF4FF' },
+  Entertainment: { icon:'🎬', bg:'#F5F0FF' },
+  Health:        { icon:'💊', bg:'#F0FFF4' },
+  Bills:         { icon:'🏠', bg:'#F0F4FF' },
+  Other:         { icon:'📦', bg:'#F4F4F4' },
+};
+
+let txnLog     = JSON.parse(localStorage.getItem('txnLog') || '[]');
+let txnNextId  = txnLog.length ? Math.max(...txnLog.map(t => t.id)) + 1 : 1;
+let txnSelCat  = null;
+let txnSelBtn  = null;
+
+function openTxnSheet() {
+  txnSelCat = null;
+  txnSelBtn = null;
+  document.getElementById('txn-amt').value      = '';
+  document.getElementById('txn-merchant').value = '';
+  document.getElementById('txn-notes').value    = '';
+  document.querySelectorAll('.txn-cat-btn').forEach(b => b.classList.remove('selected'));
+  const opt = document.getElementById('txn-optional-fields');
+  opt.classList.remove('open');
+  document.getElementById('txn-sheet-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('txn-amt').focus(), 350);
+}
+
+function closeTxnSheet() {
+  document.getElementById('txn-sheet-overlay').classList.remove('open');
+}
+
+function closeTxnSheetOutside(e) {
+  if (e.target === document.getElementById('txn-sheet-overlay')) closeTxnSheet();
+}
+
+function selectTxnCat(btn, cat) {
+  if (txnSelBtn) txnSelBtn.classList.remove('selected');
+  btn.classList.add('selected');
+  txnSelCat = cat;
+  txnSelBtn = btn;
+}
+
+function toggleTxnOptional() {
+  document.getElementById('txn-optional-fields').classList.toggle('open');
+}
+
+function saveTxn() {
+  const amtRaw = parseFloat(document.getElementById('txn-amt').value);
+  if (!amtRaw || amtRaw <= 0) { showToast('⚠️ Enter an amount', 0); return; }
+  if (!txnSelCat)              { showToast('⚠️ Pick a category', 0); return; }
+
+  const cat       = TXN_CATS[txnSelCat];
+  const merchant  = document.getElementById('txn-merchant').value.trim() || txnSelCat;
+  const notes     = document.getElementById('txn-notes').value.trim();
+  const todayStr  = (() => { const d = new Date(); return d.toISOString().split('T')[0]; })();
+
+  // Days of debt = spend / total daily interest across all debts
+  const dailyInterest = debts.length
+    ? debts.reduce((s, d) => s + d.balance * d.apr / 100 / 365, 0)
+    : 3.29;
+  const daysAdded = dailyInterest > 0 ? amtRaw / dailyInterest : 0;
+
+  const txn = {
+    id: txnNextId++,
+    amount:   amtRaw,
+    cat:      txnSelCat,
+    icon:     cat.icon,
+    bg:       cat.bg,
+    merchant,
+    notes,
+    date:     todayStr,
+    daysAdded,
+  };
+
+  txnLog.unshift(txn); // newest first
+  localStorage.setItem('txnLog', JSON.stringify(txnLog));
+  closeTxnSheet();
+  renderTxns();
+  showToast(`✅ Logged $${amtRaw.toFixed(2)} · +${daysAdded.toFixed(1)} days of debt`, 0);
+}
+
+function renderTxns() {
+  const el = document.getElementById('txn-list');
+  if (!el) return;
+
+  // Show up to 5 most recent
+  const recent = txnLog.slice(0, 5);
+
+  if (recent.length === 0) {
+    el.innerHTML = '<div style="padding:20px 0;text-align:center;color:var(--t3);font-size:13px">No transactions yet — tap ＋ Add to log one.</div>';
+    return;
+  }
+
+  const today     = new Date().toISOString().split('T')[0];
+  const yesterday = (() => { const d = new Date(); d.setDate(d.getDate()-1); return d.toISOString().split('T')[0]; })();
+
+  el.innerHTML = recent.map(t => {
+    const dateLabel = t.date === today     ? 'Today'
+                    : t.date === yesterday ? 'Yesterday'
+                    : new Date(t.date + 'T00:00:00').toLocaleDateString('en-US', {month:'short', day:'numeric'});
+    const daysStr  = t.daysAdded > 0 ? `+${t.daysAdded.toFixed(1)} days of debt` : '';
+    return `
+    <div class="txn-item">
+      <div class="merchant-chip" style="background:${t.bg}">${t.icon}</div>
+      <div class="txn-info">
+        <div class="txn-name">${t.merchant}</div>
+        <div class="txn-meta">${t.cat} · ${dateLabel}</div>
+      </div>
+      <div class="txn-right">
+        <div class="txn-amount neg">−$${t.amount.toFixed(2)}</div>
+        ${daysStr ? `<div class="txn-impact">${daysStr}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Render on load
+renderTxns();
 </script>
 </body>
 </html>
