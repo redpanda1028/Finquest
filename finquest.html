@@ -2831,42 +2831,88 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
   <!-- Hero -->
   <div class="invest-hero">
-    <div class="invest-hero-label">Your Investing Profile</div>
-    <div class="invest-hero-title" id="invest-hero-title">Let's get started</div>
-    <div class="invest-hero-sub" id="invest-hero-sub">Complete the Risk Profile Quiz to see your personalized investment strategy.</div>
+    <div class="invest-hero-label">Your Portfolio</div>
+    <div class="invest-hero-title" id="invest-hero-title">Track Your Wealth</div>
+    <div class="invest-hero-sub" id="invest-hero-sub">Add your holdings below to see your portfolio breakdown by position and sector.</div>
     <div class="invest-stat-row" id="invest-stat-row" style="display:none">
       <div class="invest-stat">
-        <div class="invest-stat-val" id="invest-stat-profile">—</div>
-        <div class="invest-stat-label">Risk Profile</div>
+        <div class="invest-stat-val" id="invest-stat-total">—</div>
+        <div class="invest-stat-label">Total Value</div>
       </div>
       <div class="invest-stat">
-        <div class="invest-stat-val" id="invest-stat-projection">—</div>
-        <div class="invest-stat-label">10-Year Projection</div>
+        <div class="invest-stat-val" id="invest-stat-holdings">—</div>
+        <div class="invest-stat-label">Holdings</div>
       </div>
       <div class="invest-stat">
-        <div class="invest-stat-val" id="invest-stat-monthly">—</div>
-        <div class="invest-stat-label">Monthly Target</div>
+        <div class="invest-stat-val" id="invest-stat-sectors">—</div>
+        <div class="invest-stat-label">Sectors</div>
       </div>
     </div>
   </div>
 
   <div class="g2">
 
-    <!-- ── 1. RISK PROFILE QUIZ ── -->
-    <div class="card" style="padding:24px">
-      <div class="card-label">🧠 Risk Profile Quiz</div>
-      <div id="quiz-container">
-        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress" style="width:0%"></div></div>
-        <div class="quiz-q" id="quiz-question">Loading...</div>
-        <div class="quiz-options" id="quiz-options"></div>
-        <div style="display:flex;justify-content:flex-end;margin-top:16px">
-          <button id="quiz-next-btn" onclick="quizNext()" style="display:none;padding:10px 22px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Next →</button>
+    <!-- ── 1. PORTFOLIO PIE CHART ── -->
+    <div class="card" style="padding:24px;grid-column:1/-1">
+      <div class="card-label">🥧 Portfolio Holdings</div>
+
+      <!-- Add holding form -->
+      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-bottom:16px;align-items:end">
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);margin-bottom:6px">Holding Name</div>
+          <input id="ph-name" type="text" placeholder="e.g. AAPL, VOO" maxlength="30"
+            style="width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font-size:14px;font-weight:600;color:var(--t1);font-family:inherit;box-sizing:border-box;outline:none">
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);margin-bottom:6px">Sector</div>
+          <select id="ph-sector"
+            style="width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font-size:14px;font-weight:600;color:var(--t1);font-family:inherit;box-sizing:border-box;outline:none;appearance:none;cursor:pointer">
+            <option>Tech</option>
+            <option>Healthcare</option>
+            <option>Finance</option>
+            <option>Energy</option>
+            <option>Consumer</option>
+            <option>Industrial</option>
+            <option>Real Estate</option>
+            <option>Utilities</option>
+            <option>Materials</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);margin-bottom:6px">Value ($)</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="display:flex;align-items:center;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:0 12px;flex:1">
+              <span style="color:var(--t3);font-weight:700;margin-right:4px">$</span>
+              <input id="ph-value" type="number" placeholder="0" min="0" step="any"
+                style="background:none;border:none;outline:none;padding:10px 0;font-size:14px;font-weight:700;color:var(--t1);font-family:inherit;width:100%;min-width:70px">
+            </div>
+            <button onclick="addHolding()"
+              style="padding:10px 18px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Add ＋</button>
+          </div>
         </div>
       </div>
-      <div id="quiz-result-container" style="display:none">
-        <div class="quiz-result" id="quiz-result-content"></div>
-        <button onclick="resetQuiz()" style="width:100%;margin-top:14px;padding:11px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg2);color:var(--t2);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Retake Quiz</button>
+
+      <!-- Holdings list -->
+      <div id="ph-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px"></div>
+
+      <!-- Chart area -->
+      <div id="ph-chart-area" style="display:none">
+        <!-- Toggle -->
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+          <button id="ph-toggle-holding" onclick="setPortfolioView('holding')"
+            style="padding:7px 16px;border-radius:8px;border:1.5px solid var(--blue);background:rgba(59,130,246,0.12);color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">By Holding</button>
+          <button id="ph-toggle-sector" onclick="setPortfolioView('sector')"
+            style="padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg2);color:var(--t2);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">By Sector</button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+          <div style="position:relative;width:220px;height:220px;flex-shrink:0;margin:0 auto">
+            <canvas id="ph-chart"></canvas>
+          </div>
+          <div id="ph-legend" style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:8px;padding-top:4px"></div>
+        </div>
       </div>
+      <div id="ph-empty" style="text-align:center;padding:28px 0;color:var(--t3);font-size:14px">Add your first holding above to see your portfolio chart.</div>
     </div>
 
     <!-- ── 2. FIRST $1,000 ROADMAP ── -->
@@ -2923,71 +2969,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- ── 3. COMPOUND GROWTH CALCULATOR ── -->
-    <div class="card" style="padding:24px">
-      <div class="card-label">🧮 Compound Growth Calculator</div>
-      <div style="font-size:13px;color:var(--t3);margin-bottom:16px">See what consistent investing does over time.</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-        <div>
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);margin-bottom:6px">Monthly Investment</div>
-          <div style="display:flex;align-items:center;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:0 12px">
-            <span style="color:var(--t3);font-weight:700;margin-right:4px">$</span>
-            <input id="cg-monthly" type="number" value="200" min="1" oninput="calcCompound()" style="background:none;border:none;outline:none;padding:11px 0;font-size:15px;font-weight:700;color:var(--t1);font-family:inherit;width:100%">
-          </div>
-        </div>
-        <div>
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);margin-bottom:6px">Annual Return %</div>
-          <div style="display:flex;align-items:center;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:0 12px">
-            <input id="cg-return" type="number" value="7" min="1" max="30" oninput="calcCompound()" style="background:none;border:none;outline:none;padding:11px 0;font-size:15px;font-weight:700;color:var(--t1);font-family:inherit;width:100%">
-            <span style="color:var(--t3);font-weight:700;margin-left:4px">%</span>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);margin-bottom:6px">Time Horizon</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap" id="cg-years-btns">
-          <button onclick="setCGYears(5,this)" class="cg-yr-btn" style="padding:7px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg2);color:var(--t2);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">5 yr</button>
-          <button onclick="setCGYears(10,this)" class="cg-yr-btn active-yr" style="padding:7px 14px;border-radius:8px;border:1.5px solid var(--blue);background:rgba(59,130,246,0.12);color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">10 yr</button>
-          <button onclick="setCGYears(20,this)" class="cg-yr-btn" style="padding:7px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg2);color:var(--t2);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">20 yr</button>
-          <button onclick="setCGYears(30,this)" class="cg-yr-btn" style="padding:7px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg2);color:var(--t2);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">30 yr</button>
-        </div>
-      </div>
-      <input type="hidden" id="cg-years" value="10">
-      <div class="compound-result" id="cg-result">
-        <div class="compound-result-row"><span class="compound-result-label">Total Invested</span><span class="compound-result-val" id="cg-total-invested">—</span></div>
-        <div class="compound-result-row"><span class="compound-result-label">Investment Gains</span><span class="compound-result-val" style="color:var(--green)" id="cg-gains">—</span></div>
-        <div class="compound-result-row"><span class="compound-result-label" style="font-weight:700;color:var(--t1)">Final Portfolio Value</span><span class="compound-result-val" style="color:var(--blue);font-size:18px" id="cg-final">—</span></div>
-      </div>
-      <div style="position:relative;height:160px;margin-top:16px">
-        <canvas id="cg-chart"></canvas>
-      </div>
-    </div>
-
-    <!-- ── 4. DEBT vs. INVEST CALCULATOR ── -->
-    <div class="card" style="padding:24px">
-      <div class="card-label">⚔️ Debt vs. Invest Calculator</div>
-      <div style="font-size:13px;color:var(--t3);margin-bottom:16px">Should you pay off debt first or start investing? Let the math decide.</div>
-      <div style="margin-bottom:14px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);margin-bottom:8px">Your Debt APRs</div>
-        <div id="dvi-debt-list" style="display:flex;flex-direction:column;gap:8px"></div>
-        <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
-          <div style="font-size:13px;font-weight:600;color:var(--t2);flex:1">Or enter a custom APR:</div>
-          <div style="display:flex;align-items:center;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:0 12px;width:110px">
-            <input id="dvi-custom-apr" type="number" placeholder="0" min="0" max="100" step="0.1" oninput="calcDVI()" style="background:none;border:none;outline:none;padding:10px 0;font-size:14px;font-weight:700;color:var(--t1);font-family:inherit;width:100%">
-            <span style="color:var(--t3);font-weight:700;margin-left:4px">%</span>
-          </div>
-        </div>
-      </div>
-      <div style="margin-bottom:14px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);margin-bottom:6px">Expected Investment Return</div>
-        <div style="display:flex;align-items:center;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:0 12px">
-          <input id="dvi-return" type="number" value="7" min="1" max="30" step="0.5" oninput="calcDVI()" style="background:none;border:none;outline:none;padding:11px 0;font-size:15px;font-weight:700;color:var(--t1);font-family:inherit;width:100%">
-          <span style="color:var(--t3);font-weight:700;margin-left:4px">% (S&amp;P 500 avg ≈ 7%)</span>
-        </div>
-      </div>
-      <div id="dvi-result"></div>
     </div>
 
   </div><!-- end .g2 -->
@@ -5540,290 +5521,170 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ─────────────────────────────
-//  INVESTING TAB
+//  INVESTING TAB — PORTFOLIO
 // ─────────────────────────────
-// ── Quiz ──
-const QUIZ_QUESTIONS = [
-  {
-    q: "How would you react if your investments dropped 20% in one month?",
-    options: [
-      { text: "Sell immediately — I can't afford to lose more", score: 0 },
-      { text: "Hold and wait for it to recover", score: 1 },
-      { text: "Buy more — this is a discount!", score: 2 }
-    ]
-  },
-  {
-    q: "When do you plan to use this money?",
-    options: [
-      { text: "Within the next 3 years", score: 0 },
-      { text: "In 4–10 years", score: 1 },
-      { text: "10+ years away (retirement or long-term)", score: 2 }
-    ]
-  },
-  {
-    q: "What's your primary investing goal?",
-    options: [
-      { text: "Preserve what I have — safety first", score: 0 },
-      { text: "Grow steadily with some risk", score: 1 },
-      { text: "Maximize long-term growth, I can handle swings", score: 2 }
-    ]
-  },
-  {
-    q: "How much investing experience do you have?",
-    options: [
-      { text: "Little to none — this is new to me", score: 0 },
-      { text: "Some — I've invested but I'm still learning", score: 1 },
-      { text: "Comfortable — I understand market cycles", score: 2 }
-    ]
-  },
-  {
-    q: "If you had $10,000 to invest, how would you split it?",
-    options: [
-      { text: "Mostly bonds and cash — safe and stable", score: 0 },
-      { text: "Mix of stocks and bonds — balanced", score: 1 },
-      { text: "All stocks or index funds — long-term growth", score: 2 }
-    ]
-  }
+// ── Portfolio Holdings ──
+const PORTFOLIO_COLORS = [
+  '#3B82F6','#10B981','#F59E0B','#EF4444','#8B5CF6',
+  '#EC4899','#06B6D4','#84CC16','#F97316','#6366F1',
+  '#14B8A6','#E11D48','#7C3AED','#0EA5E9','#22C55E'
 ];
-const QUIZ_PROFILES = [
-  {
-    name: 'Conservative',
-    emoji: '🛡️',
-    color: '#3B82F6',
-    desc: 'You prioritize protecting your money over maximizing growth. Ideal if you have a short timeline or low risk tolerance.',
-    allocs: [{label:'Bonds', pct:60, color:'#3B82F6'},{label:'Stocks', pct:30, color:'#10B981'},{label:'Cash', pct:10, color:'#9CA3AF'}],
-    monthlyTarget: 100
-  },
-  {
-    name: 'Moderate',
-    emoji: '⚖️',
-    color: '#F59E0B',
-    desc: 'You want growth but with guardrails. A balanced mix of stocks and bonds rides out most volatility while building wealth.',
-    allocs: [{label:'Stocks', pct:60, color:'#10B981'},{label:'Bonds', pct:30, color:'#3B82F6'},{label:'Cash', pct:10, color:'#9CA3AF'}],
-    monthlyTarget: 200
-  },
-  {
-    name: 'Aggressive',
-    emoji: '🚀',
-    color: '#8B5CF6',
-    desc: "You're in it for the long haul. Heavy stock exposure maximizes growth potential — you understand short-term drops are part of the game.",
-    allocs: [{label:'Stocks', pct:90, color:'#10B981'},{label:'Bonds', pct:8, color:'#3B82F6'},{label:'Cash', pct:2, color:'#9CA3AF'}],
-    monthlyTarget: 300
-  }
-];
+const SECTOR_COLORS = {
+  'Tech':'#3B82F6','Healthcare':'#10B981','Finance':'#F59E0B','Energy':'#EF4444',
+  'Consumer':'#8B5CF6','Industrial':'#EC4899','Real Estate':'#06B6D4',
+  'Utilities':'#84CC16','Materials':'#F97316','Other':'#6B7280'
+};
 
-let quizStep = 0;
-let quizScores = [];
-let cgChart = null;
+let portfolioHoldings = JSON.parse(localStorage.getItem('portfolioHoldings') || '[]');
+let phView = 'holding'; // 'holding' or 'sector'
+let phChartInstance = null;
 
-function initQuiz() {
-  const saved = localStorage.getItem('fq_risk_profile');
-  if (saved !== null) {
-    showQuizResult(parseInt(saved));
+function addHolding() {
+  const name = document.getElementById('ph-name').value.trim();
+  const sector = document.getElementById('ph-sector').value;
+  const value = parseFloat(document.getElementById('ph-value').value);
+  if (!name || !value || value <= 0) return;
+  portfolioHoldings.push({ id: Date.now(), name, sector, value });
+  localStorage.setItem('portfolioHoldings', JSON.stringify(portfolioHoldings));
+  document.getElementById('ph-name').value = '';
+  document.getElementById('ph-value').value = '';
+  renderPortfolio();
+}
+
+function removeHolding(id) {
+  portfolioHoldings = portfolioHoldings.filter(h => h.id !== id);
+  localStorage.setItem('portfolioHoldings', JSON.stringify(portfolioHoldings));
+  renderPortfolio();
+}
+
+function setPortfolioView(v) {
+  phView = v;
+  document.getElementById('ph-toggle-holding').style.cssText =
+    v === 'holding'
+      ? 'padding:7px 16px;border-radius:8px;border:1.5px solid var(--blue);background:rgba(59,130,246,0.12);color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit'
+      : 'padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg2);color:var(--t2);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit';
+  document.getElementById('ph-toggle-sector').style.cssText =
+    v === 'sector'
+      ? 'padding:7px 16px;border-radius:8px;border:1.5px solid var(--blue);background:rgba(59,130,246,0.12);color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit'
+      : 'padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg2);color:var(--t2);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit';
+  renderPortfolioChart();
+}
+
+function renderPortfolio() {
+  const listEl = document.getElementById('ph-list');
+  const chartArea = document.getElementById('ph-chart-area');
+  const emptyEl = document.getElementById('ph-empty');
+  const statRow = document.getElementById('invest-stat-row');
+
+  // List
+  const total = portfolioHoldings.reduce((s, h) => s + h.value, 0);
+  listEl.innerHTML = portfolioHoldings.map((h, i) => {
+    const pct = total > 0 ? (h.value / total * 100).toFixed(1) : '0.0';
+    const color = PORTFOLIO_COLORS[i % PORTFOLIO_COLORS.length];
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px">
+      <div style="width:10px;height:10px;border-radius:50%;background:${color};flex-shrink:0"></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:700;color:var(--t1)">${h.name}</div>
+        <div style="font-size:12px;color:var(--t3)">${h.sector}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:14px;font-weight:800;color:var(--t1)">$${h.value.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
+        <div style="font-size:12px;color:var(--t3)">${pct}%</div>
+      </div>
+      <button onclick="removeHolding(${h.id})" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--t3);font-size:12px;cursor:pointer;font-family:inherit">✕</button>
+    </div>`;
+  }).join('');
+
+  if (portfolioHoldings.length === 0) {
+    chartArea.style.display = 'none';
+    emptyEl.style.display = 'block';
+    statRow.style.display = 'none';
     return;
   }
-  quizStep = 0; quizScores = [];
-  renderQuizStep();
+
+  chartArea.style.display = 'block';
+  emptyEl.style.display = 'none';
+
+  // Hero stats
+  const sectors = [...new Set(portfolioHoldings.map(h => h.sector))];
+  statRow.style.display = 'flex';
+  document.getElementById('invest-stat-total').textContent = '$' + total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('invest-stat-holdings').textContent = portfolioHoldings.length;
+  document.getElementById('invest-stat-sectors').textContent = sectors.length;
+
+  renderPortfolioChart();
 }
 
-function renderQuizStep() {
-  const q = QUIZ_QUESTIONS[quizStep];
-  document.getElementById('quiz-progress').style.width = ((quizStep / QUIZ_QUESTIONS.length) * 100) + '%';
-  document.getElementById('quiz-question').textContent = `${quizStep + 1}/${QUIZ_QUESTIONS.length}  ${q.q}`;
-  const opts = document.getElementById('quiz-options');
-  opts.innerHTML = q.options.map((o, i) =>
-    `<button class="quiz-option" onclick="selectQuizOption(this,${i},${o.score})">${o.text}</button>`
-  ).join('');
-  document.getElementById('quiz-next-btn').style.display = 'none';
-}
+function renderPortfolioChart() {
+  if (!portfolioHoldings.length) return;
+  const canvas = document.getElementById('ph-chart');
+  const legendEl = document.getElementById('ph-legend');
 
-function selectQuizOption(btn, idx, score) {
-  document.querySelectorAll('#quiz-options .quiz-option').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  quizScores[quizStep] = score;
-  document.getElementById('quiz-next-btn').style.display = 'inline-block';
-}
+  let labels, values, colors;
 
-function quizNext() {
-  if (quizScores[quizStep] === undefined) return;
-  quizStep++;
-  if (quizStep < QUIZ_QUESTIONS.length) {
-    renderQuizStep();
+  if (phView === 'holding') {
+    labels = portfolioHoldings.map(h => h.name);
+    values = portfolioHoldings.map(h => h.value);
+    colors = portfolioHoldings.map((_, i) => PORTFOLIO_COLORS[i % PORTFOLIO_COLORS.length]);
   } else {
-    const total = quizScores.reduce((a, b) => a + b, 0);
-    const profileIdx = total <= 3 ? 0 : total <= 6 ? 1 : 2;
-    localStorage.setItem('fq_risk_profile', String(profileIdx));
-    showQuizResult(profileIdx);
-    updateInvestHero(profileIdx);
+    // Group by sector
+    const sectorMap = {};
+    portfolioHoldings.forEach(h => {
+      sectorMap[h.sector] = (sectorMap[h.sector] || 0) + h.value;
+    });
+    labels = Object.keys(sectorMap);
+    values = labels.map(s => sectorMap[s]);
+    colors = labels.map(s => SECTOR_COLORS[s] || '#6B7280');
   }
-}
 
-function showQuizResult(idx) {
-  document.getElementById('quiz-container').style.display = 'none';
-  document.getElementById('quiz-result-container').style.display = 'block';
-  const p = QUIZ_PROFILES[idx];
-  document.getElementById('quiz-result-content').innerHTML = `
-    <div class="quiz-result-badge" style="background:${p.color}22;color:${p.color}">
-      <span style="font-size:24px">${p.emoji}</span> ${p.name} Investor
-    </div>
-    <div class="quiz-result-title">${p.name} Profile</div>
-    <div class="quiz-result-sub">${p.desc}</div>
-    <div style="text-align:left;margin-top:4px">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:12px">Recommended Allocation</div>
-      ${p.allocs.map(a => `
-        <div class="alloc-row">
-          <span class="alloc-label">${a.label}</span>
-          <div class="alloc-bar-wrap"><div class="alloc-bar-fill" style="width:${a.pct}%;background:${a.color}"></div></div>
-          <span class="alloc-pct" style="color:${a.color}">${a.pct}%</span>
-        </div>`).join('')}
-    </div>`;
-  updateInvestHero(idx);
-}
+  const total = values.reduce((a, b) => a + b, 0);
 
-function resetQuiz() {
-  localStorage.removeItem('fq_risk_profile');
-  quizStep = 0; quizScores = [];
-  document.getElementById('quiz-container').style.display = 'block';
-  document.getElementById('quiz-result-container').style.display = 'none';
-  renderQuizStep();
-}
-
-function updateInvestHero(idx) {
-  const p = QUIZ_PROFILES[idx];
-  document.getElementById('invest-hero-title').textContent = p.emoji + ' ' + p.name + ' Investor';
-  document.getElementById('invest-hero-sub').textContent = p.desc;
-  document.getElementById('invest-stat-row').style.display = 'flex';
-  document.getElementById('invest-stat-profile').textContent = p.name;
-  document.getElementById('invest-stat-monthly').textContent = '$' + p.monthlyTarget + '/mo';
-  // 10 year projection at 7% with monthly target
-  const proj = calcFutureValue(p.monthlyTarget, 7, 10);
-  document.getElementById('invest-stat-projection').textContent = '$' + formatK(proj);
-}
-
-// ── Compound Growth Calculator ──
-let cgYears = 10;
-
-function setCGYears(y, btn) {
-  cgYears = y;
-  document.getElementById('cg-years').value = y;
-  document.querySelectorAll('.cg-yr-btn').forEach(b => {
-    b.style.borderColor = 'var(--border)';
-    b.style.background = 'var(--bg2)';
-    b.style.color = 'var(--t2)';
-  });
-  btn.style.borderColor = 'var(--blue)';
-  btn.style.background = 'rgba(59,130,246,0.12)';
-  btn.style.color = 'var(--blue)';
-  calcCompound();
-}
-
-function calcFutureValue(monthly, annualPct, years) {
-  const r = annualPct / 100 / 12;
-  const n = years * 12;
-  return monthly * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
-}
-
-function formatK(n) {
-  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-  if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
-  return n.toFixed(0);
-}
-
-function calcCompound() {
-  const monthly = parseFloat(document.getElementById('cg-monthly').value) || 0;
-  const ret = parseFloat(document.getElementById('cg-return').value) || 7;
-  const years = cgYears;
-  const fv = calcFutureValue(monthly, ret, years);
-  const invested = monthly * years * 12;
-  const gains = fv - invested;
-  document.getElementById('cg-total-invested').textContent = '$' + invested.toLocaleString('en-US', {maximumFractionDigits:0});
-  document.getElementById('cg-gains').textContent = '+$' + gains.toLocaleString('en-US', {maximumFractionDigits:0});
-  document.getElementById('cg-final').textContent = '$' + fv.toLocaleString('en-US', {maximumFractionDigits:0});
-  // Build chart data year by year
-  const labels = [], investedData = [], totalData = [];
-  for (let y = 0; y <= years; y++) {
-    labels.push(y === 0 ? 'Now' : `Yr ${y}`);
-    investedData.push(monthly * y * 12);
-    totalData.push(y === 0 ? 0 : calcFutureValue(monthly, ret, y));
-  }
-  if (cgChart) cgChart.destroy();
-  const ctx = document.getElementById('cg-chart').getContext('2d');
-  cgChart = new Chart(ctx, {
-    type: 'line',
+  if (phChartInstance) phChartInstance.destroy();
+  const ctx = canvas.getContext('2d');
+  phChartInstance = new Chart(ctx, {
+    type: 'doughnut',
     data: {
       labels,
-      datasets: [
-        { label: 'Invested', data: investedData, borderColor: 'rgba(156,163,175,0.6)', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, borderDash: [4,4] },
-        { label: 'Total Value', data: totalData, borderColor: '#3B82F6', backgroundColor: 'rgba(59,130,246,0.08)', borderWidth: 2.5, pointRadius: 0, fill: true }
-      ]
+      datasets: [{
+        data: values,
+        backgroundColor: colors,
+        borderColor: 'var(--card)',
+        borderWidth: 3,
+        hoverOffset: 8
+      }]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: {
-        callbacks: { label: ctx => ' $' + ctx.raw.toLocaleString('en-US', {maximumFractionDigits:0}) }
-      }},
-      scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#4B5563', maxTicksLimit: 6, font: { size: 11 } } },
-        y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#4B5563', font: { size: 11 }, callback: v => '$' + formatK(v) } }
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '60%',
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const pct = (ctx.raw / total * 100).toFixed(1);
+              return ` $${ctx.raw.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})} (${pct}%)`;
+            }
+          }
+        }
       }
     }
   });
+
+  // Render legend
+  legendEl.innerHTML = labels.map((lbl, i) => {
+    const pct = (values[i] / total * 100).toFixed(1);
+    return `<div style="display:flex;align-items:center;gap:8px">
+      <div style="width:10px;height:10px;border-radius:50%;background:${colors[i]};flex-shrink:0"></div>
+      <div style="flex:1;font-size:13px;font-weight:600;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${lbl}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--t2)">${pct}%</div>
+    </div>`;
+  }).join('');
 }
 
-// ── Debt vs. Invest ──
-function initDVI() {
-  const dviList = document.getElementById('dvi-debt-list');
-  if (!dviList) return;
-  if (!debts.length) {
-    dviList.innerHTML = '<div style="font-size:13px;color:var(--t3);padding:8px 0">No debts added yet — use the custom APR field below.</div>';
-  } else {
-    dviList.innerHTML = debts.map((d, i) => {
-      const icons = {credit:'💳',student:'🎓',personal:'💼',auto:'🚗'};
-      return `<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;cursor:pointer" onclick="setDVIDebt(${d.apr},this)">
-        <span style="font-size:18px">${icons[d.type]||'💰'}</span>
-        <span style="font-size:13px;font-weight:600;flex:1">${d.name}</span>
-        <span style="font-size:14px;font-weight:800;color:var(--red)">${d.apr}% APR</span>
-        <span style="font-size:11px;color:var(--t3)">Select →</span>
-      </div>`;
-    }).join('');
-  }
-  calcDVI();
-}
-
-function setDVIDebt(apr, el) {
-  document.getElementById('dvi-custom-apr').value = apr;
-  document.querySelectorAll('#dvi-debt-list > div').forEach(d => d.style.borderColor = 'var(--border)');
-  el.style.borderColor = 'var(--green)';
-  calcDVI();
-}
-
-function calcDVI() {
-  const debtAPR = parseFloat(document.getElementById('dvi-custom-apr').value) || 0;
-  const investReturn = parseFloat(document.getElementById('dvi-return').value) || 7;
-  const result = document.getElementById('dvi-result');
-  if (!debtAPR) { result.innerHTML = ''; return; }
-  const diff = debtAPR - investReturn;
-  let html;
-  if (diff >= 4) {
-    html = `<div class="dvi-verdict" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25)">
-      <div class="dvi-verdict-emoji">💳</div>
-      <div class="dvi-verdict-title" style="color:var(--red)">Pay Off Debt First</div>
-      <div class="dvi-verdict-sub" style="color:var(--t2)">Your debt at <strong style="color:var(--red)">${debtAPR}% APR</strong> costs more than investing returns <strong style="color:var(--t1)">${investReturn}%</strong>. Paying it off is a guaranteed ${debtAPR}% return — better than the market.</div>
-    </div>`;
-  } else if (diff >= 0) {
-    html = `<div class="dvi-verdict" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25)">
-      <div class="dvi-verdict-emoji">⚖️</div>
-      <div class="dvi-verdict-title" style="color:var(--gold)">It's Close — Do Both</div>
-      <div class="dvi-verdict-sub" style="color:var(--t2)">Your debt <strong style="color:var(--gold)">${debtAPR}% APR</strong> is close to investment returns <strong style="color:var(--t1)">${investReturn}%</strong>. Consider splitting extra money — pay down debt AND invest a little each month.</div>
-    </div>`;
-  } else {
-    html = `<div class="dvi-verdict" style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25)">
-      <div class="dvi-verdict-emoji">📈</div>
-      <div class="dvi-verdict-title" style="color:var(--green)">Invest While Paying Minimums</div>
-      <div class="dvi-verdict-sub" style="color:var(--t2)">Your debt at <strong style="color:var(--t1)">${debtAPR}% APR</strong> is lower than expected returns of <strong style="color:var(--green)">${investReturn}%</strong>. Pay minimums on debt and invest the rest — the math favors it.</div>
-    </div>`;
-  }
-  result.innerHTML = html;
+function initInvesting() {
+  loadRoadmapState();
+  renderPortfolio();
 }
 
 // ── Roadmap checklist ──
@@ -5847,16 +5708,6 @@ function loadRoadmapState() {
       el.querySelector('.roadmap-check-box span').style.display = 'block';
     }
   });
-}
-
-function initInvesting() {
-  initQuiz();
-  initDVI();
-  calcCompound();
-  loadRoadmapState();
-  // Check if profile already saved and update hero
-  const saved = localStorage.getItem('fq_risk_profile');
-  if (saved !== null) updateInvestHero(parseInt(saved));
 }
 
 // ─────────────────────────────
