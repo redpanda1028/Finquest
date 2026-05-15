@@ -568,51 +568,71 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 }
 
 /* ── COMMUNITY ── */
-.milestone-post{
-  background:var(--card);border:1px solid var(--border);border-radius:14px;
-  padding:18px;margin-bottom:12px;transition:border-color 0.2s;
+/* ── Community feed (Instagram-style) ── */
+.community-stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  margin-bottom:20px;overflow:hidden;
 }
-.milestone-post:hover{border-color:var(--border2)}
-.post-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.community-stat-cell{
+  padding:14px 12px;text-align:center;border-right:1px solid var(--border);
+}
+.community-stat-cell:last-child{border-right:none}
+.community-stat-val{font-size:18px;font-weight:900;letter-spacing:-0.5px}
+.community-stat-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-top:3px}
+
+/* Leaderboard strip */
+.lb-strip{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px;margin-bottom:24px;scrollbar-width:none}
+.lb-strip::-webkit-scrollbar{display:none}
+.lb-chip{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  flex-shrink:0;cursor:pointer;
+}
+.lb-chip-avatar{
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:18px;color:#fff;
+  box-shadow:0 0 0 2.5px var(--card),0 0 0 4px rgba(255,255,255,0.15);
+}
+.lb-chip-avatar.you{box-shadow:0 0 0 2.5px var(--card),0 0 0 4px var(--gold)}
+.lb-chip-name{font-size:11px;font-weight:600;color:var(--t2);text-align:center;max-width:56px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-chip-xp{font-size:10px;font-weight:700;color:var(--gold)}
+
+/* Feed posts */
+.feed-post{
+  padding:16px 0;border-bottom:1px solid var(--border);
+}
+.feed-post:last-child{border-bottom:none}
+.post-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .post-avatar{
-  width:36px;height:36px;border-radius:50%;
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:14px;flex-shrink:0;
+  font-weight:800;font-size:16px;color:#fff;
 }
-.post-user{font-size:13px;font-weight:600}
-.post-level{font-size:11px;color:var(--gold);margin-top:1px}
-.post-time{margin-left:auto;font-size:11px;color:var(--t3)}
-.post-body{font-size:14px;line-height:1.6;color:var(--t2)}
-.post-body strong{color:var(--t1)}
+.post-meta{flex:1;min-width:0}
+.post-user{font-size:14px;font-weight:700;color:var(--t1)}
+.post-level{font-size:12px;color:var(--t3);margin-top:1px}
+.post-time{font-size:12px;color:var(--t3);flex-shrink:0}
+.post-body{font-size:15px;line-height:1.65;color:var(--t1);margin-bottom:12px}
+.post-body strong{color:var(--t1);font-weight:800}
 .post-milestone{
-  margin-top:10px;padding:10px 14px;
-  background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.15);
-  border-radius:8px;font-size:13px;color:var(--green);font-weight:600;
-  display:flex;align-items:center;gap:8px;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:20px;
+  background:rgba(16,185,129,0.1);
+  font-size:12px;font-weight:700;color:var(--green);
+  margin-bottom:12px;
 }
-.post-actions{display:flex;align-items:center;gap:16px;margin-top:12px}
+.post-actions{display:flex;align-items:center;gap:20px}
 .post-action{
-  font-size:12px;color:var(--t3);cursor:pointer;transition:color 0.2s;
-  display:flex;align-items:center;gap:5px;
+  font-size:13px;font-weight:600;color:var(--t3);cursor:pointer;
+  transition:color 0.2s;display:flex;align-items:center;gap:5px;
 }
-.post-action:hover{color:var(--t2)}
-.post-action.liked{color:var(--red)}
-.leaderboard-item{
-  display:flex;align-items:center;gap:12px;padding:12px 0;
-  border-bottom:1px solid var(--border);
-}
-.leaderboard-item:last-child{border-bottom:none}
-.lb-rank{font-size:16px;font-weight:800;width:28px;color:var(--t3)}
-.lb-rank.top{color:var(--gold)}
-.lb-avatar{
-  width:36px;height:36px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:13px;flex-shrink:0;
-}
-.lb-info{flex:1}
-.lb-name{font-size:13px;font-weight:600}
-.lb-level{font-size:11px;color:var(--t2);margin-top:1px}
-.lb-xp{font-size:14px;font-weight:700;color:var(--gold)}
+.post-action:hover{color:var(--t1)}
+.post-action.liked{color:#EF4444}
+
+/* Legacy leaderboard — hidden (replaced by strip) */
+.leaderboard-item{display:none}
+.lb-rank,.lb-avatar,.lb-info,.lb-name,.lb-level,.lb-xp{display:none}
 
 /* ── PROFILE ── */
 .profile-hero{
@@ -2407,140 +2427,140 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 <!-- ══════════════ COMMUNITY ══════════════ -->
 <section id="community" class="screen">
   <div class="page-header">
-    <div class="page-title">Community</div>
-    <div class="page-sub">Anonymous milestones · Real accountability · You're not alone</div>
+    <div class="page-title">Community 🌎</div>
+    <div class="page-sub">Anonymous milestones · Real accountability</div>
   </div>
 
-  <div class="g2">
-    <div>
-      <div class="mission-section-title">🏆 Recent Milestones</div>
+  <!-- Community stats row -->
+  <div class="community-stats-row">
+    <div class="community-stat-cell">
+      <div class="community-stat-val" style="color:var(--green)">$4.2M</div>
+      <div class="community-stat-lbl">Debt Paid Off</div>
+    </div>
+    <div class="community-stat-cell">
+      <div class="community-stat-val">12.8K</div>
+      <div class="community-stat-lbl">Active Streaks</div>
+    </div>
+    <div class="community-stat-cell">
+      <div class="community-stat-val" style="color:var(--orange)">8.3K</div>
+      <div class="community-stat-lbl">Pauses This Week</div>
+    </div>
+    <div class="community-stat-cell">
+      <div class="community-stat-val" style="color:var(--gold)">1,204</div>
+      <div class="community-stat-lbl">🎉 Debt-Free</div>
+    </div>
+  </div>
 
-      <div class="milestone-post">
-        <div class="post-header">
-          <div class="post-avatar" style="background:linear-gradient(135deg,#7C3AED,#EC4899)">M</div>
-          <div>
-            <div class="post-user">anonymous · Debt Crusher</div>
-            <div class="post-level">⚡ Level 5 · 34-day streak</div>
-          </div>
-          <div class="post-time">2h ago</div>
+  <!-- Leaderboard strip -->
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:12px">🏅 Friends Leaderboard</div>
+  <div class="lb-strip">
+    <div class="lb-chip">
+      <div class="lb-chip-avatar" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">S</div>
+      <div class="lb-chip-name">Sarah K.</div>
+      <div class="lb-chip-xp">8,420 XP</div>
+    </div>
+    <div class="lb-chip">
+      <div class="lb-chip-avatar you" style="background:linear-gradient(135deg,#7C3AED,#EC4899)">A</div>
+      <div class="lb-chip-name">You</div>
+      <div class="lb-chip-xp">2,340 XP</div>
+    </div>
+    <div class="lb-chip">
+      <div class="lb-chip-avatar" style="background:linear-gradient(135deg,#10B981,#3B82F6)">M</div>
+      <div class="lb-chip-name">Marcus T.</div>
+      <div class="lb-chip-xp">1,890 XP</div>
+    </div>
+    <div class="lb-chip">
+      <div class="lb-chip-avatar" style="background:linear-gradient(135deg,#3B82F6,#8B5CF6)">J</div>
+      <div class="lb-chip-name">Jamie L.</div>
+      <div class="lb-chip-xp">980 XP</div>
+    </div>
+    <div class="lb-chip">
+      <div class="lb-chip-avatar" style="background:linear-gradient(135deg,#6B7280,#4B5563)">C</div>
+      <div class="lb-chip-name">Casey R.</div>
+      <div class="lb-chip-xp">410 XP</div>
+    </div>
+  </div>
+
+  <!-- Feed -->
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:4px">Recent Milestones</div>
+  <div>
+
+    <!-- Post 1 -->
+    <div class="feed-post">
+      <div class="post-header">
+        <div class="post-avatar" style="background:linear-gradient(135deg,#7C3AED,#EC4899)">M</div>
+        <div class="post-meta">
+          <div class="post-user">anonymous <span style="font-size:12px;font-weight:600;padding:2px 8px;border-radius:20px;background:rgba(124,58,237,0.15);color:#A78BFA;margin-left:6px">Debt Crusher</span></div>
+          <div class="post-level">⚡ Level 5 · 🔥 34-day streak</div>
         </div>
-        <div class="post-body">Just paid off my first card in full. <strong>Chase Freedom — $3,200 — GONE.</strong> Started IdealU 4 months ago thinking I'd never get here. The daily missions kept me accountable on days I wanted to give up.</div>
-        <div class="post-milestone">🎉 Paid off Chase Freedom Card — $3,200</div>
-        <div class="post-actions">
-          <div class="post-action liked" onclick="this.classList.toggle('liked')">❤️ 47</div>
-          <div class="post-action">💬 12 replies</div>
-          <div class="post-action">🔗 Share</div>
-        </div>
+        <div class="post-time">2h ago</div>
       </div>
-
-      <div class="milestone-post">
-        <div class="post-header">
-          <div class="post-avatar" style="background:linear-gradient(135deg,#10B981,#3B82F6)">T</div>
-          <div>
-            <div class="post-user">anonymous · Freedom Seeker</div>
-            <div class="post-level">⚡ Level 6 · 91-day streak</div>
-          </div>
-          <div class="post-time">1d ago</div>
-        </div>
-        <div class="post-body">90-day streak! My debt-free date moved from <strong>June 2030 to November 2027</strong> just by following the missions consistently. The what-if simulator got me obsessed with moving that date earlier.</div>
-        <div class="post-milestone">🔥 90-Day Streak Achieved</div>
-        <div class="post-actions">
-          <div class="post-action" onclick="this.classList.toggle('liked');this.textContent=(this.classList.contains('liked')?'❤️ 93':'❤️ 92')">❤️ 92</div>
-          <div class="post-action">💬 8 replies</div>
-          <div class="post-action">🔗 Share</div>
-        </div>
-      </div>
-
-      <div class="milestone-post">
-        <div class="post-header">
-          <div class="post-avatar" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">R</div>
-          <div>
-            <div class="post-user">anonymous · Budget Builder</div>
-            <div class="post-level">⚡ Level 3 · 7-day streak</div>
-          </div>
-          <div class="post-time">3d ago</div>
-        </div>
-        <div class="post-body">The Pause feature stopped me from buying a $180 jacket I didn't need. It said <strong>"Is this worth 6 more days of debt?"</strong> and honestly... it wasn't. That $180 went straight to my student loan instead.</div>
-        <div class="post-actions">
-          <div class="post-action" onclick="this.classList.toggle('liked');this.textContent=(this.classList.contains('liked')?'❤️ 31':'❤️ 30')">❤️ 30</div>
-          <div class="post-action">💬 5 replies</div>
-          <div class="post-action">🔗 Share</div>
-        </div>
+      <div class="post-body">Just paid off my first card in full. <strong>Chase Freedom — $3,200 — GONE.</strong> Started IdealU 4 months ago thinking I'd never get here. The daily missions kept me accountable on days I wanted to give up.</div>
+      <div class="post-milestone">🎉 Paid off Chase Freedom Card — $3,200</div>
+      <div class="post-actions">
+        <div class="post-action liked" onclick="toggleLike(this,47)">❤️ <span>47</span></div>
+        <div class="post-action">💬 <span>12</span></div>
+        <div class="post-action">↗️ <span>Share</span></div>
       </div>
     </div>
 
-    <div>
-      <div class="mission-section-title">🏅 Friends Leaderboard</div>
-      <div class="card">
-        <div class="leaderboard-item">
-          <div class="lb-rank top">1</div>
-          <div class="lb-avatar" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">S</div>
-          <div class="lb-info">
-            <div class="lb-name">Sarah K.</div>
-            <div class="lb-level">Debt Crusher · Lv.5 · 🔥 34 days</div>
-          </div>
-          <div class="lb-xp">8,420 XP</div>
+    <!-- Post 2 -->
+    <div class="feed-post">
+      <div class="post-header">
+        <div class="post-avatar" style="background:linear-gradient(135deg,#10B981,#3B82F6)">T</div>
+        <div class="post-meta">
+          <div class="post-user">anonymous <span style="font-size:12px;font-weight:600;padding:2px 8px;border-radius:20px;background:rgba(16,185,129,0.15);color:#34D399;margin-left:6px">Freedom Seeker</span></div>
+          <div class="post-level">⚡ Level 6 · 🔥 91-day streak</div>
         </div>
-        <div class="leaderboard-item">
-          <div class="lb-rank top">2</div>
-          <div class="lb-avatar" style="background:linear-gradient(135deg,#7C3AED,#EC4899)">A</div>
-          <div class="lb-info">
-            <div class="lb-name">You (Alex)</div>
-            <div class="lb-level">Debt Fighter · Lv.4 · 🔥 14 days</div>
-          </div>
-          <div class="lb-xp">2,340 XP</div>
-        </div>
-        <div class="leaderboard-item">
-          <div class="lb-rank">3</div>
-          <div class="lb-avatar" style="background:linear-gradient(135deg,#10B981,#3B82F6)">M</div>
-          <div class="lb-info">
-            <div class="lb-name">Marcus T.</div>
-            <div class="lb-level">Debt Fighter · Lv.4 · 🔥 9 days</div>
-          </div>
-          <div class="lb-xp">1,890 XP</div>
-        </div>
-        <div class="leaderboard-item">
-          <div class="lb-rank">4</div>
-          <div class="lb-avatar" style="background:linear-gradient(135deg,#3B82F6,#8B5CF6)">J</div>
-          <div class="lb-info">
-            <div class="lb-name">Jamie L.</div>
-            <div class="lb-level">Budget Builder · Lv.3 · 🔥 5 days</div>
-          </div>
-          <div class="lb-xp">980 XP</div>
-        </div>
-        <div class="leaderboard-item">
-          <div class="lb-rank">5</div>
-          <div class="lb-avatar" style="background:linear-gradient(135deg,#6B7280,#4B5563)">C</div>
-          <div class="lb-info">
-            <div class="lb-name">Casey R.</div>
-            <div class="lb-level">Debt Aware · Lv.2 · 🔥 2 days</div>
-          </div>
-          <div class="lb-xp">410 XP</div>
-        </div>
+        <div class="post-time">1d ago</div>
       </div>
-
-      <div class="card section-gap" style="margin-top:16px">
-        <div class="card-label">📊 Community Stats</div>
-        <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:13px;color:var(--t2)">Total debt paid off (all users)</span>
-            <span style="font-size:16px;font-weight:700;color:var(--green)">$4.2M</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:13px;color:var(--t2)">Active streaks today</span>
-            <span style="font-size:16px;font-weight:700">12,847</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:13px;color:var(--t2)">Purchases paused this week</span>
-            <span style="font-size:16px;font-weight:700;color:var(--orange)">8,293</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:13px;color:var(--t2)">Debt-free celebrations</span>
-            <span style="font-size:16px;font-weight:700;color:var(--gold)">🎉 1,204</span>
-          </div>
-        </div>
+      <div class="post-body">90-day streak! My debt-free date moved from <strong>June 2030 to November 2027</strong> just by following the missions consistently. The what-if simulator got me obsessed with moving that date earlier.</div>
+      <div class="post-milestone">🔥 90-Day Streak Achieved</div>
+      <div class="post-actions">
+        <div class="post-action" onclick="toggleLike(this,92)">❤️ <span>92</span></div>
+        <div class="post-action">💬 <span>8</span></div>
+        <div class="post-action">↗️ <span>Share</span></div>
       </div>
     </div>
+
+    <!-- Post 3 -->
+    <div class="feed-post">
+      <div class="post-header">
+        <div class="post-avatar" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">R</div>
+        <div class="post-meta">
+          <div class="post-user">anonymous <span style="font-size:12px;font-weight:600;padding:2px 8px;border-radius:20px;background:rgba(245,158,11,0.15);color:#FCD34D;margin-left:6px">Budget Builder</span></div>
+          <div class="post-level">⚡ Level 3 · 🔥 7-day streak</div>
+        </div>
+        <div class="post-time">3d ago</div>
+      </div>
+      <div class="post-body">The Pause feature stopped me from buying a $180 jacket I didn't need. It asked <strong>"Is this worth 6 more days of debt?"</strong> and honestly… it wasn't. That $180 went straight to my student loan instead.</div>
+      <div class="post-milestone">⏸️ Paused a $180 purchase</div>
+      <div class="post-actions">
+        <div class="post-action" onclick="toggleLike(this,30)">❤️ <span>30</span></div>
+        <div class="post-action">💬 <span>5</span></div>
+        <div class="post-action">↗️ <span>Share</span></div>
+      </div>
+    </div>
+
+    <!-- Post 4 -->
+    <div class="feed-post">
+      <div class="post-header">
+        <div class="post-avatar" style="background:linear-gradient(135deg,#3B82F6,#06B6D4)">K</div>
+        <div class="post-meta">
+          <div class="post-user">anonymous <span style="font-size:12px;font-weight:600;padding:2px 8px;border-radius:20px;background:rgba(59,130,246,0.15);color:#60A5FA;margin-left:6px">Debt Fighter</span></div>
+          <div class="post-level">⚡ Level 4 · 🔥 21-day streak</div>
+        </div>
+        <div class="post-time">4d ago</div>
+      </div>
+      <div class="post-body">Hit $5,000 paid off total across all my debts. Never thought I'd see that number. The progress bar going down feels better than any purchase I've ever made.</div>
+      <div class="post-milestone">💰 $5,000 Total Paid Off</div>
+      <div class="post-actions">
+        <div class="post-action" onclick="toggleLike(this,61)">❤️ <span>61</span></div>
+        <div class="post-action">💬 <span>14</span></div>
+        <div class="post-action">↗️ <span>Share</span></div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -3819,6 +3839,11 @@ function updateXP() {
   document.getElementById('sidebar-xp').style.width = pct + '%';
   document.getElementById('xp-display').textContent = `${currentXP.toLocaleString()} / ${XP_TO_NEXT.toLocaleString()} XP to Level 5`;
   document.getElementById('xp-remaining').textContent = (XP_TO_NEXT - currentXP).toLocaleString();
+}
+
+function toggleLike(el, base) {
+  const liked = el.classList.toggle('liked');
+  el.querySelector('span').textContent = liked ? base + 1 : base;
 }
 
 function showToast(icon, xp) {
