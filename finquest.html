@@ -550,24 +550,63 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 }
 
 /* ── REPORT CARD ── */
-.grade-display{
-  font-size:120px;font-weight:900;line-height:1;letter-spacing:-6px;
-  background:linear-gradient(135deg,var(--green),var(--greenL));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+.rc-hero{
+  text-align:center;padding:32px 24px 28px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;margin-bottom:20px;
 }
-.grade-period{font-size:14px;color:var(--t2);margin-top:8px}
-.grade-feedback{
-  margin-top:16px;padding:14px;background:rgba(16,185,129,0.07);
-  border:1px solid rgba(16,185,129,0.15);border-radius:10px;
-  font-size:14px;line-height:1.6;color:var(--t1);
+.rc-grade-ring{
+  width:120px;height:120px;border-radius:50%;margin:0 auto 16px;
+  display:flex;align-items:center;justify-content:center;
+  background:conic-gradient(var(--green) 0% 78%, var(--border2) 78% 100%);
+  position:relative;
 }
-.action-item{
-  margin-top:12px;padding:14px;background:var(--card2);
-  border-radius:10px;display:flex;align-items:flex-start;gap:12px;
+.rc-grade-ring::before{
+  content:'';position:absolute;width:90px;height:90px;
+  border-radius:50%;background:var(--card);
 }
-.action-icon{font-size:20px;flex-shrink:0}
-.action-text{font-size:13px;color:var(--t2);line-height:1.5}
-.action-text strong{color:var(--t1);display:block;margin-bottom:2px}
+.rc-grade-letter{
+  position:relative;font-size:44px;font-weight:900;letter-spacing:-2px;
+  color:var(--green);line-height:1;
+}
+.rc-week{font-size:12px;color:var(--t3);font-weight:600;margin-bottom:12px}
+.rc-feedback{
+  font-size:14px;line-height:1.65;color:var(--t2);
+  max-width:420px;margin:0 auto 20px;
+}
+.rc-feedback strong{color:var(--t1)}
+.rc-action{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:14px;padding:12px 18px;text-align:left;max-width:420px;width:100%;
+}
+.rc-action-icon{font-size:22px;flex-shrink:0}
+.rc-action-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px}
+.rc-action-text{font-size:13px;color:var(--t1);font-weight:600;line-height:1.4}
+
+/* Category grid */
+.rc-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;
+}
+.rc-cat{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:16px 14px;text-align:center;
+}
+.rc-cat-icon{font-size:22px;margin-bottom:8px}
+.rc-cat-grade{font-size:28px;font-weight:900;line-height:1;margin-bottom:4px}
+.rc-cat-name{font-size:11px;font-weight:700;color:var(--t2);line-height:1.3}
+.rc-cat-desc{font-size:10px;color:var(--t3);margin-top:4px;line-height:1.4}
+
+/* Trend chart card */
+.rc-trend{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:20px 20px 16px;
+}
+
+/* Legacy — hide old classes */
+.grade-display,.grade-period,.grade-feedback,.action-item,.action-icon,.action-text{display:none}
+.report-cat{display:none}
+.health-categories{display:none}
 
 .report-cat{
   display:flex;align-items:center;gap:14px;padding:16px 0;
@@ -2349,102 +2388,75 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 <!-- ══════════════ REPORT CARD ══════════════ -->
 <section id="reportcard" class="screen">
   <div class="page-header">
-    <div class="page-title">Weekly Report Card</div>
-    <div class="page-sub">Week of April 7–13, 2026 · Every Sunday in your inbox</div>
+    <div class="page-title">Report Card</div>
+    <div class="page-sub">Week of April 7–13, 2026</div>
   </div>
 
-  <div class="g2">
-    <div class="card">
-      <div class="card-label">This Week's Grade</div>
-      <div class="grade-display">B+</div>
-      <div class="grade-period">Apr 7 – Apr 13, 2026</div>
-      <div class="grade-feedback">
-        You made your minimum payment on time and avoided dining out on 5 of 7 days. Your streak held strong at 14 days. The only drag: one $47 delivery order mid-week set your timeline back slightly.
-      </div>
-      <div class="action-item">
-        <div class="action-icon">🎯</div>
-        <div class="action-text">
-          <strong>Your one action for next week</strong>
-          Set a $40 weekly dining budget and use cash — it's harder to overspend when you can see it leaving your hand.
-        </div>
-      </div>
+  <!-- Grade hero -->
+  <div class="rc-hero">
+    <div class="rc-grade-ring">
+      <div class="rc-grade-letter">B+</div>
     </div>
-
-    <div class="card">
-      <div class="card-label">Category Breakdown</div>
-      <div class="report-cat">
-        <div class="report-cat-icon">💳</div>
-        <div class="report-cat-info">
-          <div class="report-cat-name">Debt Payments</div>
-          <div class="report-cat-desc">Made minimum + $25 extra on Chase</div>
-        </div>
-        <div class="report-cat-grade" style="color:var(--green)">A</div>
-      </div>
-      <div class="report-cat">
-        <div class="report-cat-icon">🍽️</div>
-        <div class="report-cat-info">
-          <div class="report-cat-name">Dining & Takeout</div>
-          <div class="report-cat-desc">$63 spent · Target was $40</div>
-        </div>
-        <div class="report-cat-grade" style="color:var(--orange)">C+</div>
-      </div>
-      <div class="report-cat">
-        <div class="report-cat-icon">🎯</div>
-        <div class="report-cat-info">
-          <div class="report-cat-name">Mission Completion</div>
-          <div class="report-cat-desc">4 of 7 daily missions complete</div>
-        </div>
-        <div class="report-cat-grade" style="color:var(--gold)">B-</div>
-      </div>
-      <div class="report-cat">
-        <div class="report-cat-icon">🔥</div>
-        <div class="report-cat-info">
-          <div class="report-cat-name">Streak & Consistency</div>
-          <div class="report-cat-desc">14-day streak · 0 missed check-ins</div>
-        </div>
-        <div class="report-cat-grade" style="color:var(--green)">A+</div>
-      </div>
-      <div class="report-cat">
-        <div class="report-cat-icon">💰</div>
-        <div class="report-cat-info">
-          <div class="report-cat-name">Savings Rate</div>
-          <div class="report-cat-desc">Saved $120 of $4,200 income (2.9%)</div>
-        </div>
-        <div class="report-cat-grade" style="color:var(--orange)">C</div>
+    <div class="rc-week">Apr 7 – Apr 13, 2026</div>
+    <div class="rc-feedback">
+      Minimum payment on time, avoided dining out <strong>5 of 7 days</strong>, streak held at <strong>14 days</strong>. One $47 delivery order mid-week was the only drag.
+    </div>
+    <div class="rc-action" style="margin:0 auto">
+      <div class="rc-action-icon">🎯</div>
+      <div>
+        <div class="rc-action-label">Focus for next week</div>
+        <div class="rc-action-text">Set a $40 dining budget and use cash — harder to overspend when you see it leaving your hand.</div>
       </div>
     </div>
   </div>
 
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-label">🏥 Health Score Breakdown</div>
-    <div class="health-categories">
-      <div class="health-row">
-        <span class="health-row-label">Debt payments</span>
-        <div class="health-bar"><div class="health-bar-fill" style="background:var(--green);width:85%"></div></div>
-        <span class="health-grade" style="color:var(--green)">A</span>
-      </div>
-      <div class="health-row">
-        <span class="health-row-label">Spending control</span>
-        <div class="health-bar"><div class="health-bar-fill" style="background:var(--gold);width:72%"></div></div>
-        <span class="health-grade" style="color:var(--gold)">B</span>
-      </div>
-      <div class="health-row">
-        <span class="health-row-label">Savings rate</span>
-        <div class="health-bar"><div class="health-bar-fill" style="background:var(--orange);width:58%"></div></div>
-        <span class="health-grade" style="color:var(--orange)">C+</span>
-      </div>
-      <div class="health-row">
-        <span class="health-row-label">Streak consistency</span>
-        <div class="health-bar"><div class="health-bar-fill" style="background:var(--green);width:93%"></div></div>
-        <span class="health-grade" style="color:var(--green)">A+</span>
-      </div>
+  <!-- Category grid -->
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:12px">Category Breakdown</div>
+  <div class="rc-grid">
+    <div class="rc-cat">
+      <div class="rc-cat-icon">💳</div>
+      <div class="rc-cat-grade" style="color:var(--green)">A</div>
+      <div class="rc-cat-name">Debt Payments</div>
+      <div class="rc-cat-desc">Min + $25 extra on Chase</div>
+    </div>
+    <div class="rc-cat">
+      <div class="rc-cat-icon">🍽️</div>
+      <div class="rc-cat-grade" style="color:var(--orange)">C+</div>
+      <div class="rc-cat-name">Dining & Takeout</div>
+      <div class="rc-cat-desc">$63 spent · target $40</div>
+    </div>
+    <div class="rc-cat">
+      <div class="rc-cat-icon">🎯</div>
+      <div class="rc-cat-grade" style="color:var(--gold)">B−</div>
+      <div class="rc-cat-name">Missions</div>
+      <div class="rc-cat-desc">4 of 7 complete</div>
+    </div>
+    <div class="rc-cat">
+      <div class="rc-cat-icon">🔥</div>
+      <div class="rc-cat-grade" style="color:var(--green)">A+</div>
+      <div class="rc-cat-name">Streak</div>
+      <div class="rc-cat-desc">14 days · 0 missed</div>
+    </div>
+    <div class="rc-cat">
+      <div class="rc-cat-icon">💰</div>
+      <div class="rc-cat-grade" style="color:var(--orange)">C</div>
+      <div class="rc-cat-name">Savings Rate</div>
+      <div class="rc-cat-desc">$120 saved (2.9%)</div>
+    </div>
+    <div class="rc-cat" style="border-style:dashed;opacity:0.4;cursor:default">
+      <div class="rc-cat-icon">➕</div>
+      <div class="rc-cat-grade" style="color:var(--t3);font-size:20px">—</div>
+      <div class="rc-cat-name">More soon</div>
+      <div class="rc-cat-desc">Coming next update</div>
     </div>
   </div>
 
-  <div class="card section-gap">
-    <div class="card-label">📈 Health Score Trend</div>
+  <!-- Trend chart -->
+  <div class="rc-trend">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:16px">📈 Score Trend</div>
     <canvas id="trendChart" height="90"></canvas>
   </div>
+
 </section>
 
 <!-- ══════════════ COMMUNITY ══════════════ -->
